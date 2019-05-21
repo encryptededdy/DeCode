@@ -23,7 +23,7 @@ namespace PythonRunner
         {
             var engine = Python.CreateEngine();
             var scope = engine.CreateScope();
-            engine.Execute(codeField.text);
+            engine.CreateScriptSourceFromString(codeField.text).Execute(scope);
             var pythonResult = scope.GetVariable<string>("result");
             resultText.text = pythonResult;
         }
