@@ -1,74 +1,93 @@
 using System;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UltimateIsometricToolkit.physics;
+using UnityEditor;
 using UnityEngine;
 
-[ExecuteInEditMode]
-public class BaseFloorGenerator : MonoBehaviour
+namespace Misc
 {
-    public String Prefix = "Floor Tile";
-
-    public GameObject Prefab;
-
-    public int SizeX = 16;
-
-    public int SizeZ = 16;
-
-    public int Y;
-
-    private void Awake()
+    [ExecuteInEditMode]
+    public class BaseFloorGenerator : MonoBehaviour
     {
-        this.GetOrAddComponent<IsoTransform>();
-    }
+        // Default naming prefix
+        public String Prefix = "Floor Tile";
 
-    public void RePaint()
-    {
-        while (transform.childCount != 0)
+        // Default prefab
+        public GameObject Prefab;
+
+        // Default size
+        public int SizeX = 16;
+        public int SizeZ = 16;
+        
+        void Awake()
         {
-            foreach (Transform child in transform)
+            this.GetOrAddComponent<IsoTransform>();
+            this.GetOrAddComponent<IsoSorting>();
+        }
+
+        public void RePaint()
+        {
+            while (transform.childCount != 0)
             {
-                DestroyImmediate(child.gameObject);
+                foreach (Transform child in transform)
+                {
+                    DestroyImmediate(child.gameObject);
+                }
+            }
+
+            GenerateFloor();
+        }
+
+        private void GenerateFloor()
+        {
+            if (!Prefab)
+            {
+                Debug.Log("Select a prefab");
+                return;
+            }
+
+            var isoTransform = GetComponent<IsoTransform>();
+            var parentX = isoTransform.Position.x;
+            var parentY = isoTransform.Position.y;
+            var parentZ = isoTransform.Position.z;
+
+            for (var dx = 0; dx <= SizeX; dx++)
+            {
+                for (var dz = 0; dz <= SizeZ; dz++)
+                {
+                    var x = parentX + dx;
+                    var z = parentZ + dz;
+                    Insert(Prefab, Prefix + " (" + x + ", " + z + ")", x, Prefab.GetComponent<IsoTransform>().Position.y + parentY, z);
+                }
             }
         }
 
-        GenerateFloor();
-    }
-
-    private void GenerateFloor()
-    {
-        if (!Prefab)
+        private void Insert(GameObject prefab, String name, float x, float y, float z)
         {
-            Debug.Log("Select a prefab");
-            return;
+            GameObject gameObject = Instantiate(prefab);
+            gameObject.transform.parent = transform;
+            gameObject.name = name;
+
+            gameObject.AddComponent<IsoBoxCollider>();
+            var isoTransform = gameObject.GetComponent<IsoTransform>();
+            isoTransform.Position = new Vector3(x, y, z);
+            isoTransform.ShowBounds = name.StartsWith("Collider");
         }
-
-        var isoTransform = GetComponent<IsoTransform>();
-        var parentX = isoTransform.Position.x;
-        var parentY = isoTransform.Position.y;
-        var parentZ = isoTransform.Position.z;
-
-        for (var dx = 0; dx <= SizeX; dx++)
+    
+    }
+    [CustomEditor(typeof(BaseFloorGenerator))]
+    public class ObjectBuilderEditor : Editor
+    {
+        public override void OnInspectorGUI()
         {
-            for (var dz = 0; dz <= SizeZ; dz++)
+            DrawDefaultInspector();
+
+            BaseFloorGenerator myScript = (BaseFloorGenerator) target;
+            if (GUILayout.Button("Build Object"))
             {
-                var x = parentX + dx;
-                var z = parentZ + dz;
-                Insert(Prefab, Prefix + " (" + x + ", " + z + ")", x, Y + parentY, z);
+                myScript.RePaint();
+                EditorUtility.SetDirty(myScript);
             }
         }
-    }
-
-    private GameObject Insert(GameObject prefab, String name, float x, float y, float z)
-    {
-        GameObject gameObject = Instantiate(prefab);
-        gameObject.transform.parent = transform;
-        gameObject.name = name;
-
-        gameObject.AddComponent<IsoBoxCollider>();
-        var isoTransform = gameObject.GetComponent<IsoTransform>();
-        isoTransform.Position = new Vector3(x, y, z);
-        isoTransform.ShowBounds = name.StartsWith("Collider");
-
-        return gameObject;
     }
 }
