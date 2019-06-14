@@ -4,10 +4,9 @@ using System.Linq;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Assets.UltimateIsometricToolkit.Scripts.Pathfinding;
 using Assets.UltimateIsometricToolkit.Scripts.Utils;
-using UnityEditor;
 using UnityEngine;
 
-namespace Misc
+namespace VehicleController
 {
     public class CustomGridGraph : MonoBehaviour
     {
@@ -21,9 +20,8 @@ namespace Misc
             NorthEast, SouthEast, SouthWest, NorthWest
         };
 
-        public float MaxScanHeight = 20;
         public bool ShowGraph = false;
-        public Dictionary<Vector3, Node> _gridGraph = new Dictionary<Vector3, Node>();
+        private Dictionary<Vector3, Node> _gridGraph = new Dictionary<Vector3, Node>();
         public List<IsoTransform> Ignorables = new List<IsoTransform>();
 
         #region Unity Callbacks 
@@ -129,22 +127,6 @@ namespace Misc
             public bool Equals(Node other)
             {
                 return Position.Equals(other.Position);
-            }
-        }
-    }
-
-    [CustomEditor(typeof(CustomGridGraph))]
-    public class CustomGridGraphEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            DrawDefaultInspector();
-
-            CustomGridGraph myScript = (CustomGridGraph) target;
-            if (GUILayout.Button("Update Graph"))
-            {
-                myScript.UpdateGraph();
-                EditorUtility.SetDirty(myScript);
             }
         }
     }

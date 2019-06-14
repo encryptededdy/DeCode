@@ -4,17 +4,16 @@ using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Assets.UltimateIsometricToolkit.Scripts.Pathfinding;
 using UnityEngine;
-using static Assets.UltimateIsometricToolkit.Scripts.Pathfinding.AstarAgent;
 
-namespace Misc
+namespace VehicleController
 {
     [RequireComponent(typeof(IsoTransform))]
     public class CustomAStarAgent : MonoBehaviour
     {
         public float JumpHeight = 0; //vertical distance threshold to next node
-        public float Speed = 2; //units per second
+        public float Speed = 1; //units per second
         public CustomGridGraph Graph;
-        public Heuristic heuristic;
+        public AstarAgent.Heuristic Heuristic;
         private CarAnimator _carAnimator;
 
         private void Awake()
@@ -24,7 +23,7 @@ namespace Misc
 
         public void MoveTo(Vector3 destination)
         {
-            var astar = new Astar(GetFromEnum(heuristic));
+            var astar = new Astar(GetFromEnum(Heuristic));
 
             var startNode = Graph.ClosestNode(GetComponent<IsoTransform>().Position);
             var endNode = Graph.ClosestNode(destination);
@@ -84,17 +83,17 @@ namespace Misc
             }
         }
 
-        private Astar.Heuristic GetFromEnum(Heuristic heuristic)
+        private Astar.Heuristic GetFromEnum(AstarAgent.Heuristic heuristic)
         {
             switch (heuristic)
             {
-                case Heuristic.EuclidianDistance:
+                case AstarAgent.Heuristic.EuclidianDistance:
                     return Astar.EuclidianHeuristic;
-                case Heuristic.MaxAlongAxis:
+                case AstarAgent.Heuristic.MaxAlongAxis:
                     return Astar.MaxAlongAxisHeuristic;
-                case Heuristic.ManhattenDistance:
+                case AstarAgent.Heuristic.ManhattenDistance:
                     return Astar.ManhattanHeuristic;
-                case Heuristic.AvoidVerticalSteeps:
+                case AstarAgent.Heuristic.AvoidVerticalSteeps:
                     return Astar.AvoidVerticalSteepsHeuristic;
                 default:
                     throw new ArgumentOutOfRangeException("heuristic", heuristic, null);

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Misc
+namespace VehicleController
 {
     public class CarAnimator
     {
