@@ -65,7 +65,7 @@ namespace VehicleController
                 if (timePassed >= maxTimePassed)
                 {
                     var pos = isoTransform.Position;
-                    pos = new Vector3(Mathf.Round(pos.x), Mathf.Round(pos.y), Mathf.Round(pos.z));
+                    pos = new Vector3(Mathf.Round(pos.x), pos.y, Mathf.Round(pos.z));
                     isoTransform.Position = pos;
                     break;
                 }
