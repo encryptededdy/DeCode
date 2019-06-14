@@ -12,7 +12,7 @@ namespace VehicleController
     {
         public float JumpHeight = 0; //vertical distance threshold to next node
         public float Speed = 1; //units per second
-        public CustomGridGraph Graph;
+        public CustomGridGraph.CustomGridGraph Graph;
         public AstarAgent.Heuristic Heuristic;
         private CarAnimator _carAnimator;
 

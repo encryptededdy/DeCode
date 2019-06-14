@@ -16,16 +16,16 @@ namespace VehicleController
                 myScript.test();
             }
         }
-    } 
+    }
 
-    [CustomEditor(typeof(CustomGridGraph))]
+    [CustomEditor(typeof(CustomGridGraph.CustomGridGraph))]
     public class CustomGridGraphEditor : Editor
     {
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
-            CustomGridGraph myScript = (CustomGridGraph) target;
+            CustomGridGraph.CustomGridGraph myScript = (CustomGridGraph.CustomGridGraph) target;
             if (GUILayout.Button("Update Graph"))
             {
                 myScript.UpdateGraph();

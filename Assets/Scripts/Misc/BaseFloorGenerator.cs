@@ -68,10 +68,8 @@ namespace Misc
             gameObject.transform.parent = transform;
             gameObject.name = name;
 
-            gameObject.AddComponent<IsoBoxCollider>();
             var isoTransform = gameObject.GetComponent<IsoTransform>();
             isoTransform.Position = new Vector3(x, y, z);
-            isoTransform.ShowBounds = name.StartsWith("Collider");
         }
     
     }

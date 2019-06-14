@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 2762676319258161563}
   - component: {fileID: 7326609494064615075}
   - component: {fileID: 3765883438157069324}
+  - component: {fileID: 4991817709287858194}
   m_Layer: 0
-  m_Name: New Sprite
+  m_Name: Grass
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,3 +115,19 @@ MonoBehaviour:
   _material: {fileID: 0}
   _size: {x: 1, y: 0.4, z: 1}
   _center: {x: 0, y: 0, z: 0}
+--- !u!114 &4991817709287858194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7326609494064615068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03c213e5c3a164bdbaa3de3e6a8c9d5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NW: 1
+  NE: 1
+  SW: 1
+  SE: 1

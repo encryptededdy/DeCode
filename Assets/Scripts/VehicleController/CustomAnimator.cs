@@ -20,7 +20,8 @@ namespace VehicleController
                 {
                     _animator.SetBool("NE", true);
                 }
-                else if (to.x < from.x)
+
+                if (to.x < from.x)
                 {
                     _animator.SetBool("SW", true);
                 }
@@ -31,7 +32,8 @@ namespace VehicleController
                 {
                     _animator.SetBool("NW", true);
                 }
-                else if (to.z < from.z)
+
+                if (to.z < from.z)
                 {
                     _animator.SetBool("SE", true);
                 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Assets.UltimateIsometricToolkit.Scripts.Pathfinding;
 using Assets.UltimateIsometricToolkit.Scripts.Utils;
 using UnityEngine;
 
-namespace VehicleController
+namespace CustomGridGraph
 {
     public class CustomGridGraph : MonoBehaviour
     {
@@ -62,7 +61,8 @@ namespace VehicleController
         public void UpdateGraph()
         {
             _gridGraph =
-                UpdateGraphInternal(FindObjectsOfType<IsoTransform>().Where(isoT => !Ignorables.Contains(isoT)));
+                UpdateGraphInternal(FindObjectsOfType<IsoTransform>().Where(isoT =>
+                    !Ignorables.Contains(isoT) && isoT.GetComponent<TileRules>() != null));
         }
 
 
@@ -76,6 +76,7 @@ namespace VehicleController
                 {
                     var adjacentCells = AdjacentPositions.Select(adjacentPosition => adjacentPosition + obj.Position)
                         .ToArray();
+                    TileRules tileRules = obj.GetComponent<TileRules>();
 
                     HashSet<INode> neighbours = new HashSet<INode>();
                     foreach (var adjacentCell in adjacentCells)
@@ -83,15 +84,22 @@ namespace VehicleController
                         Node neighbour;
                         if (grid.TryGetValue(adjacentCell, out neighbour))
                         {
-                            neighbours.Add(neighbour);
+                            if (Traversable(obj.Position, neighbour.Position, tileRules))
+                            {
+                                neighbours.Add(neighbour);
+                            }
                         }
                     }
 
-                    Node node = new Node(obj.Position, obj.Max.y - obj.Min.y, neighbours);
+                    Node node = new Node(obj.Position, tileRules, obj.Max.y - obj.Min.y, neighbours);
 
                     foreach (var neighbour in neighbours)
                     {
-                        neighbour.NextNodes.Add(node);
+                        var n = (Node) neighbour;
+                        if (Traversable(n.Position, node.Position, n.TileRules))
+                        {
+                            n.NextNodes.Add(node);
+                        }
                     }
 
                     grid.Add(obj.Position, node);
@@ -101,33 +109,35 @@ namespace VehicleController
             return grid;
         }
 
-        public class Node : INode, IEquatable<Node>
+
+        public bool Traversable(Vector3 from, Vector3 to, TileRules tileRules)
         {
-            public Vector3 Position { get; }
-
-            public HashSet<INode> NextNodes { get; private set; }
-
-            public bool Passable { get; set; }
-
-            public float Height { get; }
-
-            public Node(Vector3 position, float height, HashSet<INode> neighbours)
+            if (from.z.Equals(to.z))
             {
-                Position = position + new Vector3(0, height, 0);
-                Height = height;
-                NextNodes = neighbours;
-                Passable = true;
+                if (to.x > from.x)
+                {
+                    return tileRules.NE;
+                }
+
+                if (to.x < from.x)
+                {
+                    return tileRules.SW;
+                }
+            }
+            else if (from.x.Equals(to.x))
+            {
+                if (to.z > from.z)
+                {
+                    return tileRules.NW;
+                }
+
+                if (to.z < from.z)
+                {
+                    return tileRules.SE;
+                }
             }
 
-            public override int GetHashCode()
-            {
-                return Position.GetHashCode();
-            }
-
-            public bool Equals(Node other)
-            {
-                return Position.Equals(other.Position);
-            }
+            return false;
         }
     }
 }

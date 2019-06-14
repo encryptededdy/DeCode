@@ -15,7 +15,7 @@ namespace VehicleController
 
         public void test()
         {
-            _astarAgent.MoveTo(new Vector3(5, 1, 4));
+            _astarAgent.MoveTo(new Vector3(3, 1, 0));
         }
     }
 }
