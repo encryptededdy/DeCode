@@ -1,7 +1,7 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace VehicleController
+namespace Vehicle
 {
     [CustomEditor(typeof(VehicleController))]
     public class VehicleControllerEditor : Editor
@@ -13,7 +13,7 @@ namespace VehicleController
             VehicleController myScript = (VehicleController) target;
             if (GUILayout.Button("test"))
             {
-                myScript.test();
+                myScript.TestMove();
             }
         }
     }

@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
-namespace VehicleController
+namespace Vehicle
 {
     public class VehicleController : MonoBehaviour
     {
         private CustomAStarAgent _astarAgent;
-
 
         // Start is called before the first frame update
         void Awake()
@@ -13,9 +12,9 @@ namespace VehicleController
             _astarAgent = this.GetOrAddComponent<CustomAStarAgent>();
         }
 
-        public void test()
+        public void TestMove()
         {
-            _astarAgent.MoveTo(new Vector3(2, 0.6f, 4));
+            _astarAgent.MoveTo(new Vector3(2, 0, 4));
         }
     }
 }

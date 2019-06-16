@@ -8,5 +8,6 @@ namespace CustomGridGraph
         public bool NE;
         public bool SW;
         public bool SE;
+        public bool TempVar;
     }
 }

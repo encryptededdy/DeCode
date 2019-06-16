@@ -5,7 +5,7 @@ using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Assets.UltimateIsometricToolkit.Scripts.Pathfinding;
 using UnityEngine;
 
-namespace VehicleController
+namespace Vehicle
 {
     [RequireComponent(typeof(IsoTransform))]
     public class CustomAStarAgent : MonoBehaviour

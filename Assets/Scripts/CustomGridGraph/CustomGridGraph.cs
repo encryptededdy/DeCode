@@ -21,7 +21,6 @@ namespace CustomGridGraph
 
         public bool ShowGraph = false;
         private Dictionary<Vector3, Node> _gridGraph = new Dictionary<Vector3, Node>();
-        public List<IsoTransform> Ignorables = new List<IsoTransform>();
 
         #region Unity Callbacks 
 
@@ -57,26 +56,23 @@ namespace CustomGridGraph
                 .FirstOrDefault();
         }
 
-
         public void UpdateGraph()
         {
             _gridGraph =
-                UpdateGraphInternal(FindObjectsOfType<IsoTransform>().Where(isoT =>
-                    !Ignorables.Contains(isoT) && isoT.GetComponent<TileRules>() != null));
+                UpdateGraphInternal(FindObjectsOfType<TileRules>().Where(obj => obj.GetComponent<IsoTransform>() != null));
         }
 
-
-        private Dictionary<Vector3, Node> UpdateGraphInternal(IEnumerable<IsoTransform> worldObjects)
+        private Dictionary<Vector3, Node> UpdateGraphInternal(IEnumerable<TileRules> allTiles)
         {
             var grid = new Dictionary<Vector3, Node>();
 
-            foreach (var obj in worldObjects)
+            foreach (var tile in allTiles)
             {
-                if (!grid.ContainsKey(obj.Position))
+                IsoTransform isoTransform = tile.GetComponent<IsoTransform>();
+                if (!grid.ContainsKey(isoTransform.Position))
                 {
-                    var adjacentCells = AdjacentPositions.Select(adjacentPosition => adjacentPosition + obj.Position)
+                    var adjacentCells = AdjacentPositions.Select(adjacentPosition => adjacentPosition + isoTransform.Position)
                         .ToArray();
-                    TileRules tileRules = obj.GetComponent<TileRules>();
 
                     HashSet<INode> neighbours = new HashSet<INode>();
                     foreach (var adjacentCell in adjacentCells)
@@ -84,14 +80,14 @@ namespace CustomGridGraph
                         Node neighbour;
                         if (grid.TryGetValue(adjacentCell, out neighbour))
                         {
-                            if (Traversable(obj.Position, neighbour.Position, tileRules))
+                            if (Traversable(isoTransform.Position, neighbour.Position, tile))
                             {
                                 neighbours.Add(neighbour);
                             }
                         }
                     }
 
-                    Node node = new Node(obj.Position, tileRules, obj.Max.y - obj.Min.y, neighbours);
+                    Node node = new Node(isoTransform.Position, tile, isoTransform.Max.y - isoTransform.Min.y, neighbours);
 
                     foreach (var neighbour in neighbours)
                     {
@@ -102,13 +98,12 @@ namespace CustomGridGraph
                         }
                     }
 
-                    grid.Add(obj.Position, node);
+                    grid.Add(isoTransform.Position, node);
                 }
             }
 
             return grid;
         }
-
 
         public bool Traversable(Vector3 from, Vector3 to, TileRules tileRules)
         {
