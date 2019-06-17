@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using Assets.UltimateIsometricToolkit.Scripts.Core;
+using UnityEngine;
 
 namespace CustomGridGraph
 {
+    [RequireComponent(typeof(IsoTransform))]
     public class TileRules : MonoBehaviour
     {
         public bool NW;
