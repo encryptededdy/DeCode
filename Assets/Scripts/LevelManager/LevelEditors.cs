@@ -8,17 +8,47 @@ namespace LevelManager
     {
         public override void OnInspectorGUI()
         {
+            GameObject freshSpawn = null;
             DrawDefaultInspector();
 
             ArrayLevelManager myScript = (ArrayLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.WriteToArray(myScript.Spawn(), 0);
+                
+                myScript.Spawn(obj =>
+                {
+                    freshSpawn = obj;
+                });
+            }
+            if (GUILayout.Button("Move"))
+            {
+                myScript.WriteToArray(freshSpawn, 0, status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully written to array");
+                    }
+                    else
+                    {
+                        Debug.Log("Fail to write to array");
+                    }
+                });
+                
             }
 
             if (GUILayout.Button("Destroy"))
             {
-                myScript.Destroy(0);
+                myScript.DestroyElement(0, status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully destroyed a car");
+                    }
+                    else
+                    {
+                        Debug.Log("Fail to destroy a car");
+                    }
+                });
             }
         }
     }

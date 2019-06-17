@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Misc;
 using UnityEditor;
@@ -33,13 +33,14 @@ namespace LevelManager
             _destroyPoint = ConvertTileToPosition(DestroyTile);
         }
 
-        public GameObject Spawn()
+        public void Spawn(Action<GameObject> callback)
         {
             foreach (GameObject vehicle in _vehicles.Keys)
             {
                 if (vehicle.GetComponent<IsoTransform>().Position.Equals(_spawnPoint))
                 {
-                    return null;
+                    callback(null);
+                    return;
                 }
             }
 
@@ -53,42 +54,36 @@ namespace LevelManager
                 obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
                 if (!_vehicles.TryAdd(obj, 0))
                 {
-                    return null;
+                    callback(null);
+                    return;
                 }
             }
 
-            return obj;
+            callback(obj);
         }
 
-        protected void MoveTo(GameObject vehicle, Vector3 position)
+        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback)
         {
             CustomAStarAgent customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
-            customAStarAgent.MoveTo(position);
+            yield return StartCoroutine(customAStarAgent.MoveTo(position, callback));
         }
 
-        protected bool Destroy(Vector3 position)
+        protected IEnumerator Destroy(Vector3 position, Action<bool> callback)
         {
             foreach (GameObject vehicle in _vehicles.Keys)
             {
                 IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    MoveTo(vehicle, _destroyPoint);
                     byte b;
                     if (_vehicles.TryRemove(vehicle, out b))
                     {
-                        StartCoroutine(Exit(vehicle));
-                        return true;
+                        yield return MoveTo(vehicle, _destroyPoint, callback);
+                        DestroyImmediate(vehicle);
+                        yield break;
                     }
                 }
             }
-            return false;
-        }
-
-        private IEnumerator Exit(GameObject vehicle)
-        {
-            yield return new WaitUntil(() => vehicle.GetComponent<IsoTransform>().Position.Equals(_destroyPoint));
-            DestroyImmediate(vehicle);
         }
 
         protected static Vector3 ConvertTileToPosition(IsoTransform tile)

@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Assets.UltimateIsometricToolkit.Scripts.Pathfinding;
 using UnityEngine;
@@ -22,7 +21,7 @@ namespace Vehicle
             _carAnimator = new CarAnimator(this.GetOrAddComponent<Animator>());
         }
 
-        public void MoveTo(Vector3 destination)
+        public IEnumerator MoveTo(Vector3 destination, Action<bool> callback)
         {
             var astar = new Astar(GetFromEnum(Heuristic));
 
@@ -32,20 +31,29 @@ namespace Vehicle
             {
                 Debug.LogError("Invalid position, no node found close enough to " +
                                GetComponent<IsoTransform>().Position);
-                return;
+                callback(false);
+                yield break;
             }
 
             if (endNode == null)
             {
                 Debug.LogError("Invalid position, no node found close enough to " + destination);
-                return;
+                callback(false);
+                yield break;
             }
 
             astar.SearchPath(startNode, endNode, JumpHeight, path =>
             {
                 StopAllCoroutines();
                 StartCoroutine(MoveAlongPathInternal(path));
-            }, () => { Debug.Log("No path found"); });
+            }, () =>
+            {
+                Debug.Log("No path found");
+                callback(false);
+            });
+
+            yield return new WaitUntil(() => gameObject.GetComponent<IsoTransform>().Position.Equals(destination));
+            callback(true);
         }
 
         private IEnumerator StepTo(Vector3 from, Vector3 to, float speed)
