@@ -18,7 +18,7 @@ namespace LevelManager
         private Vector3 _destroyPoint;
 
         // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
-        public ConcurrentDictionary<GameObject, byte> _vehicles;
+        private ConcurrentDictionary<GameObject, byte> _vehicles;
         private readonly List<string> _vehicleAssets;
 
         protected LevelManager()
@@ -75,15 +75,37 @@ namespace LevelManager
                 IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    byte b;
-                    if (_vehicles.TryRemove(vehicle, out b))
+                    GameObject clone = vehicle.GetComponent<VehicleClones>().NextClone();
+                    if (clone != null)
                     {
-                        yield return MoveTo(vehicle, _destroyPoint, callback);
-                        DestroyImmediate(vehicle);
-                        yield break;
+                        IsoTransform cloneIsoTransform = clone.GetComponent<IsoTransform>();
+                        yield return MoveTo(vehicle, cloneIsoTransform.Position, status =>
+                        {
+                            if (status)
+                            {
+                                Debug.Log("Replaced clone");
+                                DestroyImmediate(vehicle);
+                            }
+                            else
+                            {
+                                Debug.Log("Fail to replace clone");
+                            }
+                        });
+                    }
+                    else
+                    {
+                        byte b;
+                        if (_vehicles.TryRemove(vehicle, out b))
+                        {
+                            yield return MoveTo(vehicle, _destroyPoint, callback);
+                            DestroyImmediate(vehicle);
+                            yield break;
+                        }
                     }
                 }
             }
+
+            callback(false);
         }
 
         protected static Vector3 ConvertTileToPosition(IsoTransform tile)
