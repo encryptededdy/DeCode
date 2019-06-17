@@ -7,12 +7,12 @@ using Vehicle;
 
 namespace LevelManager
 {
-    public class ArrayLevel : Level
+    public class ArrayLevelManager : LevelManager
     {
         public List<IsoTransform> CarParks;
         private ConcurrentDictionary<String, IsoTransform> _tempVar;
 
-        public ArrayLevel()
+        public ArrayLevelManager()
         {
             _tempVar = new ConcurrentDictionary<string, IsoTransform>();
         }
@@ -27,16 +27,23 @@ namespace LevelManager
         {
         }
 
-        public void Destroy(int index)
+        public void WriteToArray(GameObject vehicle, int index)
+        {
+            Vector3 position = ConvertTileToPosition(CarParks[index]);
+            base.Destroy(position);
+            MoveTo(vehicle, position);
+        }
+
+        public bool Destroy(int index)
         {
             IsoTransform isoTransform = CarParks[index];
-            Destroy(new Vector3(isoTransform.Position.x, isoTransform.Size.y + isoTransform.Position.y, isoTransform.Position.z));
-            Debug.Log(_vehicles.Count);
+            return base.Destroy(ConvertTileToPosition(isoTransform));
         }
         
-        public void Destroy(string var)
+        public bool Destroy(string variable)
         {
-            
+            //TODO
+            return false;
         }
     }
 }

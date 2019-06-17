@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Threading;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Misc;
 using UnityEditor;
@@ -9,7 +10,7 @@ using Vehicle;
 
 namespace LevelManager
 {
-    public abstract class Level : MonoBehaviour
+    public abstract class LevelManager : MonoBehaviour
     {
         public IsoTransform SpawnTile;
         public IsoTransform DestroyTile;
@@ -18,9 +19,9 @@ namespace LevelManager
 
         // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
         public ConcurrentDictionary<GameObject, byte> _vehicles;
-        private List<string> _vehicleAssets;
+        private readonly List<string> _vehicleAssets;
 
-        protected Level()
+        protected LevelManager()
         {
             _vehicleAssets = AssetFinder.VehicleAssets();
             _vehicles = new ConcurrentDictionary<GameObject, byte>();
@@ -28,10 +29,8 @@ namespace LevelManager
 
         void Awake()
         {
-            _spawnPoint = new Vector3(SpawnTile.Position.x, SpawnTile.Position.y + SpawnTile.Size.y,
-                SpawnTile.Position.z);
-            _destroyPoint = new Vector3(DestroyTile.Position.x, DestroyTile.Position.y + DestroyTile.Size.y,
-                DestroyTile.Position.z);
+            _spawnPoint = ConvertTileToPosition(SpawnTile);
+            _destroyPoint = ConvertTileToPosition(DestroyTile);
         }
 
         public GameObject Spawn()
@@ -58,34 +57,40 @@ namespace LevelManager
             return obj;
         }
 
-        protected void Destroy(Vector3 position)
+        protected void MoveTo(GameObject vehicle, Vector3 position)
+        {
+            CustomAStarAgent customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
+            customAStarAgent.MoveTo(position);
+        }
+
+        protected bool Destroy(Vector3 position)
         {
             foreach (GameObject vehicle in _vehicles.Keys)
             {
                 IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    CustomAStarAgent customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
-                    customAStarAgent.MoveTo(_destroyPoint);
-
+                    MoveTo(vehicle, _destroyPoint);
                     byte b;
                     if (_vehicles.TryRemove(vehicle, out b))
                     {
                         StartCoroutine(Exit(vehicle));
+                        return true;
                     }
-
-                    return;
                 }
             }
+            return false;
         }
 
         private IEnumerator Exit(GameObject vehicle)
         {
-            while (!vehicle.GetComponent<IsoTransform>().Position.Equals(_destroyPoint))
-            {
-                yield return null;
-            }
+            yield return new WaitUntil(() => vehicle.GetComponent<IsoTransform>().Position.Equals(_destroyPoint));
             DestroyImmediate(vehicle);
+        }
+
+        protected static Vector3 ConvertTileToPosition(IsoTransform tile)
+        {
+            return new Vector3(tile.Position.x, tile.Position.y + tile.Size.y, tile.Position.z);
         }
     }
 }

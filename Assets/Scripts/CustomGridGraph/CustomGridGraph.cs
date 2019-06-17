@@ -105,7 +105,7 @@ namespace CustomGridGraph
             return grid;
         }
 
-        public bool Traversable(Vector3 from, Vector3 to, TileRules tileRules)
+        private bool Traversable(Vector3 from, Vector3 to, TileRules tileRules)
         {
             if (from.z.Equals(to.z))
             {
