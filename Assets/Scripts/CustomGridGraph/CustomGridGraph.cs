@@ -59,7 +59,8 @@ namespace CustomGridGraph
         public void UpdateGraph()
         {
             _gridGraph =
-                UpdateGraphInternal(FindObjectsOfType<TileRules>().Where(obj => obj.GetComponent<IsoTransform>() != null));
+                UpdateGraphInternal(FindObjectsOfType<TileRules>()
+                    .Where(obj => obj.GetComponent<IsoTransform>() != null));
         }
 
         private Dictionary<Vector3, Node> UpdateGraphInternal(IEnumerable<TileRules> allTiles)
@@ -71,7 +72,8 @@ namespace CustomGridGraph
                 IsoTransform isoTransform = tile.GetComponent<IsoTransform>();
                 if (!grid.ContainsKey(isoTransform.Position))
                 {
-                    var adjacentCells = AdjacentPositions.Select(adjacentPosition => adjacentPosition + isoTransform.Position)
+                    var adjacentCells = AdjacentPositions
+                        .Select(adjacentPosition => adjacentPosition + isoTransform.Position)
                         .ToArray();
 
                     HashSet<INode> neighbours = new HashSet<INode>();
@@ -87,14 +89,13 @@ namespace CustomGridGraph
                         }
                     }
 
-                    Node node = new Node(isoTransform.Position, tile, isoTransform.Max.y - isoTransform.Min.y, neighbours);
+                    Node node = new Node(isoTransform.Position, tile, isoTransform.Size.y, neighbours);
 
-                    foreach (var neighbour in neighbours)
+                    foreach (var potentialNeighbour in grid.Values)
                     {
-                        var n = (Node) neighbour;
-                        if (Traversable(n.Position, node.Position, n.TileRules))
+                        if (Traversable(potentialNeighbour.Position, node.Position, potentialNeighbour.TileRules))
                         {
-                            n.NextNodes.Add(node);
+                            potentialNeighbour.NextNodes.Add(node);
                         }
                     }
 
@@ -109,24 +110,24 @@ namespace CustomGridGraph
         {
             if (from.z.Equals(to.z))
             {
-                if (to.x > from.x)
+                if (to.x.Equals(from.x + 1))
                 {
                     return tileRules.NE;
                 }
 
-                if (to.x < from.x)
+                if (to.x.Equals(from.x - 1))
                 {
                     return tileRules.SW;
                 }
             }
             else if (from.x.Equals(to.x))
             {
-                if (to.z > from.z)
+                if (to.z.Equals(from.z + 1))
                 {
                     return tileRules.NW;
                 }
 
-                if (to.z < from.z)
+                if (to.z.Equals(from.z - 1))
                 {
                     return tileRules.SE;
                 }

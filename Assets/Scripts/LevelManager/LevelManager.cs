@@ -49,9 +49,12 @@ namespace LevelManager
 
             if (obj != null)
             {
-                obj.GetComponent<IsoTransform>().Position.Set(_spawnPoint.x, _spawnPoint.y, _spawnPoint.z);
+                obj.GetComponent<IsoTransform>().Position = _spawnPoint;
                 obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
-                _vehicles.TryAdd(obj, 0);
+                if (!_vehicles.TryAdd(obj, 0))
+                {
+                    return null;
+                }
             }
 
             return obj;
