@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace LevelManager
@@ -15,7 +16,7 @@ namespace LevelManager
             ArrayLevelManager myScript = (ArrayLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.Spawn(obj => { freshSpawn = obj; });
+                myScript.Spawn(VehicleType.ambulance, obj => { freshSpawn = obj; });
             }
 
             if (GUILayout.Button("Move"))
@@ -91,6 +92,16 @@ namespace LevelManager
                         Debug.Log("Fail to destroy a car");
                     }
                 });
+            }
+
+            if (GUILayout.Button("ArrayState"))
+            {
+                List<VehicleType> vehicleTypes = myScript.GetArrayState();
+
+                for (var i = 0; i < vehicleTypes.Count; i++)
+                {
+                    Debug.Log("Vehicle at: " + i + " is " + vehicleTypes[i]);
+                }
             }
         }
     }

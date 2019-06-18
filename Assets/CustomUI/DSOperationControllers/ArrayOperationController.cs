@@ -41,7 +41,7 @@ namespace CustomUI.DSOperationControllers
                 case ArrayOperations.Add:
                     CodePreviewView.text = "car = new Car();\n" +
                                            $"array[{index}] = car;";
-                    LevelManager.Spawn(obj => { LevelManager.WriteToArray(obj, index);; });
+                    LevelManager.Spawn(VehicleType.ambulance, obj => { LevelManager.WriteToArray(obj, index);; });
                     break;
                 case ArrayOperations.ToTemp:
                     CodePreviewView.text = $"temp = array[{index}];";

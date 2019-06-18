@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Misc;
 using UnityEditor;
@@ -17,43 +18,60 @@ namespace LevelManager
         private Vector3 _destroyPoint;
 
         // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
-        private ConcurrentDictionary<GameObject, byte> _vehicles;
-        private readonly ConcurrentQueue<string> _vehicleAssets;
+        private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
+        private readonly ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
 
         protected LevelManager()
         {
-            _vehicleAssets = new ConcurrentQueue<string>();
-            AssetFinder.VehicleAssets().ForEach(vehicle => { _vehicleAssets.Enqueue(vehicle); });
-
-            _vehicles = new ConcurrentDictionary<GameObject, byte>();
+            _spawnableVehicles = new ConcurrentDictionary<VehicleType, GameObject>();
+            _activeVehicles = new ConcurrentDictionary<GameObject, VehicleType>();
         }
 
         void Awake()
         {
             _spawnPoint = ConvertTileToPosition(SpawnTile);
             _destroyPoint = ConvertTileToPosition(DestroyTile);
+
+            // Pre-loading the assets
+            Dictionary<string, string> vehicleAssets = AssetFinder.VehicleAssets();
+            foreach (var file in vehicleAssets.Keys)
+            {
+                string filename;
+                if (vehicleAssets.TryGetValue(file, out filename))
+                {
+                    GameObject prefab = (GameObject) AssetDatabase.LoadAssetAtPath(filename, typeof(GameObject));
+
+                    VehicleType vehicleType;
+                    if (Enum.TryParse(file, out vehicleType))
+                    {
+                        _spawnableVehicles.TryAdd(vehicleType, prefab);
+                    }
+                }
+            }
         }
 
-        protected IEnumerator Spawn(Action<GameObject> callback = null)
+        protected IEnumerator Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
         {
-            foreach (GameObject vehicle in _vehicles.Keys)
+            foreach (GameObject vehicle in _activeVehicles.Keys)
             {
                 if (vehicle.GetComponent<IsoTransform>().Position.Equals(_spawnPoint))
                 {
+                    Debug.Log("Cannot spawn vehicle, a vehicle exist at spawn");
                     callback?.Invoke(null);
                     yield break;
                 }
             }
 
-            string vehicleAsset;
-            if (_vehicleAssets.TryDequeue(out vehicleAsset))
+            GameObject vehicleAsset;
+            if (_spawnableVehicles.TryGetValue(vehicleType, out vehicleAsset))
             {
-                GameObject prefab = (GameObject) AssetDatabase.LoadAssetAtPath(vehicleAsset, typeof(GameObject));
-                GameObject obj = Instantiate(prefab);
+                GameObject obj = Instantiate(vehicleAsset);
                 obj.GetComponent<IsoTransform>().Position = _spawnPoint;
                 obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
-                if (_vehicles.TryAdd(obj, 0))
+                if (_activeVehicles.TryAdd(obj, vehicleType))
                 {
+                    GameObject remove;
+                    _spawnableVehicles.TryRemove(vehicleType, out remove);
                     callback?.Invoke(obj);
                 }
                 else
@@ -64,10 +82,10 @@ namespace LevelManager
             }
             else
             {
-                Debug.Log("Cannot spawn any more vehicles, please restart level");
+                Debug.Log("Cannot spawn vehicle, this vehicle type already spawned");
             }
 
-            Debug.Log("There are " + _vehicles.Count + " active vehicles");
+            Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
         }
 
         protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null)
@@ -78,17 +96,17 @@ namespace LevelManager
 
         protected IEnumerator Destroy(Vector3 position, Action<bool> callback = null)
         {
-            foreach (GameObject vehicle in _vehicles.Keys)
+            foreach (GameObject vehicle in _activeVehicles.Keys)
             {
                 IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    byte b;
-                    if (_vehicles.TryRemove(vehicle, out b))
+                    VehicleType b;
+                    if (_activeVehicles.TryRemove(vehicle, out b))
                     {
                         yield return MoveTo(vehicle, _destroyPoint, callback);
                         DestroyImmediate(vehicle);
-                        Debug.Log("There are " + _vehicles.Count + " active vehicles");
+                        Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
                         yield break;
                     }
                 }
@@ -99,7 +117,7 @@ namespace LevelManager
 
         protected GameObject GetVehicleAtPosition(Vector3 position)
         {
-            foreach (GameObject vehicle in _vehicles.Keys)
+            foreach (GameObject vehicle in _activeVehicles.Keys)
             {
                 IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
@@ -111,11 +129,18 @@ namespace LevelManager
             return null;
         }
 
-        protected bool AddVehicle(GameObject vehicle)
+        protected bool AddVehicle(GameObject vehicle, VehicleType vehicleType)
         {
-            bool added = _vehicles.TryAdd(vehicle, 0);
-            Debug.Log("There are " + _vehicles.Count + " active vehicles");
+            bool added = _activeVehicles.TryAdd(vehicle, vehicleType);
+            Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
             return added;
+        }
+
+        protected VehicleType GetVehicleType(GameObject vehicle)
+        {
+            VehicleType type;
+            _activeVehicles.TryGetValue(vehicle, out type);
+            return type;
         }
 
         protected static Vector3 ConvertTileToPosition(IsoTransform tile)

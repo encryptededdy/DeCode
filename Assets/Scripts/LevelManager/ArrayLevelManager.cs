@@ -27,9 +27,9 @@ namespace LevelManager
             StartCoroutine(MoveTo(vehicle, position, callback));
         }
 
-        public new void Spawn(Action<GameObject> callback = null)
+        public new void Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
         {
-            StartCoroutine(base.Spawn(callback));
+            StartCoroutine(base.Spawn(vehicleType, callback));
         }
 
         public void CopyFromIndexToTempVar(int index, Action<bool> callback = null)
@@ -38,7 +38,7 @@ namespace LevelManager
             if (vehicle != null)
             {
                 GameObject clone = Instantiate(vehicle);
-                if (AddVehicle(clone))
+                if (AddVehicle(clone, GetVehicleType(vehicle)))
                 {
                     StartCoroutine(Destroy(ConvertTileToPosition(TempVarTile)));
                     StartCoroutine(MoveTo(clone, ConvertTileToPosition(TempVarTile), callback));
@@ -56,7 +56,7 @@ namespace LevelManager
             if (vehicle != null)
             {
                 GameObject clone = Instantiate(vehicle);
-                if (AddVehicle(clone))
+                if (AddVehicle(clone, GetVehicleType(vehicle)))
                 {
                     StartCoroutine(Destroy(ConvertTileToPosition(CarParks[toIndex])));
                     StartCoroutine(MoveTo(clone, ConvertTileToPosition(CarParks[toIndex]), callback));
@@ -76,7 +76,7 @@ namespace LevelManager
             if (vehicle != null)
             {
                 GameObject clone = Instantiate(vehicle);
-                if (AddVehicle(clone))
+                if (AddVehicle(clone, GetVehicleType(vehicle)))
                 {
                     StartCoroutine(Destroy(ConvertTileToPosition(isoTransform)));
                     StartCoroutine(MoveTo(clone, ConvertTileToPosition(isoTransform), callback));
@@ -92,6 +92,27 @@ namespace LevelManager
         {
             IsoTransform isoTransform = CarParks[index];
             StartCoroutine(base.Destroy(ConvertTileToPosition(isoTransform), callback));
+        }
+
+        public List<VehicleType> GetArrayState()
+        {
+            List<VehicleType> array = new List<VehicleType>();
+
+            foreach (IsoTransform carPark in CarParks)
+            {
+                GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(carPark));
+
+                if (vehicle == null)
+                {
+                    array.Add(VehicleType.empty);
+                }
+                else
+                {
+                    array.Add(GetVehicleType(vehicle));
+                }
+            }
+
+            return array;
         }
     }
 }
