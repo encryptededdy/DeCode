@@ -33,14 +33,14 @@ namespace LevelManager
             _destroyPoint = ConvertTileToPosition(DestroyTile);
         }
 
-        public void Spawn(Action<GameObject> callback)
+        protected IEnumerator Spawn(Action<GameObject> callback = null)
         {
             foreach (GameObject vehicle in _vehicles.Keys)
             {
                 if (vehicle.GetComponent<IsoTransform>().Position.Equals(_spawnPoint))
                 {
-                    callback(null);
-                    return;
+                    callback?.Invoke(null);
+                    yield break;
                 }
             }
 
@@ -54,58 +54,59 @@ namespace LevelManager
                 obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
                 if (!_vehicles.TryAdd(obj, 0))
                 {
-                    callback(null);
-                    return;
+                    callback?.Invoke(null);
+                    yield break;
                 }
             }
-
-            callback(obj);
+            Debug.Log("There are " + _vehicles.Count + " active vehicles");
+            callback?.Invoke(obj);
         }
 
-        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback)
+        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null)
         {
             CustomAStarAgent customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
             yield return StartCoroutine(customAStarAgent.MoveTo(position, callback));
         }
 
-        protected IEnumerator Destroy(Vector3 position, Action<bool> callback)
+        protected IEnumerator Destroy(Vector3 position, Action<bool> callback = null)
         {
             foreach (GameObject vehicle in _vehicles.Keys)
             {
                 IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    GameObject clone = vehicle.GetComponent<VehicleClones>().NextClone();
-                    if (clone != null)
+                    byte b;
+                    if (_vehicles.TryRemove(vehicle, out b))
                     {
-                        IsoTransform cloneIsoTransform = clone.GetComponent<IsoTransform>();
-                        yield return MoveTo(vehicle, cloneIsoTransform.Position, status =>
-                        {
-                            if (status)
-                            {
-                                Debug.Log("Replaced clone");
-                                DestroyImmediate(vehicle);
-                            }
-                            else
-                            {
-                                Debug.Log("Fail to replace clone");
-                            }
-                        });
-                    }
-                    else
-                    {
-                        byte b;
-                        if (_vehicles.TryRemove(vehicle, out b))
-                        {
-                            yield return MoveTo(vehicle, _destroyPoint, callback);
-                            DestroyImmediate(vehicle);
-                            yield break;
-                        }
+                        yield return MoveTo(vehicle, _destroyPoint, callback);
+                        DestroyImmediate(vehicle);
+                        Debug.Log("There are " + _vehicles.Count + " active vehicles");
+                        yield break;
                     }
                 }
             }
+            callback?.Invoke(false);
+        }
+        
+        protected GameObject GetVehicleAtPosition(Vector3 position)
+        {
+            foreach (GameObject vehicle in _vehicles.Keys)
+            {
+                IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
+                if (isoTransform.Position.Equals(position))
+                {
+                    return vehicle;
+                }
+            }
 
-            callback(false);
+            return null;
+        }
+        
+        protected bool AddVehicle(GameObject vehicle)
+        {
+            bool added = _vehicles.TryAdd(vehicle, 0);
+            Debug.Log("There are " + _vehicles.Count + " active vehicles");
+            return added;
         }
 
         protected static Vector3 ConvertTileToPosition(IsoTransform tile)

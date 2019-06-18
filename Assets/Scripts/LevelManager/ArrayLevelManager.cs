@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Vehicle;
 
 namespace LevelManager
@@ -9,18 +10,9 @@ namespace LevelManager
     public class ArrayLevelManager : LevelManager
     {
         public List<IsoTransform> CarParks;
-        public IsoTransform _tempVar;
+        public IsoTransform TempVarTile;
 
-        void Start()
-        {
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        }
-
-        public void WriteToArray(GameObject vehicle, int index, Action<bool> callback)
+        public void WriteToArray(GameObject vehicle, int index, Action<bool> callback = null)
         {
             Vector3 position = ConvertTileToPosition(CarParks[index]);
             StartCoroutine(Destroy(position, status =>
@@ -33,33 +25,72 @@ namespace LevelManager
                 {
                     Debug.Log("No need to overwrite");
                 }
-                StartCoroutine(MoveTo(vehicle, position, callback));
             }));
+            StartCoroutine(MoveTo(vehicle, position, callback));
         }
 
-        public void CopyToTempVariable(GameObject vehicle, Action<bool> callback)
+        public new void Spawn(Action<GameObject> callback = null)
         {
+            StartCoroutine(base.Spawn(callback));
+        }
+        
+        public void CopyFromIndexToTempVar(int index, Action<bool> callback = null)
+        {
+            GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(CarParks[index]));
             if (vehicle != null)
             {
-                VehicleClones clones = vehicle.GetComponent<VehicleClones>();
-                if (!clones.HasClone())
+                GameObject clone = Instantiate(vehicle);
+                if (AddVehicle(clone))
                 {
-                    GameObject clone = Instantiate(vehicle);
-                    clones.AddClone(clone);
-                    StartCoroutine(MoveTo(clone, ConvertTileToPosition(_tempVar), callback)); 
-                }
-                else
-                {
-                    Debug.Log("Already has references at tempVar");
+                    StartCoroutine(Destroy(ConvertTileToPosition(TempVarTile)));
+                    StartCoroutine(MoveTo(clone, ConvertTileToPosition(TempVarTile), callback));
                 }
             }
             else
             {
-                callback(false);
+                callback?.Invoke(false);
+            }
+        }
+        
+        public void CopyFromIndexToIndex(int fromIndex, int toIndex, Action<bool> callback = null)
+        {
+            GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(CarParks[fromIndex]));
+            if (vehicle != null)
+            {
+                GameObject clone = Instantiate(vehicle);
+                if (AddVehicle(clone))
+                {
+                    StartCoroutine(Destroy(ConvertTileToPosition(CarParks[toIndex])));
+                    StartCoroutine(MoveTo(clone, ConvertTileToPosition(CarParks[toIndex]), callback));
+                }
+            }
+            else
+            {
+                callback?.Invoke(false);
+            }
+        }
+        
+        public void CopyFromTempVarToIndex(int index, Action<bool> callback = null)
+        {
+            GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(TempVarTile));
+            IsoTransform isoTransform = CarParks[index];
+
+            if (vehicle != null)
+            {
+                GameObject clone = Instantiate(vehicle);
+                if (AddVehicle(clone))
+                {
+                    StartCoroutine(Destroy(ConvertTileToPosition(isoTransform)));
+                    StartCoroutine(MoveTo(clone, ConvertTileToPosition(isoTransform), callback));
+                }
+            }
+            else
+            {
+                callback?.Invoke(false);
             }
         }
 
-        public void Destroy(int index, Action<bool> callback)
+        public void Destroy(int index, Action<bool> callback = null)
         {
             IsoTransform isoTransform = CarParks[index];
             StartCoroutine(base.Destroy(ConvertTileToPosition(isoTransform), callback));

@@ -21,7 +21,7 @@ namespace Vehicle
             _carAnimator = new CarAnimator(this.GetOrAddComponent<Animator>());
         }
 
-        public IEnumerator MoveTo(Vector3 destination, Action<bool> callback)
+        public IEnumerator MoveTo(Vector3 destination, Action<bool> callback = null)
         {
             var astar = new Astar(GetFromEnum(Heuristic));
 
@@ -31,14 +31,14 @@ namespace Vehicle
             {
                 Debug.LogError("Invalid position, no node found close enough to " +
                                GetComponent<IsoTransform>().Position);
-                callback(false);
+                callback?.Invoke(false);
                 yield break;
             }
 
             if (endNode == null)
             {
                 Debug.LogError("Invalid position, no node found close enough to " + destination);
-                callback(false);
+                callback?.Invoke(false);
                 yield break;
             }
 
@@ -49,11 +49,11 @@ namespace Vehicle
             }, () =>
             {
                 Debug.Log("No path found");
-                callback(false);
+                callback?.Invoke(false);
             });
 
             yield return new WaitUntil(() => gameObject.GetComponent<IsoTransform>().Position.Equals(destination));
-            callback(true);
+            callback?.Invoke(true);
         }
 
         private IEnumerator StepTo(Vector3 from, Vector3 to, float speed)

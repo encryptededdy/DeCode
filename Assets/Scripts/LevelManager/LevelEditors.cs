@@ -33,9 +33,9 @@ namespace LevelManager
                 });
             }
 
-            if (GUILayout.Button("Copy"))
+            if (GUILayout.Button("CopyFromIndexToTempVar"))
             {
-                myScript.CopyToTempVariable(freshSpawn, status =>
+                myScript.CopyFromIndexToTempVar(0, status =>
                 {
                     if (status)
                     {
@@ -44,6 +44,36 @@ namespace LevelManager
                     else
                     {
                         Debug.Log("Fail to copy to temp variable");
+                    }
+                });
+            }
+            
+            if (GUILayout.Button("CopyFromTempVarToIndex"))
+            {
+                myScript.CopyFromTempVarToIndex(1, status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully copy from tempVar to array");
+                    }
+                    else
+                    {
+                        Debug.Log("Fail to copy from tempVar to array");
+                    }
+                });
+            }
+            
+            if (GUILayout.Button("CopyFromIndexToIndex"))
+            {
+                myScript.CopyFromIndexToIndex(0, 1, status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully copy from index to index");
+                    }
+                    else
+                    {
+                        Debug.Log("Fail to copy from index to index");
                     }
                 });
             }
