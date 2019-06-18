@@ -9,7 +9,7 @@ namespace Misc
     {
         public static List<string> VehicleAssets()
         {
-            return Directory.GetFiles("Assets/Custom/Vehicles", "*.prefab").ToList();
+            return RandomNumberGenerator.Shuffle(Directory.GetFiles("Assets/Custom/Vehicles", "*.prefab").ToList());
         }
     }
 }

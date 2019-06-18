@@ -47,7 +47,7 @@ namespace LevelManager
                     }
                 });
             }
-            
+
             if (GUILayout.Button("CopyFromTempVarToIndex"))
             {
                 myScript.CopyFromTempVarToIndex(1, status =>
@@ -62,7 +62,7 @@ namespace LevelManager
                     }
                 });
             }
-            
+
             if (GUILayout.Button("CopyFromIndexToIndex"))
             {
                 myScript.CopyFromIndexToIndex(0, 1, status =>

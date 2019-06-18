@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Misc;
 using UnityEditor;
@@ -19,11 +18,13 @@ namespace LevelManager
 
         // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, byte> _vehicles;
-        private readonly List<string> _vehicleAssets;
+        private readonly ConcurrentQueue<string> _vehicleAssets;
 
         protected LevelManager()
         {
-            _vehicleAssets = AssetFinder.VehicleAssets();
+            _vehicleAssets = new ConcurrentQueue<string>();
+            AssetFinder.VehicleAssets().ForEach(vehicle => { _vehicleAssets.Enqueue(vehicle); });
+
             _vehicles = new ConcurrentDictionary<GameObject, byte>();
         }
 
@@ -44,22 +45,29 @@ namespace LevelManager
                 }
             }
 
-            int rand = RandomNumberGenerator.GetNext(0, _vehicleAssets.Count);
-            GameObject prefab = (GameObject) AssetDatabase.LoadAssetAtPath(_vehicleAssets[rand], typeof(GameObject));
-            GameObject obj = Instantiate(prefab);
-
-            if (obj != null)
+            string vehicleAsset;
+            if (_vehicleAssets.TryDequeue(out vehicleAsset))
             {
+                GameObject prefab = (GameObject) AssetDatabase.LoadAssetAtPath(vehicleAsset, typeof(GameObject));
+                GameObject obj = Instantiate(prefab);
                 obj.GetComponent<IsoTransform>().Position = _spawnPoint;
                 obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
-                if (!_vehicles.TryAdd(obj, 0))
+                if (_vehicles.TryAdd(obj, 0))
                 {
+                    callback?.Invoke(obj);
+                }
+                else
+                {
+                    DestroyImmediate(obj);
                     callback?.Invoke(null);
-                    yield break;
                 }
             }
+            else
+            {
+                Debug.Log("Cannot spawn any more vehicles, please restart level");
+            }
+
             Debug.Log("There are " + _vehicles.Count + " active vehicles");
-            callback?.Invoke(obj);
         }
 
         protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null)
@@ -85,9 +93,10 @@ namespace LevelManager
                     }
                 }
             }
+
             callback?.Invoke(false);
         }
-        
+
         protected GameObject GetVehicleAtPosition(Vector3 position)
         {
             foreach (GameObject vehicle in _vehicles.Keys)
@@ -101,7 +110,7 @@ namespace LevelManager
 
             return null;
         }
-        
+
         protected bool AddVehicle(GameObject vehicle)
         {
             bool added = _vehicles.TryAdd(vehicle, 0);

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Vehicle;
 
 namespace LevelManager
 {
@@ -33,7 +31,7 @@ namespace LevelManager
         {
             StartCoroutine(base.Spawn(callback));
         }
-        
+
         public void CopyFromIndexToTempVar(int index, Action<bool> callback = null)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(CarParks[index]));
@@ -51,7 +49,7 @@ namespace LevelManager
                 callback?.Invoke(false);
             }
         }
-        
+
         public void CopyFromIndexToIndex(int fromIndex, int toIndex, Action<bool> callback = null)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(CarParks[fromIndex]));
@@ -69,7 +67,7 @@ namespace LevelManager
                 callback?.Invoke(false);
             }
         }
-        
+
         public void CopyFromTempVarToIndex(int index, Action<bool> callback = null)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(TempVarTile));
