@@ -62,6 +62,11 @@ namespace LevelManager
                 }
             }
 
+            if (vehicleType == VehicleType.empty)
+            {
+                vehicleType = Randomiser.RandomValuesFromDict(_spawnableVehicles);
+            }
+
             GameObject vehicleAsset;
             if (_spawnableVehicles.TryGetValue(vehicleType, out vehicleAsset))
             {

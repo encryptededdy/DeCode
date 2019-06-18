@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Misc
 {
-    public static class RandomNumberGenerator
+    public static class Randomiser
     {
         public static int GetNext(int min, int max)
         {
@@ -23,6 +24,14 @@ namespace Misc
             }
 
             return list;
+        }
+        
+        public static TKey RandomValuesFromDict<TKey, TValue>(IDictionary<TKey, TValue> dict)
+        {
+            Random rand = new Random();
+            List<TKey> values = dict.Keys.ToList();
+            int size = dict.Count;
+            return values[rand.Next(size)];
         }
     }
 }

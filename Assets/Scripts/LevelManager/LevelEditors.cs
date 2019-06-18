@@ -16,7 +16,7 @@ namespace LevelManager
             ArrayLevelManager myScript = (ArrayLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.Spawn(VehicleType.ambulance, obj => { freshSpawn = obj; });
+                myScript.Spawn(obj => { freshSpawn = obj; });
             }
 
             if (GUILayout.Button("Move"))

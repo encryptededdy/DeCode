@@ -27,11 +27,16 @@ namespace LevelManager
             StartCoroutine(MoveTo(vehicle, position, callback));
         }
 
-        public new void Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
+        public void Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
         {
             StartCoroutine(base.Spawn(vehicleType, callback));
         }
-
+        
+        public void Spawn(Action<GameObject> callback = null)
+        {
+            StartCoroutine(base.Spawn(VehicleType.empty, callback));
+        }
+        
         public void CopyFromIndexToTempVar(int index, Action<bool> callback = null)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(CarParks[index]));
