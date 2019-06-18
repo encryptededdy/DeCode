@@ -12,13 +12,23 @@ namespace CustomUI.DSOperationControllers
         public InputField IndexInputField2 = null;
         public Text CodePreviewView;
         public ArrayOperations OperationType;
-        public ArrayLevelManager LevelManager;
-        public int NumberOfParks;
+        private ArrayOperationQueue _operationsQueue;
+        private int _maxIndex = 0;
         
         // Start is called before the first frame update
         void Start()
         {
             ExecuteOperationButton.onClick.AddListener(ProcessExecution);   
+        }
+
+        public ArrayOperationQueue OperationsQueue
+        {
+            set { _operationsQueue = value; }
+        }
+
+        public int MaxIndex
+        {
+            set { _maxIndex = value; }
         }
 
         private void ProcessExecution()
@@ -31,7 +41,7 @@ namespace CustomUI.DSOperationControllers
 
             var index = int.Parse(IndexInputField.text);
 
-            if (index >= NumberOfParks)
+            if (index > _maxIndex)
             {
                 CodePreviewView.text = "Index out of range";
                 return;
@@ -42,19 +52,19 @@ namespace CustomUI.DSOperationControllers
                 case ArrayOperations.Add:
                     CodePreviewView.text = "car = new Car();\n" +
                                            $"array[{index}] = car;";
-                    LevelManager.Spawn(obj => { LevelManager.WriteToArray(obj, index); });
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, index));
                     break;
                 case ArrayOperations.ToTemp:
                     CodePreviewView.text = $"temp = array[{index}];";
-                    LevelManager.CopyFromIndexToTempVar(index);
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, index));
                     break;
                 case ArrayOperations.FromTemp:
                     CodePreviewView.text = $"array[{index}] = temp;";
-                    LevelManager.CopyFromTempVarToIndex(index);
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, index));
                     break;
                 case ArrayOperations.Delete:
                     CodePreviewView.text = $"array[{index}] = null;";
-                    LevelManager.Destroy(index);
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Delete, index));
                     break;
                 case ArrayOperations.CopyTo:
                     // Parse the second field
@@ -66,15 +76,14 @@ namespace CustomUI.DSOperationControllers
 
                     var index2 = int.Parse(IndexInputField2.text);
 
-                    if (index2 >= NumberOfParks)
+                    if (index2 > _maxIndex)
                     {
                         CodePreviewView.text = "Index out of range";
                         return;
                     }
                     
-                    // Perform the copy
                     CodePreviewView.text = $"array[{index2}] = array[{index}];";
-                    LevelManager.CopyFromIndexToIndex(index, index2);
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, index, index2));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
