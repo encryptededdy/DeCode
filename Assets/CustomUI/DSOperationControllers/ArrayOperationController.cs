@@ -9,6 +9,7 @@ namespace CustomUI.DSOperationControllers
     {
         public Button ExecuteOperationButton;
         public InputField IndexInputField;
+        public InputField IndexInputField2 = null;
         public Text CodePreviewView;
         public ArrayOperations OperationType;
         public ArrayLevelManager LevelManager;
@@ -55,6 +56,26 @@ namespace CustomUI.DSOperationControllers
                     CodePreviewView.text = $"array[{index}] = null;";
                     LevelManager.Destroy(index);
                     break;
+                case ArrayOperations.CopyTo:
+                    // Parse the second field
+                    if (IndexInputField2.text.Length == 0)
+                    {
+                        CodePreviewView.text = "Invalid Index";
+                        return;
+                    }
+
+                    var index2 = int.Parse(IndexInputField2.text);
+
+                    if (index2 >= NumberOfParks)
+                    {
+                        CodePreviewView.text = "Index out of range";
+                        return;
+                    }
+                    
+                    // Perform the copy
+                    CodePreviewView.text = $"array[{index2}] = array[{index}];";
+                    LevelManager.CopyFromIndexToIndex(index, index2);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -66,6 +87,7 @@ namespace CustomUI.DSOperationControllers
         Add,
         ToTemp,
         FromTemp,
-        Delete
+        Delete,
+        CopyTo
     }
 }
