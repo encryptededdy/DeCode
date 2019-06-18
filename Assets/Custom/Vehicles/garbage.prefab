@@ -148,6 +148,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpHeight: 0
-  Speed: 1
+  Speed: 3
   Graph: {fileID: 0}
   Heuristic: 0
