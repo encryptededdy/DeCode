@@ -13,10 +13,8 @@ namespace LevelManager
         public void WriteToArray(GameObject vehicle, int index, Action<bool> callback = null)
         {
             Vector3 position = ConvertTileToPosition(CarParks[index]);
-            StartCoroutine(Destroy(position, status =>
-            {
-                Debug.Log(status ? "Successfully overwritten" : "No need to overwrite");
-            }));
+            StartCoroutine(Destroy(position,
+                status => { Debug.Log(status ? "Successfully overwritten" : "No need to overwrite"); }));
             StartCoroutine(MoveTo(vehicle, position, callback));
         }
 
@@ -24,12 +22,12 @@ namespace LevelManager
         {
             StartCoroutine(base.Spawn(vehicleType, callback));
         }
-        
+
         public void Spawn(Action<GameObject> callback = null)
         {
             StartCoroutine(base.Spawn(VehicleType.empty, callback));
         }
-        
+
         public void CopyFromIndexToTempVar(int index, Action<bool> callback = null)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(CarParks[index]));
@@ -90,6 +88,16 @@ namespace LevelManager
         {
             IsoTransform isoTransform = CarParks[index];
             StartCoroutine(base.Destroy(ConvertTileToPosition(isoTransform), callback));
+        }
+
+        public new void ResetLevel(Action<bool> callback = null)
+        {
+            StartCoroutine(base.ResetLevel(callback));
+        }
+
+        public int GetArraySize()
+        {
+            return CarParks.Count;
         }
 
         public List<VehicleType> GetArrayState()

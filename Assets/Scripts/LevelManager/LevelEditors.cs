@@ -21,18 +21,17 @@ namespace LevelManager
 
             if (GUILayout.Button("Move"))
             {
-                myScript.WriteToArray(_freshSpawn, 0, status =>
-                {
-                    Debug.Log(status ? "Successfully written to array" : "Fail to write to array");
-                });
+                myScript.WriteToArray(_freshSpawn, 0,
+                    status => { Debug.Log(status ? "Successfully written to array" : "Fail to write to array"); });
             }
 
             if (GUILayout.Button("CopyFromIndexToTempVar"))
             {
-                myScript.CopyFromIndexToTempVar(0, status =>
-                {
-                    Debug.Log(status ? "Successfully copy to temp variable" : "Fail to copy to temp variable");
-                });
+                myScript.CopyFromIndexToTempVar(0,
+                    status =>
+                    {
+                        Debug.Log(status ? "Successfully copy to temp variable" : "Fail to copy to temp variable");
+                    });
             }
 
             if (GUILayout.Button("CopyFromTempVarToIndex"))
@@ -47,18 +46,19 @@ namespace LevelManager
 
             if (GUILayout.Button("CopyFromIndexToIndex"))
             {
-                myScript.CopyFromIndexToIndex(0, 1, status =>
-                {
-                    Debug.Log(status ? "Successfully copy from index to index" : "Fail to copy from index to index");
-                });
+                myScript.CopyFromIndexToIndex(0, 1,
+                    status =>
+                    {
+                        Debug.Log(status
+                            ? "Successfully copy from index to index"
+                            : "Fail to copy from index to index");
+                    });
             }
 
             if (GUILayout.Button("Destroy"))
             {
-                myScript.Destroy(0, status =>
-                {
-                    Debug.Log(status ? "Successfully destroyed a car" : "Fail to destroy a car");
-                });
+                myScript.Destroy(0,
+                    status => { Debug.Log(status ? "Successfully destroyed a car" : "Fail to destroy a car"); });
             }
 
             if (GUILayout.Button("ArrayState"))
@@ -68,6 +68,14 @@ namespace LevelManager
                 {
                     Debug.Log("Vehicle at: " + i + " is " + vehicleTypes[i]);
                 }
+            }
+
+            if (GUILayout.Button("Reset"))
+            {
+                myScript.ResetLevel(status =>
+                {
+                    Debug.Log(status ? "Successfully reset level" : "Fail to reset level");
+                });
             }
         }
     }
