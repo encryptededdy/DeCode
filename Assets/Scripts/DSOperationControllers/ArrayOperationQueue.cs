@@ -32,6 +32,11 @@ namespace DSOperationControllers
             });
         }
 
+        public List<VehicleType> GetArrayState()
+        {
+            return LevelManager.GetArrayState();
+        }
+
         public void QueueOperation(QueuedArrayOperation operation)
         {
             QueuedOperations.Enqueue(operation);
@@ -85,6 +90,15 @@ namespace DSOperationControllers
                 case ArrayOperations.CopyTo:
                     LevelManager.CopyFromIndexToIndex(operation.Index1, operation.Index2, Callback);
                     break;
+                case ArrayOperations.Reset:
+                    LevelManager.ResetLevel(Callback);
+                    break;
+                case ArrayOperations.AddSpecific:
+                    LevelManager.Spawn(operation.VehicleType, obj =>
+                    {
+                        LevelManager.WriteToArray(obj, operation.Index1, Callback);
+                    });
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -97,7 +111,9 @@ namespace DSOperationControllers
         public ArrayOperations Operation { get; }
         public int Index1 { get; }
         public int Index2 { get; }
+        public VehicleType VehicleType { get; }
 
+        // Used for CopyTo
         public QueuedArrayOperation(ArrayOperations operation, int index1, int index2)
         {
             Operation = operation;
@@ -105,6 +121,21 @@ namespace DSOperationControllers
             Index2 = index2;
         }
 
+        // Used for AddSpecific
+        public QueuedArrayOperation(ArrayOperations operation, int index1, VehicleType vehicleType)
+        {
+            Operation = operation;
+            Index1 = index1;
+            VehicleType = vehicleType;
+        }
+
+        // Used for reset
+        public QueuedArrayOperation(ArrayOperations operation)
+        {
+            Operation = operation;
+        }
+
+        // Used for all other operations
         public QueuedArrayOperation(ArrayOperations operation, int index1)
         {
             Operation = operation;

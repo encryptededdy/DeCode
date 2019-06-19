@@ -96,6 +96,8 @@ namespace DSOperationControllers
         ToTemp,
         FromTemp,
         Delete,
-        CopyTo
+        CopyTo,
+        Reset,
+        AddSpecific
     }
 }
