@@ -1,9 +1,8 @@
 ﻿using System;
-using LevelManager;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CustomUI.DSOperationControllers
+namespace DSOperationControllers
 {
     public class ArrayOperationController : MonoBehaviour
     {

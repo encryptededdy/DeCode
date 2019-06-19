@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using LevelManager;
 using UnityEngine;
-using Object = System.Object;
 
-namespace CustomUI.DSOperationControllers
+namespace DSOperationControllers
 {
     public class ArrayOperationQueue : MonoBehaviour
     {
@@ -16,7 +14,7 @@ namespace CustomUI.DSOperationControllers
 
         void Start()
         {
-            var size = LevelManager.CarParks.Count - 1;
+            var size = LevelManager.GetArraySize() - 1;
             OperationControllers.ForEach(obj =>
             {
                 obj.OperationsQueue = this;
@@ -27,7 +25,7 @@ namespace CustomUI.DSOperationControllers
         // Call if the CarPark size changes
         public void UpdateSize()
         {
-            var size = LevelManager.CarParks.Count - 1;
+            var size = LevelManager.GetArraySize() - 1;
             OperationControllers.ForEach(obj =>
             {
                 obj.MaxIndex = size;
