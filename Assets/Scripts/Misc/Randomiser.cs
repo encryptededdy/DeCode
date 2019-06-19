@@ -12,7 +12,7 @@ namespace Misc
             return random.Next(min, max);
         }
 
-        public static List<T> Shuffle<T>(List<T> list)
+        public static List<T> ShuffleList<T>(List<T> list)
         {
             Random random = new Random();
             for (int i = 0; i < list.Count; i++)
@@ -25,13 +25,21 @@ namespace Misc
 
             return list;
         }
-        
-        public static TKey RandomValuesFromDict<TKey, TValue>(IDictionary<TKey, TValue> dict)
+
+        public static bool RandomValuesFromDict<TKey, TValue>(IDictionary<TKey, TValue> dict, out TKey value)
         {
             Random rand = new Random();
             List<TKey> values = dict.Keys.ToList();
-            int size = dict.Count;
-            return values[rand.Next(size)];
+            var size = dict.Count;
+
+            if (size == 0)
+            {
+                value = default;
+                return false;
+            }
+
+            value = values[rand.Next(size)];
+            return true;
         }
     }
 }

@@ -36,13 +36,11 @@ namespace LevelManager
             Dictionary<string, string> vehicleAssets = AssetFinder.VehicleAssets();
             foreach (var file in vehicleAssets.Keys)
             {
-                string filename;
-                if (vehicleAssets.TryGetValue(file, out filename))
+                if (vehicleAssets.TryGetValue(file, out var filename))
                 {
-                    GameObject prefab = (GameObject) AssetDatabase.LoadAssetAtPath(filename, typeof(GameObject));
+                    var prefab = (GameObject) AssetDatabase.LoadAssetAtPath(filename, typeof(GameObject));
 
-                    VehicleType vehicleType;
-                    if (Enum.TryParse(file, out vehicleType))
+                    if (Enum.TryParse(file, out VehicleType vehicleType))
                     {
                         _spawnableVehicles.TryAdd(vehicleType, prefab);
                     }
@@ -52,7 +50,7 @@ namespace LevelManager
 
         protected IEnumerator Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
         {
-            foreach (GameObject vehicle in _activeVehicles.Keys)
+            foreach (var vehicle in _activeVehicles.Keys)
             {
                 if (vehicle.GetComponent<IsoTransform>().Position.Equals(_spawnPoint))
                 {
@@ -64,11 +62,15 @@ namespace LevelManager
 
             if (vehicleType == VehicleType.empty)
             {
-                vehicleType = Randomiser.RandomValuesFromDict(_spawnableVehicles);
+
+                if (!Randomiser.RandomValuesFromDict(_spawnableVehicles, out vehicleType))
+                {
+                    Debug.Log("No vehicle left to spawn");
+                    callback?.Invoke(null);
+                }
             }
 
-            GameObject vehicleAsset;
-            if (_spawnableVehicles.TryGetValue(vehicleType, out vehicleAsset))
+            if (_spawnableVehicles.TryGetValue(vehicleType, out var vehicleAsset))
             {
                 GameObject obj = Instantiate(vehicleAsset);
                 obj.GetComponent<IsoTransform>().Position = _spawnPoint;
@@ -95,19 +97,18 @@ namespace LevelManager
 
         protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null)
         {
-            CustomAStarAgent customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
+            var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
             yield return StartCoroutine(customAStarAgent.MoveTo(position, callback));
         }
 
         protected IEnumerator Destroy(Vector3 position, Action<bool> callback = null)
         {
-            foreach (GameObject vehicle in _activeVehicles.Keys)
+            foreach (var vehicle in _activeVehicles.Keys)
             {
-                IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
+                var isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    VehicleType b;
-                    if (_activeVehicles.TryRemove(vehicle, out b))
+                    if (_activeVehicles.TryRemove(vehicle, out _))
                     {
                         yield return MoveTo(vehicle, _destroyPoint, callback);
                         DestroyImmediate(vehicle);
@@ -122,9 +123,9 @@ namespace LevelManager
 
         protected GameObject GetVehicleAtPosition(Vector3 position)
         {
-            foreach (GameObject vehicle in _activeVehicles.Keys)
+            foreach (var vehicle in _activeVehicles.Keys)
             {
-                IsoTransform isoTransform = vehicle.GetComponent<IsoTransform>();
+                var isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
                     return vehicle;
@@ -143,8 +144,7 @@ namespace LevelManager
 
         protected VehicleType GetVehicleType(GameObject vehicle)
         {
-            VehicleType type;
-            _activeVehicles.TryGetValue(vehicle, out type);
+            _activeVehicles.TryGetValue(vehicle, out var type);
             return type;
         }
 

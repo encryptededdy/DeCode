@@ -15,19 +15,12 @@ namespace LevelManager
             Vector3 position = ConvertTileToPosition(CarParks[index]);
             StartCoroutine(Destroy(position, status =>
             {
-                if (status)
-                {
-                    Debug.Log("Successfully overwritten");
-                }
-                else
-                {
-                    Debug.Log("No need to overwrite");
-                }
+                Debug.Log(status ? "Successfully overwritten" : "No need to overwrite");
             }));
             StartCoroutine(MoveTo(vehicle, position, callback));
         }
 
-        public void Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
+        public new void Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
         {
             StartCoroutine(base.Spawn(vehicleType, callback));
         }
@@ -103,10 +96,9 @@ namespace LevelManager
         {
             List<VehicleType> array = new List<VehicleType>();
 
-            foreach (IsoTransform carPark in CarParks)
+            foreach (var carPark in CarParks)
             {
                 GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(carPark));
-
                 if (vehicle == null)
                 {
                     array.Add(VehicleType.empty);

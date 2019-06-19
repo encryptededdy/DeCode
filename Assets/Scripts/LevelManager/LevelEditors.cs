@@ -7,7 +7,7 @@ namespace LevelManager
     [CustomEditor(typeof(ArrayLevelManager))]
     public class ArrayLevelEditor : Editor
     {
-        private GameObject freshSpawn;
+        private GameObject _freshSpawn;
 
         public override void OnInspectorGUI()
         {
@@ -16,21 +16,14 @@ namespace LevelManager
             ArrayLevelManager myScript = (ArrayLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.Spawn(obj => { freshSpawn = obj; });
+                myScript.Spawn(obj => { _freshSpawn = obj; });
             }
 
             if (GUILayout.Button("Move"))
             {
-                myScript.WriteToArray(freshSpawn, 0, status =>
+                myScript.WriteToArray(_freshSpawn, 0, status =>
                 {
-                    if (status)
-                    {
-                        Debug.Log("Successfully written to array");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail to write to array");
-                    }
+                    Debug.Log(status ? "Successfully written to array" : "Fail to write to array");
                 });
             }
 
@@ -38,14 +31,7 @@ namespace LevelManager
             {
                 myScript.CopyFromIndexToTempVar(0, status =>
                 {
-                    if (status)
-                    {
-                        Debug.Log("Successfully copy to temp variable");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail to copy to temp variable");
-                    }
+                    Debug.Log(status ? "Successfully copy to temp variable" : "Fail to copy to temp variable");
                 });
             }
 
@@ -53,14 +39,9 @@ namespace LevelManager
             {
                 myScript.CopyFromTempVarToIndex(1, status =>
                 {
-                    if (status)
-                    {
-                        Debug.Log("Successfully copy from tempVar to array");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail to copy from tempVar to array");
-                    }
+                    Debug.Log(status
+                        ? "Successfully copy from tempVar to array"
+                        : "Fail to copy from tempVar to array");
                 });
             }
 
@@ -68,14 +49,7 @@ namespace LevelManager
             {
                 myScript.CopyFromIndexToIndex(0, 1, status =>
                 {
-                    if (status)
-                    {
-                        Debug.Log("Successfully copy from index to index");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail to copy from index to index");
-                    }
+                    Debug.Log(status ? "Successfully copy from index to index" : "Fail to copy from index to index");
                 });
             }
 
@@ -83,21 +57,13 @@ namespace LevelManager
             {
                 myScript.Destroy(0, status =>
                 {
-                    if (status)
-                    {
-                        Debug.Log("Successfully destroyed a car");
-                    }
-                    else
-                    {
-                        Debug.Log("Fail to destroy a car");
-                    }
+                    Debug.Log(status ? "Successfully destroyed a car" : "Fail to destroy a car");
                 });
             }
 
             if (GUILayout.Button("ArrayState"))
             {
                 List<VehicleType> vehicleTypes = myScript.GetArrayState();
-
                 for (var i = 0; i < vehicleTypes.Count; i++)
                 {
                     Debug.Log("Vehicle at: " + i + " is " + vehicleTypes[i]);
