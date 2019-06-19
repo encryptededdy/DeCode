@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using LevelManager;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +45,7 @@ namespace DSOperationControllers
                 {
                     VehicleType.ambulance, VehicleType.blue, VehicleType.garbage, VehicleType.red, VehicleType.taxi
                 },
-                (answer) => answer.Equals(new List<VehicleType>()
+                (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
                     VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
                 })));
@@ -53,7 +54,7 @@ namespace DSOperationControllers
             
         }
 
-        public void NextQuestion()
+        private void NextQuestion()
         {
             if (_questions.Count == 0)
             {
@@ -84,8 +85,8 @@ namespace DSOperationControllers
 
             // Clear parking lot
             OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
-            // Add cars in reverse order (for dramatic effect)
-            for (var i = _currentQuestion.InitialState.Count - 1; i >= 0; i--)
+            // Add cars
+            for (var i = 0; i < _currentQuestion.InitialState.Count; i++)
             {
                 // Work around issue with trying to insert VehicleType.empty
                 if (!_currentQuestion.InitialState[i].Equals(VehicleType.empty))
@@ -108,6 +109,7 @@ namespace DSOperationControllers
 
         private void CheckQuestion()
         {
+            print(OperationQueue.GetArrayState());
             if (_currentQuestion.AnswerChecker(OperationQueue.GetArrayState()))
             {
                 // Correct!

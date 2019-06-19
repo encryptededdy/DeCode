@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using LevelManager;
 using UnityEngine;
 
@@ -64,8 +65,9 @@ namespace DSOperationControllers
             // Callback for when operation is complete
             void Callback(bool _)
             {
-                // Unlock first
                 print("Got callback!");
+                
+                // Unlock first
                 _queueProcessingLock = false;
                 TryExecuteQueue();
             }
@@ -112,7 +114,7 @@ namespace DSOperationControllers
         public int Index1 { get; }
         public int Index2 { get; }
         public VehicleType VehicleType { get; }
-
+        
         // Used for CopyTo
         public QueuedArrayOperation(ArrayOperations operation, int index1, int index2)
         {
