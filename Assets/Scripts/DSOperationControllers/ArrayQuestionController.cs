@@ -68,6 +68,9 @@ namespace DSOperationControllers
 
         private void NextQuestion()
         {
+            // Clear parking lot
+            OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
+
             if (_questions.Count == 0)
             {
                 Title.text = "Level Complete!";
@@ -79,7 +82,7 @@ namespace DSOperationControllers
             _currentQuestion = _questions.Dequeue();
             // Fill in UI
             Title.text = _currentQuestion.Title;
-            Description.text = _currentQuestion.Description;
+            Description.text = "Click Start to begin question";
             // Configure buttons
             GreenButton.gameObject.SetActive(true);
             GreenButton.GetComponentInChildren<Text>().text = "Start";
