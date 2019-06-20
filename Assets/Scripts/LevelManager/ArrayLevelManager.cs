@@ -10,12 +10,12 @@ namespace LevelManager
         public List<IsoTransform> CarParks;
         public IsoTransform TempVarTile;
 
-        public void WriteToArray(GameObject vehicle, int index, Action<bool> callback = null)
+        public void WriteToArray(GameObject vehicle, int index, Action<bool> callback = null, bool fast = false)
         {
             Vector3 position = ConvertTileToPosition(CarParks[index]);
             StartCoroutine(Destroy(position,
                 status => { Debug.Log(status ? "Successfully overwritten" : "No need to overwrite"); }));
-            StartCoroutine(MoveTo(vehicle, position, callback));
+            StartCoroutine(MoveTo(vehicle, position, callback, fast));
         }
 
         public new void Spawn(VehicleType vehicleType, Action<GameObject> callback = null)

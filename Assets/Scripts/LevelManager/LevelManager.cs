@@ -16,7 +16,7 @@ namespace LevelManager
         public IsoTransform DestroyTile;
         private Vector3 _spawnPoint;
         private Vector3 _destroyPoint;
-
+        
         // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
@@ -78,10 +78,17 @@ namespace LevelManager
             Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
         }
 
-        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null)
+        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null, bool fast = false)
         {
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
-            yield return StartCoroutine(customAStarAgent.MoveTo(position, callback));
+            if (fast)
+            {
+                yield return StartCoroutine(customAStarAgent.MoveTo(position, 10, callback));
+            }
+            else
+            {
+                yield return StartCoroutine(customAStarAgent.MoveTo(position, 3, callback));
+            }
         }
 
         protected IEnumerator Destroy(Vector3 position, Action<bool> callback = null)
@@ -156,7 +163,7 @@ namespace LevelManager
             }
         }
 
-        protected IEnumerator ResetLevel(Action<bool> callback = null)
+        protected IEnumerator ResetLevel(Action<bool> callback)
         {
             foreach (GameObject activeVehicle in _activeVehicles.Keys)
             {

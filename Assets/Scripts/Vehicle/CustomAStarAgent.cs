@@ -11,7 +11,6 @@ namespace Vehicle
     public class CustomAStarAgent : MonoBehaviour
     {
         public float JumpHeight = 0; //vertical distance threshold to next node
-        public float Speed = 1; //units per second
         public CustomGridGraph.CustomGridGraph Graph;
         public AstarAgent.Heuristic Heuristic;
         private CarAnimator _carAnimator;
@@ -21,7 +20,7 @@ namespace Vehicle
             _carAnimator = new CarAnimator(this.GetOrAddComponent<Animator>());
         }
 
-        public IEnumerator MoveTo(Vector3 destination, Action<bool> callback = null)
+        public IEnumerator MoveTo(Vector3 destination, int speed, Action<bool> callback = null)
         {
             var astar = new Astar(GetFromEnum(Heuristic));
 
@@ -45,7 +44,7 @@ namespace Vehicle
             astar.SearchPath(startNode, endNode, JumpHeight, path =>
             {
                 StopAllCoroutines();
-                StartCoroutine(MoveAlongPathInternal(path));
+                StartCoroutine(MoveAlongPathInternal(path, speed));
             }, () =>
             {
                 Debug.Log("No path found");
@@ -83,12 +82,12 @@ namespace Vehicle
             }
         }
 
-        private IEnumerator MoveAlongPathInternal(IEnumerable<Vector3> path)
+        private IEnumerator MoveAlongPathInternal(IEnumerable<Vector3> path, int speed)
         {
             foreach (var pos in path)
             {
                 yield return StepTo(GetComponent<IsoTransform>().Position,
-                    pos + new Vector3(0, GetComponent<IsoTransform>().Size.y / 2, 0), Speed);
+                    pos + new Vector3(0, GetComponent<IsoTransform>().Size.y / 2, 0), speed);
             }
         }
 
