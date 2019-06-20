@@ -49,6 +49,18 @@ namespace DSOperationControllers
                 {
                     VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
                 })));
+            
+            _questions.Enqueue(new ArrayQuestionData(
+                "Sort Array",
+                "Sort the array according to car type, ascending - Ambulance, Police, Taxi, Silver, Black.",
+                new List<VehicleType>()
+                {
+                    VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
+                },
+                (answer) => answer.SequenceEqual(new List<VehicleType>()
+                {
+                    VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
+                })));
                         
             NextQuestion();
             

@@ -1,39 +1,43 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class HelpScreenLogic : MonoBehaviour
 {
-    public GameObject page1;
-    public GameObject page2;
-    public Button nextButton;
+    public GameObject Page2;
+    public GameObject Page1;
+    public GameObject Background;
+    public Button NextButton;
 
     private bool onPage2 = false;
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         // Hide the second page, show the first one...
-        page2.SetActive(false);
-        page1.SetActive(true);
-        nextButton.onClick.AddListener(nextButtonClickHandler);
+        Page2.SetActive(false);
+        Page1.SetActive(true);
+        Background.SetActive(true);
+        NextButton.onClick.AddListener(nextButtonClickHandler);
     }
 
     private void nextButtonClickHandler()
     {
         if (onPage2)
         {
-            page2.SetActive(false);
-            page1.SetActive(false);
-            nextButton.gameObject.SetActive(false);
+            Page2.SetActive(false);
+            Page1.SetActive(false);
+            NextButton.gameObject.SetActive(false);
+            Background.SetActive(false);
         }
         else
         {
             // On page 1
             onPage2 = true;
-            page2.SetActive(true);
-            page1.SetActive(false);
+            Page2.SetActive(true);
+            Page1.SetActive(false);
         }
     }
 }
