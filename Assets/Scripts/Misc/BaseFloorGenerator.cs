@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using System;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UltimateIsometricToolkit.physics;
@@ -89,3 +91,4 @@ namespace Misc
         }
     }
 }
+#endif
