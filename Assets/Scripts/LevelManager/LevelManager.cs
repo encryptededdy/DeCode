@@ -153,7 +153,7 @@ namespace LevelManager
             {
                 if (vehicleAssets.TryGetValue(file, out var filename))
                 {
-                    var prefab = (GameObject) AssetDatabase.LoadAssetAtPath(filename, typeof(GameObject));
+                    var prefab = Resources.Load<GameObject>(filename);
 
                     if (Enum.TryParse(file, out VehicleType vehicleType))
                     {
