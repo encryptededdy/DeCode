@@ -1662,14 +1662,14 @@ MonoBehaviour:
   - {fileID: 6457995941146750253, guid: 99059045792844ce8a7773eb4968ef57, type: 3}
   - {fileID: 6457995941146750253, guid: fcb7d6592e2ef4bf3a5d4c1358e6f6b2, type: 3}
   - {fileID: 6457995941146750253, guid: d42e0e8b187044cee9e5307b70dea5b4, type: 3}
-  SpawnTile: {fileID: 1034792155}
-  DestroyTile: {fileID: 1758949828}
-  CarParks:
+  ActiveCarpark:
   - {fileID: 1940266264}
   - {fileID: 1389326585}
   - {fileID: 845697302}
   - {fileID: 1641895942}
   - {fileID: 651367344}
+  ActiveSpawnTile: {fileID: 1034792155}
+  ActiveDestroyTile: {fileID: 1758949828}
   TempVarTile: {fileID: 182650664}
 --- !u!114 &671304596
 MonoBehaviour:

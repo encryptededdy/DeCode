@@ -12,11 +12,11 @@ namespace LevelManager
     public abstract class LevelManager : MonoBehaviour
     {
         public List<GameObject> VehicleAssets;
-
-        public IsoTransform SpawnTile;
-        public IsoTransform DestroyTile;
-        private Vector3 _spawnPoint;
-        private Vector3 _destroyPoint;
+        public List<IsoTransform> ActiveCarpark;
+        public IsoTransform ActiveSpawnTile;
+        public IsoTransform ActiveDestroyTile;
+        protected Vector3 SpawnPoint;
+        protected Vector3 DestroyPoint;
 
         // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
@@ -27,10 +27,10 @@ namespace LevelManager
             _activeVehicles = new ConcurrentDictionary<GameObject, VehicleType>();
         }
 
-        void Awake()
+        protected void Awake()
         {
-            _spawnPoint = ConvertTileToPosition(SpawnTile);
-            _destroyPoint = ConvertTileToPosition(DestroyTile);
+            SpawnPoint = ConvertTileToPosition(ActiveSpawnTile);
+            DestroyPoint = ConvertTileToPosition(ActiveDestroyTile);
             LoadAssets();
         }
 
@@ -38,7 +38,7 @@ namespace LevelManager
         {
             foreach (var vehicle in _activeVehicles.Keys)
             {
-                if (vehicle.GetComponent<IsoTransform>().Position.Equals(_spawnPoint))
+                if (vehicle.GetComponent<IsoTransform>().Position.Equals(SpawnPoint))
                 {
                     Debug.Log("Cannot spawn vehicle, a vehicle exist at spawn");
                     callback?.Invoke(null);
@@ -58,7 +58,7 @@ namespace LevelManager
             if (_spawnableVehicles.TryGetValue(vehicleType, out var vehicleAsset))
             {
                 GameObject obj = Instantiate(vehicleAsset);
-                obj.GetComponent<IsoTransform>().Position = _spawnPoint;
+                obj.GetComponent<IsoTransform>().Position = SpawnPoint;
                 obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
                 if (_activeVehicles.TryAdd(obj, vehicleType))
                 {
@@ -79,8 +79,7 @@ namespace LevelManager
             Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
         }
 
-        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null,
-            bool fast = false)
+        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
         {
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
             if (fast)
@@ -93,14 +92,14 @@ namespace LevelManager
             }
         }
 
-        protected IEnumerator Destroy(Vector3 position, Action<bool> callback = null)
+        protected IEnumerator Destroy(Vector3 position, Action<bool> callback, bool fast = false)
         {
             foreach (var vehicle in _activeVehicles.Keys)
             {
                 var isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    yield return MoveTo(vehicle, _destroyPoint, callback);
+                    yield return MoveTo(vehicle, DestroyPoint, callback, fast);
                     if (_activeVehicles.TryRemove(vehicle, out VehicleType type))
                     {
                         DestroyImmediate(vehicle);
@@ -112,6 +111,37 @@ namespace LevelManager
             }
 
             callback?.Invoke(false);
+        }
+
+        protected IEnumerator Overwrite(GameObject clone, Vector3 carpark, Action<bool> callback, bool fast = false)
+        {
+            int completed = 0;
+            StartCoroutine(MoveTo(clone, carpark, status =>
+            {
+                if (status)
+                {
+                    completed++;
+                }
+                else
+                {
+                    callback?.Invoke(false);
+                }
+            }, fast));
+
+            StartCoroutine(Destroy(carpark, status =>
+            {
+                if (status)
+                {
+                    completed++;
+                }
+                else
+                {
+                    callback?.Invoke(false);
+                }
+            }, fast));
+
+            yield return new WaitUntil(() => completed == 2);
+            callback?.Invoke(true);
         }
 
         protected GameObject GetVehicleAtPosition(Vector3 position)
@@ -186,7 +216,7 @@ namespace LevelManager
             }
         }
 
-        protected IEnumerator ResetLevel(Action<bool> callback)
+        protected IEnumerator ResetLevel(Action<bool> callback, bool fast = false)
         {
             foreach (GameObject activeVehicle in _activeVehicles.Keys)
             {
@@ -197,7 +227,7 @@ namespace LevelManager
                         Debug.Log("Failed to destroy vehicles, please restart level");
                         callback?.Invoke(false);
                     }
-                }));
+                }, fast));
             }
 
             yield return new WaitUntil(() => _activeVehicles.IsEmpty);
