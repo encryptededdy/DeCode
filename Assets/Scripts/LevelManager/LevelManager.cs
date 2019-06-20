@@ -4,7 +4,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Misc;
-using UnityEditor;
 using UnityEngine;
 using Vehicle;
 
@@ -13,12 +12,12 @@ namespace LevelManager
     public abstract class LevelManager : MonoBehaviour
     {
         public List<GameObject> VehicleAssets;
-        
+
         public IsoTransform SpawnTile;
         public IsoTransform DestroyTile;
         private Vector3 _spawnPoint;
         private Vector3 _destroyPoint;
-        
+
         // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
@@ -80,7 +79,8 @@ namespace LevelManager
             Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
         }
 
-        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null, bool fast = false)
+        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback = null,
+            bool fast = false)
         {
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
             if (fast)
@@ -101,9 +101,10 @@ namespace LevelManager
                 if (isoTransform.Position.Equals(position))
                 {
                     yield return MoveTo(vehicle, _destroyPoint, callback);
-                    if (_activeVehicles.TryRemove(vehicle, out _))
+                    if (_activeVehicles.TryRemove(vehicle, out VehicleType type))
                     {
                         DestroyImmediate(vehicle);
+                        ResetVehicle(type);
                         Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
                         yield break;
                     }
@@ -155,6 +156,31 @@ namespace LevelManager
                     if (_spawnableVehicles.TryAdd(vehicleType, asset))
                     {
                         Debug.Log($"Added Vehicle {asset.name}");
+                    }
+                }
+            }
+        }
+
+        private void ResetVehicle(VehicleType vehicleType)
+        {
+            foreach (VehicleType vehicle in _activeVehicles.Values)
+            {
+                if (vehicle.Equals(vehicleType))
+                {
+                    return;
+                }
+            }
+
+            foreach (var asset in VehicleAssets)
+            {
+                if (Enum.TryParse(asset.name, out VehicleType type))
+                {
+                    if (vehicleType.Equals(type))
+                    {
+                        if (_spawnableVehicles.TryAdd(vehicleType, asset))
+                        {
+                            Debug.Log($"Added Vehicle {asset.name}");
+                        }
                     }
                 }
             }
