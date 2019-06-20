@@ -1628,7 +1628,7 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &671304594
 Transform:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 2
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -1652,6 +1652,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37e8cc8c0d9654d868df88216c437b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VehicleAssets:
+  - {fileID: 6457995941146750253, guid: 2a3e1c3bd6e88472baade771c5f117c2, type: 3}
+  - {fileID: 8894331509636492924, guid: 9e40758ea5af94a398625aa6ca2d2b2b, type: 3}
+  - {fileID: 6457995941146750253, guid: 665a4637bf2c040cbb2d6ee21fec2183, type: 3}
+  - {fileID: 6457995941146750253, guid: 1cfd3180abd5a4475a6bf7d2d5fe34bd, type: 3}
+  - {fileID: 6457995941146750253, guid: 94212dfe9ec21402abf269346a46bd47, type: 3}
+  - {fileID: 6457995941146750253, guid: 2e76c7c95974b434da3cfdba2d44d050, type: 3}
+  - {fileID: 6457995941146750253, guid: 99059045792844ce8a7773eb4968ef57, type: 3}
+  - {fileID: 6457995941146750253, guid: fcb7d6592e2ef4bf3a5d4c1358e6f6b2, type: 3}
+  - {fileID: 6457995941146750253, guid: d42e0e8b187044cee9e5307b70dea5b4, type: 3}
   SpawnTile: {fileID: 1034792155}
   DestroyTile: {fileID: 1758949828}
   CarParks:

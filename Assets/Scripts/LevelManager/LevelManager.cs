@@ -12,6 +12,8 @@ namespace LevelManager
 {
     public abstract class LevelManager : MonoBehaviour
     {
+        public List<GameObject> VehicleAssets;
+        
         public IsoTransform SpawnTile;
         public IsoTransform DestroyTile;
         private Vector3 _spawnPoint;
@@ -146,18 +148,13 @@ namespace LevelManager
         private void LoadAssets()
         {
             _spawnableVehicles = new ConcurrentDictionary<VehicleType, GameObject>();
-
-            // Pre-loading the assets
-            Dictionary<string, string> vehicleAssets = AssetFinder.VehicleAssets();
-            foreach (var file in vehicleAssets.Keys)
+            foreach (var asset in VehicleAssets)
             {
-                if (vehicleAssets.TryGetValue(file, out var filename))
+                if (Enum.TryParse(asset.name, out VehicleType vehicleType))
                 {
-                    var prefab = Resources.Load<GameObject>(filename);
-
-                    if (Enum.TryParse(file, out VehicleType vehicleType))
+                    if (_spawnableVehicles.TryAdd(vehicleType, asset))
                     {
-                        _spawnableVehicles.TryAdd(vehicleType, prefab);
+                        Debug.Log($"Added Vehicle {asset.name}");
                     }
                 }
             }

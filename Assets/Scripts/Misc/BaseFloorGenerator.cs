@@ -1,5 +1,3 @@
-#if UNITY_EDITOR
-
 using System;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UltimateIsometricToolkit.physics;
@@ -75,6 +73,8 @@ namespace Misc
         }
     
     }
+    
+#if UNITY_EDITOR
     [CustomEditor(typeof(BaseFloorGenerator))]
     public class ObjectBuilderEditor : Editor
     {
@@ -90,5 +90,5 @@ namespace Misc
             }
         }
     }
-}
 #endif
+}
