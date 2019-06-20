@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,8 +8,8 @@ namespace DSOperationControllers
     public class ArrayOperationController : MonoBehaviour
     {
         public Button ExecuteOperationButton;
-        public InputField IndexInputField;
-        public InputField IndexInputField2 = null;
+        public Dropdown IndexDropdown;
+        public Dropdown IndexDropdown2 = null;
         public Text CodePreviewView;
         public ArrayOperations OperationType;
         private ArrayOperationQueue _operationsQueue;
@@ -22,29 +23,27 @@ namespace DSOperationControllers
 
         public ArrayOperationQueue OperationsQueue
         {
-            set { _operationsQueue = value; }
+            set => _operationsQueue = value;
         }
 
         public int MaxIndex
         {
-            set { _maxIndex = value; }
+            set
+            {
+                _maxIndex = value;
+                var options = Enumerable.Range(0, _maxIndex + 1).Select(i => $"Index {i}").ToList();
+                // Now populate dropdown
+                IndexDropdown.AddOptions(options);
+                if (IndexDropdown2 != null)
+                {
+                    IndexDropdown2.AddOptions(options);
+                }
+            }
         }
 
         private void ProcessExecution()
         {
-            if (IndexInputField.text.Length == 0)
-            {
-                CodePreviewView.text = "Invalid Index";
-                return;
-            }
-
-            var index = int.Parse(IndexInputField.text);
-
-            if (index > _maxIndex)
-            {
-                CodePreviewView.text = "Index out of range";
-                return;
-            }
+            var index = IndexDropdown.value;            
             
             switch (OperationType)
             {
@@ -67,20 +66,7 @@ namespace DSOperationControllers
                     break;
                 case ArrayOperations.CopyTo:
                     // Parse the second field
-                    if (IndexInputField2.text.Length == 0)
-                    {
-                        CodePreviewView.text = "Invalid Index";
-                        return;
-                    }
-
-                    var index2 = int.Parse(IndexInputField2.text);
-
-                    if (index2 > _maxIndex)
-                    {
-                        CodePreviewView.text = "Index out of range";
-                        return;
-                    }
-                    
+                    var index2 = IndexDropdown2.value;                    
                     CodePreviewView.text = $"array[{index2}] = array[{index}];";
                     _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, index, index2));
                     break;

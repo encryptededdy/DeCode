@@ -98,7 +98,7 @@ namespace DSOperationControllers
                 case ArrayOperations.AddSpecific:
                     LevelManager.Spawn(operation.VehicleType, obj =>
                     {
-                        LevelManager.WriteToArray(obj, operation.Index1, Callback);
+                        LevelManager.WriteToArray(obj, operation.Index1, Callback, true);
                     });
                     break;
                 default:
