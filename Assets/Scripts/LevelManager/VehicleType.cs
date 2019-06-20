@@ -11,6 +11,7 @@ namespace LevelManager
         police,
         ambulance,
         garbage,
-        empty
+        empty,
+        random
     }
 }

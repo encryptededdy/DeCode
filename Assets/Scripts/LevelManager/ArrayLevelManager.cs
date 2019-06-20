@@ -12,27 +12,12 @@ namespace LevelManager
         public void WriteToArray(GameObject vehicle, int index, Action<bool> callback = null, bool fast = false)
         {
             Vector3 position = ConvertTileToPosition(ActiveCarpark[index]);
-
-            if (GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[index])) == null)
-            {
-                Debug.Log("No need to overwrite");
-                StartCoroutine(MoveTo(vehicle, position, callback, fast));
-            }
-            else
-            {
-                Debug.Log("Require overwrite");
-                StartCoroutine(Overwrite(vehicle, position, callback, fast));
-            }
+            StartCoroutine(WriteToIndex(vehicle, position, callback, fast));
         }
 
-        public new void Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
+        public void Spawn(Action<GameObject> callback = null, VehicleType vehicleType = VehicleType.random)
         {
             StartCoroutine(base.Spawn(vehicleType, callback));
-        }
-
-        public void Spawn(Action<GameObject> callback = null)
-        {
-            StartCoroutine(base.Spawn(VehicleType.empty, callback));
         }
 
         public void CopyFromIndexToTempVar(int index, Action<bool> callback = null)
@@ -43,7 +28,7 @@ namespace LevelManager
                 GameObject clone = Instantiate(vehicle);
                 if (AddVehicle(clone, GetVehicleType(vehicle)))
                 {
-                    StartCoroutine(Overwrite(clone, ConvertTileToPosition(TempVarTile), callback));
+                    StartCoroutine(WriteToIndex(clone, ConvertTileToPosition(TempVarTile), callback));
                 }
             }
             else
@@ -62,7 +47,7 @@ namespace LevelManager
                     GameObject clone = Instantiate(vehicle);
                     if (AddVehicle(clone, GetVehicleType(vehicle)))
                     {
-                        StartCoroutine(Overwrite(clone, ConvertTileToPosition(ActiveCarpark[toIndex]), callback));
+                        StartCoroutine(WriteToIndex(clone, ConvertTileToPosition(ActiveCarpark[toIndex]), callback));
                     }
                 }
                 else
@@ -86,7 +71,7 @@ namespace LevelManager
                 GameObject clone = Instantiate(vehicle);
                 if (AddVehicle(clone, GetVehicleType(vehicle)))
                 {
-                    StartCoroutine(Overwrite(clone, ConvertTileToPosition(isoTransform), callback));
+                    StartCoroutine(WriteToIndex(clone, ConvertTileToPosition(isoTransform), callback));
                 }
             }
             else
@@ -97,8 +82,7 @@ namespace LevelManager
 
         public void Destroy(int index, Action<bool> callback = null, bool fast = false)
         {
-            IsoTransform isoTransform = ActiveCarpark[index];
-            StartCoroutine(base.Destroy(ConvertTileToPosition(isoTransform), callback, fast));
+            StartCoroutine(base.Destroy(ConvertTileToPosition(ActiveCarpark[index]), callback, fast));
         }
 
         public new void ResetLevel(Action<bool> callback = null, bool fast = false)
