@@ -81,10 +81,25 @@ namespace LevelManager
 
             if (GUILayout.Button("NextStage"))
             {
-                myScript.NextStage(status =>
+                myScript.Expand(status =>
                 {
                     Debug.Log(status ? "Successfully change to next stage" : "Failed to change to next stage");
                 });
+            }
+        }
+    }
+    
+    [CustomEditor(typeof(CarparkManager))]
+    public class CarparkManagerEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            CarparkManager myScript = (CarparkManager) target;
+
+            if (GUILayout.Button("AddCarpark"))
+            {
+                myScript.AddCarpark();
             }
         }
     }

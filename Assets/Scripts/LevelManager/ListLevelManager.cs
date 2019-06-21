@@ -7,21 +7,11 @@ namespace LevelManager
 {
     public class ListLevelManager : ArrayLevelManager
     {
-        public List<IsoTransform> CarParkMedium;
-        public IsoTransform MediumSpawnTile;
-        public IsoTransform MediumDestroyTile;
-
-        public List<IsoTransform> CarParkLarge;
-        public IsoTransform LargeSpawnTile;
-        public IsoTransform LargeDestroyTile;
-
-        public List<IsoTransform> CustomMapLayout;
-
-        private Stage stage;
+        public IsoTransform CurrentCarpark;
+        public IsoTransform NewCarpark;
 
         protected void Awake()
         {
-            stage = Stage.One;
             base.Awake();
         }
 
@@ -44,35 +34,8 @@ namespace LevelManager
             }
         }
 
-        public void NextStage(Action<bool> callback)
+        public void Expand(Action<bool> callback)
         {
-            if (GetNextOpenIndex() != -1)
-            {
-                Debug.Log("Carpark has not been filled");
-                callback(false);
-                return;
-            }
-
-            switch (stage)
-            {
-                case Stage.One:
-                    SetNewSpawnPoint(MediumSpawnTile);
-                    SetNewDestroyPoint(MediumDestroyTile);
-                    SetNewActiveCarpark(CarParkMedium);
-                    stage = Stage.Two;
-                    break;
-                case Stage.Two:
-                    SetNewSpawnPoint(LargeSpawnTile);
-                    SetNewDestroyPoint(LargeDestroyTile);
-                    SetNewActiveCarpark(CarParkLarge);
-                    stage = Stage.Three;
-                    break;
-                case Stage.Three:
-                    Debug.Log("Level Complete");
-                    break;
-            }
-
-            callback(true);
         }
 
         private int GetNextOpenIndex()
