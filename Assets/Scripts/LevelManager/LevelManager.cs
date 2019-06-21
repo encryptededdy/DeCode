@@ -18,19 +18,15 @@ namespace LevelManager
         protected Vector3 SpawnPoint;
         protected Vector3 DestroyPoint;
 
-        // Only using the key as we want a thread-safe DS with ability to lookup in O(1).
+        // Only using the key as we want thread-safe DSes with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
 
-        protected LevelManager()
+        void Awake()
         {
             _activeVehicles = new ConcurrentDictionary<GameObject, VehicleType>();
-        }
-
-        protected void Awake()
-        {
-            SpawnPoint = ConvertTileToPosition(ActiveSpawnTile);
-            DestroyPoint = ConvertTileToPosition(ActiveDestroyTile);
+            SetNewSpawnPoint(ActiveSpawnTile);
+            SetNewDestroyPoint(ActiveDestroyTile);
             LoadAssets();
         }
 
@@ -46,7 +42,7 @@ namespace LevelManager
                 }
             }
 
-            if (vehicleType == VehicleType.empty)
+            if (vehicleType == VehicleType.random)
             {
                 if (!Randomiser.RandomValuesFromDict(_spawnableVehicles, out vehicleType))
                 {
@@ -79,7 +75,7 @@ namespace LevelManager
             Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
         }
 
-        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
+        private IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
         {
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
             if (fast)
@@ -113,29 +109,41 @@ namespace LevelManager
             callback?.Invoke(false);
         }
 
-        protected IEnumerator Overwrite(GameObject clone, Vector3 carpark, Action<bool> callback, bool fast = false)
+        protected IEnumerator WriteToIndex(GameObject clone, Vector3 carpark, Action<bool> callback, bool fast = false)
         {
             int completed = 0;
+            if (GetVehicleAtPosition(carpark) == null)
+            {
+                Debug.Log("No need to overwrite");
+                completed++;
+            }
+            else
+            {
+                StartCoroutine(Destroy(carpark, status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully overwritten index");
+                        completed++;
+                    }
+                    else
+                    {
+                        Debug.Log("Failed to overwrite index");
+                        callback?.Invoke(false);
+                    }
+                }, fast));
+            }
+
             StartCoroutine(MoveTo(clone, carpark, status =>
             {
                 if (status)
                 {
+                    Debug.Log("Successfully move vehicle to index");
                     completed++;
                 }
                 else
                 {
-                    callback?.Invoke(false);
-                }
-            }, fast));
-
-            StartCoroutine(Destroy(carpark, status =>
-            {
-                if (status)
-                {
-                    completed++;
-                }
-                else
-                {
+                    Debug.Log("Failed to move vehicle to index");
                     callback?.Invoke(false);
                 }
             }, fast));
@@ -233,6 +241,21 @@ namespace LevelManager
             yield return new WaitUntil(() => _activeVehicles.IsEmpty);
             LoadAssets();
             callback?.Invoke(true);
+        }
+
+        protected void SetNewSpawnPoint(IsoTransform spawnTile)
+        {
+            SpawnPoint = ConvertTileToPosition(spawnTile);
+        }
+
+        protected void SetNewDestroyPoint(IsoTransform destroyTile)
+        {
+            DestroyPoint = ConvertTileToPosition(destroyTile);
+        }
+
+        protected void SetNewActiveCarpark(List<IsoTransform> carpark)
+        {
+            ActiveCarpark = carpark;
         }
     }
 }

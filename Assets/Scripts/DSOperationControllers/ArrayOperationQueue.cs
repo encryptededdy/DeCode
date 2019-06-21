@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using LevelManager;
 using UnityEngine;
 using UnityEngine.UI;
@@ -117,10 +116,10 @@ namespace DSOperationControllers
                     LevelManager.ResetLevel(Callback);
                     break;
                 case ArrayOperations.AddSpecific:
-                    LevelManager.Spawn(operation.VehicleType, obj =>
+                    LevelManager.Spawn(obj =>
                     {
                         LevelManager.WriteToArray(obj, operation.Index1, Callback, true);
-                    });
+                    }, operation.VehicleType);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
