@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LevelManager;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DSOperationControllers
 {
@@ -12,6 +13,11 @@ namespace DSOperationControllers
         public ArrayLevelManager LevelManager;
         private Queue<QueuedArrayOperation> QueuedOperations = new Queue<QueuedArrayOperation>();
         private bool _queueProcessingLock = false;
+        
+        // Logging stuff
+        public GameObject LoggingView;
+        public Text LoggingText;
+        public Button LoggingToggle;
 
         void Start()
         {
@@ -21,6 +27,20 @@ namespace DSOperationControllers
                 obj.OperationsQueue = this;
                 obj.MaxIndex = size;
             });
+            
+            // Hide Logging stuff
+            LoggingView.SetActive(false);
+            LoggingToggle.onClick.AddListener(ToggleLoggingView);
+        }
+
+        private void ToggleLoggingView()
+        {
+            LoggingView.SetActive(!LoggingView.activeInHierarchy);
+        }
+
+        private void AppendLog(String line)
+        {
+            LoggingText.text = LoggingText.text + "\n" + line;
         }
 
         // Call if the CarPark size changes
@@ -41,6 +61,7 @@ namespace DSOperationControllers
         public void QueueOperation(QueuedArrayOperation operation)
         {
             QueuedOperations.Enqueue(operation);
+            AppendLog(operation.CodeLine);
             TryExecuteQueue();
         }
 
@@ -115,12 +136,15 @@ namespace DSOperationControllers
         public int Index2 { get; }
         public VehicleType VehicleType { get; }
         
+        public String CodeLine { get; }
+        
         // Used for CopyTo
-        public QueuedArrayOperation(ArrayOperations operation, int index1, int index2)
+        public QueuedArrayOperation(ArrayOperations operation, int index1, int index2, string codeLine)
         {
             Operation = operation;
             Index1 = index1;
             Index2 = index2;
+            CodeLine = codeLine;
         }
 
         // Used for AddSpecific
@@ -138,10 +162,11 @@ namespace DSOperationControllers
         }
 
         // Used for all other operations
-        public QueuedArrayOperation(ArrayOperations operation, int index1)
+        public QueuedArrayOperation(ArrayOperations operation, int index1, string codeLine)
         {
             Operation = operation;
             Index1 = index1;
+            CodeLine = codeLine;
         }
     }
 }

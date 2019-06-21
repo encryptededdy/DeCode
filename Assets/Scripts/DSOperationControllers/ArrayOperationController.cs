@@ -43,32 +43,38 @@ namespace DSOperationControllers
 
         private void ProcessExecution()
         {
-            var index = IndexDropdown.value;            
+            var index = IndexDropdown.value;
+            string code;
             
             switch (OperationType)
             {
                 case ArrayOperations.Add:
-                    CodePreviewView.text = "car = new Car();\n" +
-                                           $"array[{index}] = car;";
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, index));
+                    code = "car = new Car();\n" +
+                                    $"array[{index}] = car;";
+                    CodePreviewView.text = code;
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, index, code));
                     break;
                 case ArrayOperations.ToTemp:
-                    CodePreviewView.text = $"temp = array[{index}];";
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, index));
+                    code = $"temp = array[{index}];";
+                    CodePreviewView.text = code;
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, index, code));
                     break;
                 case ArrayOperations.FromTemp:
-                    CodePreviewView.text = $"array[{index}] = temp;";
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, index));
+                    code = $"array[{index}] = temp;";
+                    CodePreviewView.text = code;
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, index, code));
                     break;
                 case ArrayOperations.Delete:
-                    CodePreviewView.text = $"array[{index}] = null;";
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Delete, index));
+                    code = $"array[{index}] = null;";
+                    CodePreviewView.text = code;
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Delete, index, code));
                     break;
                 case ArrayOperations.CopyTo:
                     // Parse the second field
                     var index2 = IndexDropdown2.value;                    
-                    CodePreviewView.text = $"array[{index2}] = array[{index}];";
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, index, index2));
+                    code = $"array[{index2}] = array[{index}];";
+                    CodePreviewView.text = code;
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, index, index2, code));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -1691,6 +1691,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3094746921083033400}
   - component: {fileID: 7261473812855851644}
+  - component: {fileID: 8253135188559177295}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -1716,7 +1717,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.000015258789}
-  m_SizeDelta: {x: 0, y: 300}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7261473812855851644
 MonoBehaviour:
@@ -1743,6 +1744,20 @@ MonoBehaviour:
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
+--- !u!114 &8253135188559177295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2057917965116938474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!1 &2082792146327264206
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,6 +1879,9 @@ MonoBehaviour:
   - {fileID: 2082792147802402274}
   - {fileID: 5862207442475885574}
   LevelManager: {fileID: 0}
+  LoggingView: {fileID: 7180806534219405739}
+  LoggingText: {fileID: 5785774759557420797}
+  LoggingToggle: {fileID: 5098467217574381717}
 --- !u!1 &2082792146422314021
 GameObject:
   m_ObjectHideFlags: 0
@@ -4383,7 +4401,7 @@ GameObject:
   - component: {fileID: 4815051917459113719}
   - component: {fileID: 3590071302071699625}
   - component: {fileID: 5785774759557420797}
-  - component: {fileID: 4616454197074397338}
+  - component: {fileID: 5465777572893008645}
   m_Layer: 5
   m_Name: CodeLine
   m_TagString: Untagged
@@ -4451,88 +4469,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-    Meme meme = new Meme();
-
-'
---- !u!114 &4616454197074397338
+  m_Text: 
+--- !u!114 &5465777572893008645
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
