@@ -15,14 +15,14 @@ namespace LevelManager
         public List<IsoTransform> ActiveCarpark;
         public IsoTransform ActiveSpawnTile;
         public IsoTransform ActiveDestroyTile;
-        protected Vector3 SpawnPoint;
-        protected Vector3 DestroyPoint;
+        private Vector3 _spawnPoint;
+        private Vector3 _destroyPoint;
 
         // Only using the key as we want thread-safe DSes with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
 
-        void Awake()
+        protected void Awake()
         {
             _activeVehicles = new ConcurrentDictionary<GameObject, VehicleType>();
             SetNewSpawnPoint(ActiveSpawnTile);
@@ -34,7 +34,7 @@ namespace LevelManager
         {
             foreach (var vehicle in _activeVehicles.Keys)
             {
-                if (vehicle.GetComponent<IsoTransform>().Position.Equals(SpawnPoint))
+                if (vehicle.GetComponent<IsoTransform>().Position.Equals(_spawnPoint))
                 {
                     Debug.Log("Cannot spawn vehicle, a vehicle exist at spawn");
                     callback?.Invoke(null);
@@ -54,7 +54,7 @@ namespace LevelManager
             if (_spawnableVehicles.TryGetValue(vehicleType, out var vehicleAsset))
             {
                 GameObject obj = Instantiate(vehicleAsset);
-                obj.GetComponent<IsoTransform>().Position = SpawnPoint;
+                obj.GetComponent<IsoTransform>().Position = _spawnPoint;
                 obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
                 if (_activeVehicles.TryAdd(obj, vehicleType))
                 {
@@ -95,7 +95,7 @@ namespace LevelManager
                 var isoTransform = vehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    yield return MoveTo(vehicle, DestroyPoint, callback, fast);
+                    yield return MoveTo(vehicle, _destroyPoint, callback, fast);
                     if (_activeVehicles.TryRemove(vehicle, out VehicleType type))
                     {
                         DestroyImmediate(vehicle);
@@ -175,7 +175,7 @@ namespace LevelManager
 
         protected VehicleType GetVehicleType(GameObject vehicle)
         {
-            _activeVehicles.TryGetValue(vehicle, out var type);
+            _activeVehicles.TryGetValue(vehicle, out VehicleType type);
             return type;
         }
 
@@ -245,12 +245,12 @@ namespace LevelManager
 
         protected void SetNewSpawnPoint(IsoTransform spawnTile)
         {
-            SpawnPoint = ConvertTileToPosition(spawnTile);
+            _spawnPoint = ConvertTileToPosition(spawnTile);
         }
 
         protected void SetNewDestroyPoint(IsoTransform destroyTile)
         {
-            DestroyPoint = ConvertTileToPosition(destroyTile);
+            _destroyPoint = ConvertTileToPosition(destroyTile);
         }
 
         protected void SetNewActiveCarpark(List<IsoTransform> carpark)

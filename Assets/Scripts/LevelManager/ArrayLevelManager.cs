@@ -9,18 +9,22 @@ namespace LevelManager
     {
         public IsoTransform TempVarTile;
 
-        public void WriteToArray(GameObject vehicle, int index, Action<bool> callback = null, bool fast = false)
+        protected void Awake()
         {
-            Vector3 position = ConvertTileToPosition(ActiveCarpark[index]);
-            StartCoroutine(WriteToIndex(vehicle, position, callback, fast));
+            base.Awake();
         }
 
-        public void Spawn(Action<GameObject> callback = null, VehicleType vehicleType = VehicleType.random)
+        public void WriteToArray(GameObject vehicle, int index, Action<bool> callback, bool fast = false)
+        {
+            StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(ActiveCarpark[index]), callback, fast));
+        }
+
+        public void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
         {
             StartCoroutine(base.Spawn(vehicleType, callback));
         }
 
-        public void CopyFromIndexToTempVar(int index, Action<bool> callback = null)
+        public void CopyFromIndexToTempVar(int index, Action<bool> callback)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[index]));
             if (vehicle != null)
@@ -37,7 +41,7 @@ namespace LevelManager
             }
         }
 
-        public void CopyFromIndexToIndex(int fromIndex, int toIndex, Action<bool> callback = null)
+        public void CopyFromIndexToIndex(int fromIndex, int toIndex, Action<bool> callback)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[fromIndex]));
             if (vehicle != null)
@@ -61,7 +65,7 @@ namespace LevelManager
             }
         }
 
-        public void CopyFromTempVarToIndex(int index, Action<bool> callback = null)
+        public void CopyFromTempVarToIndex(int index, Action<bool> callback)
         {
             GameObject vehicle = GetVehicleAtPosition(ConvertTileToPosition(TempVarTile));
             IsoTransform isoTransform = ActiveCarpark[index];
@@ -80,7 +84,7 @@ namespace LevelManager
             }
         }
 
-        public void Destroy(int index, Action<bool> callback = null, bool fast = false)
+        public void Destroy(int index, Action<bool> callback, bool fast = false)
         {
             StartCoroutine(base.Destroy(ConvertTileToPosition(ActiveCarpark[index]), callback, fast));
         }

@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace LevelManager
 {
-    [CustomEditor(typeof(ArrayLevelManager))]
-    public class ArrayLevelEditor : Editor
+    [CustomEditor(typeof(ListLevelManager))]
+    public class ListLevelEditor : Editor
     {
         private GameObject _freshSpawn;
 
@@ -14,7 +14,7 @@ namespace LevelManager
         {
             DrawDefaultInspector();
 
-            ArrayLevelManager myScript = (ArrayLevelManager) target;
+            ListLevelManager myScript = (ListLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
                 myScript.Spawn(obj => { _freshSpawn = obj; });
@@ -22,8 +22,8 @@ namespace LevelManager
 
             if (GUILayout.Button("Move"))
             {
-                myScript.WriteToArray(_freshSpawn, 0,
-                    status => { Debug.Log(status ? "Successfully written to array" : "Fail to write to array"); });
+                myScript.AddElement(_freshSpawn,
+                    status => { Debug.Log(status ? "Successfully written to array" : "Failed to write to array"); });
             }
 
             if (GUILayout.Button("CopyFromIndexToTempVar"))
@@ -31,7 +31,7 @@ namespace LevelManager
                 myScript.CopyFromIndexToTempVar(0,
                     status =>
                     {
-                        Debug.Log(status ? "Successfully copy to temp variable" : "Fail to copy to temp variable");
+                        Debug.Log(status ? "Successfully copy to temp variable" : "Failed to copy to temp variable");
                     });
             }
 
@@ -41,7 +41,7 @@ namespace LevelManager
                 {
                     Debug.Log(status
                         ? "Successfully copy from tempVar to array"
-                        : "Fail to copy from tempVar to array");
+                        : "Failed to copy from tempVar to array");
                 });
             }
 
@@ -52,14 +52,14 @@ namespace LevelManager
                     {
                         Debug.Log(status
                             ? "Successfully copy from index to index"
-                            : "Fail to copy from index to index");
+                            : "Failed to copy from index to index");
                     });
             }
 
             if (GUILayout.Button("Destroy"))
             {
                 myScript.Destroy(0,
-                    status => { Debug.Log(status ? "Successfully destroyed a car" : "Fail to destroy a car"); });
+                    status => { Debug.Log(status ? "Successfully destroyed a car" : "Failed to destroy a car"); });
             }
 
             if (GUILayout.Button("ArrayState"))
@@ -75,7 +75,15 @@ namespace LevelManager
             {
                 myScript.ResetLevel(status =>
                 {
-                    Debug.Log(status ? "Successfully reset level" : "Fail to reset level");
+                    Debug.Log(status ? "Successfully reset level" : "Failed to reset level");
+                });
+            }
+
+            if (GUILayout.Button("NextStage"))
+            {
+                myScript.NextStage(status =>
+                {
+                    Debug.Log(status ? "Successfully change to next stage" : "Failed to change to next stage");
                 });
             }
         }
