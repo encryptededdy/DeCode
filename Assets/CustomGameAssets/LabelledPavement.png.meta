@@ -1,0 +1,448 @@
+fileFormatVersion: 2
+guid: 47a21e3e46ea96548a5f1cb1dc2fe308
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1198591000411300023
+    second: LabelledPavement_0
+  - first:
+      213: 8540106750515603322
+    second: LabelledPavement_1
+  - first:
+      213: -7078668598235465713
+    second: LabelledPavement_2
+  - first:
+      213: -3605923699624247289
+    second: LabelledPavement_3
+  - first:
+      213: 4940651940396742387
+    second: LabelledPavement_4
+  - first:
+      213: 3014606473488598447
+    second: LabelledPavement_5
+  - first:
+      213: 6377469155280669287
+    second: LabelledPavement_6
+  - first:
+      213: 2006595481428863792
+    second: LabelledPavement_7
+  - first:
+      213: -2948365550900619884
+    second: LabelledPavement_8
+  - first:
+      213: -6965601185837562877
+    second: LabelledPavement_9
+  - first:
+      213: -3711636162532889616
+    second: LabelledPavement_10
+  - first:
+      213: 4997602749058503683
+    second: LabelledPavement_11
+  - first:
+      213: -7834930578701927031
+    second: LabelledPavement_12
+  - first:
+      213: -2328384954674052942
+    second: LabelledPavement_13
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LabelledPavement_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 38244d5e74f30b74c90151a8289af84b
+      internalID: -1198591000411300023
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_1
+      rect:
+        serializedVersion: 2
+        x: 132
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa41c040f9da9b348afdce2563a2811e
+      internalID: 8540106750515603322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_2
+      rect:
+        serializedVersion: 2
+        x: 264
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 985379c01cc665947ae27c2fa42db888
+      internalID: -7078668598235465713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_3
+      rect:
+        serializedVersion: 2
+        x: 396
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbef19b5e32204643835b4c5a4126e5e
+      internalID: -3605923699624247289
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_4
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51a90e6f921cff2438160ed46037b575
+      internalID: 4940651940396742387
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_5
+      rect:
+        serializedVersion: 2
+        x: 660
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 946c2ac1aba43864293dad099b246f6e
+      internalID: 3014606473488598447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_6
+      rect:
+        serializedVersion: 2
+        x: 792
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 88ee842ee16d3a74ab533557135a584c
+      internalID: 6377469155280669287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_7
+      rect:
+        serializedVersion: 2
+        x: 924
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fd06215290bc974f85a6a633ad06bbd
+      internalID: 2006595481428863792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_8
+      rect:
+        serializedVersion: 2
+        x: 1056
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63de1fcb765398b49a3b895257252c9f
+      internalID: -2948365550900619884
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_9
+      rect:
+        serializedVersion: 2
+        x: 1188
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f12a5069f19514149a82491809c40511
+      internalID: -6965601185837562877
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_10
+      rect:
+        serializedVersion: 2
+        x: 1320
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2953d66138c1d5a47bae9a1f2bcf5300
+      internalID: -3711636162532889616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_11
+      rect:
+        serializedVersion: 2
+        x: 1452
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ad647ab2201b0e468413b8c7642998f
+      internalID: 4997602749058503683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_12
+      rect:
+        serializedVersion: 2
+        x: 1584
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21338b310dcceb248b3c935163b0f44d
+      internalID: -7834930578701927031
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LabelledPavement_13
+      rect:
+        serializedVersion: 2
+        x: 1716
+        y: 0
+        width: 132.14285
+        height: 99
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b7d3b36fed8b57e4db8ce1308df34bcf
+      internalID: -2328384954674052942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: e1a144269720f3d43979e8f1aed4bfda
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

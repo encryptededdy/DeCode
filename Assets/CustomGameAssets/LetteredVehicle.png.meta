@@ -1,0 +1,592 @@
+fileFormatVersion: 2
+guid: b999348a6e1905e4b957d3d73f98b219
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6491976587675061063
+    second: LetteredVehicle_0
+  - first:
+      213: 3557496664630440401
+    second: LetteredVehicle_1
+  - first:
+      213: 6847005705594403954
+    second: LetteredVehicle_2
+  - first:
+      213: 496489833366669968
+    second: LetteredVehicle_3
+  - first:
+      213: 6864804364317821332
+    second: LetteredVehicle_4
+  - first:
+      213: 6073930301524849526
+    second: LetteredVehicle_5
+  - first:
+      213: -5338365229725219130
+    second: LetteredVehicle_6
+  - first:
+      213: -2761838743821215569
+    second: LetteredVehicle_7
+  - first:
+      213: -992282819962260876
+    second: LetteredVehicle_8
+  - first:
+      213: 7731910715039581475
+    second: LetteredVehicle_9
+  - first:
+      213: 2922444109998306594
+    second: LetteredVehicle_10
+  - first:
+      213: -4347953018946039260
+    second: LetteredVehicle_11
+  - first:
+      213: 4730061332042888507
+    second: LetteredVehicle_12
+  - first:
+      213: 6006975526033606081
+    second: LetteredVehicle_13
+  - first:
+      213: -8077251348871240028
+    second: LetteredVehicle_14
+  - first:
+      213: -594177861687700389
+    second: LetteredVehicle_15
+  - first:
+      213: 2967195033768975628
+    second: LetteredVehicle_16
+  - first:
+      213: 6872740509156292535
+    second: LetteredVehicle_17
+  - first:
+      213: 4411898708828940271
+    second: LetteredVehicle_18
+  - first:
+      213: 5892602640114829253
+    second: LetteredVehicle_19
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 2
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  - serializedVersion: 2
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: LetteredVehicle_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 155
+        width: 140
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1f627934c072c784189e0ab1723c204e
+      internalID: -6491976587675061063
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_1
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 151
+        width: 140
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abc0787f69a214a46af3340006f0efe0
+      internalID: 3557496664630440401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_2
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 155
+        width: 140
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5a4192e50b296446b8392809f8d1b10
+      internalID: 6847005705594403954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_3
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 151
+        width: 140
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70b033f0279e7d94b858a4281ae9ed26
+      internalID: 496489833366669968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_4
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 156
+        width: 140
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25c682ee69c2455429c426dc5e5fa609
+      internalID: 6864804364317821332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_5
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 152
+        width: 140
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b839b01775796f44bd6cd446a30d56d
+      internalID: 6073930301524849526
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_6
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 156
+        width: 140
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8c7b9dd6d0f82545a2243f98e7184ea
+      internalID: -5338365229725219130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_7
+      rect:
+        serializedVersion: 2
+        x: 1130
+        y: 152
+        width: 140
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dac05a6b7887b8c4a92d42741ecab11a
+      internalID: -2761838743821215569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_8
+      rect:
+        serializedVersion: 2
+        x: 1290
+        y: 156
+        width: 140
+        height: 124
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee08af06141348c4b86867fde8238d1c
+      internalID: -992282819962260876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_9
+      rect:
+        serializedVersion: 2
+        x: 1450
+        y: 152
+        width: 140
+        height: 128
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e75708e1ceb152d42a241e952c1662f9
+      internalID: 7731910715039581475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f892e956985e81b40b7bbdf44fde0f42
+      internalID: 2922444109998306594
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_11
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 46871336e40a122498bcd0be067cb71b
+      internalID: -4347953018946039260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_12
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d70889a382eca4a459959c731464f983
+      internalID: 4730061332042888507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_13
+      rect:
+        serializedVersion: 2
+        x: 480
+        y: 0
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dbdaeb80df53d3a46acb924c3cead4a3
+      internalID: 6006975526033606081
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_14
+      rect:
+        serializedVersion: 2
+        x: 650
+        y: 1
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fe10ae8990aa7341afc04b4a6cba6e3
+      internalID: -8077251348871240028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_15
+      rect:
+        serializedVersion: 2
+        x: 810
+        y: 1
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 62d607bca6892844f8a0c9f82155c73f
+      internalID: -594177861687700389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_16
+      rect:
+        serializedVersion: 2
+        x: 970
+        y: 1
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 801967d0ae530fe458d3339b3b0ce902
+      internalID: 2967195033768975628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_17
+      rect:
+        serializedVersion: 2
+        x: 1130
+        y: 1
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8f0d3cb357768be4e864171c582a8d0a
+      internalID: 6872740509156292535
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_18
+      rect:
+        serializedVersion: 2
+        x: 1290
+        y: 1
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1fb831d1c60d68f40803ab52223da45e
+      internalID: 4411898708828940271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: LetteredVehicle_19
+      rect:
+        serializedVersion: 2
+        x: 1450
+        y: 1
+        width: 140
+        height: 132
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7fedb6c363bb50e4bb19a049aa917a9f
+      internalID: 5892602640114829253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 69281a72cffa1f441a95fa75faf51952
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

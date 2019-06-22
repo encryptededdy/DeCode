@@ -12,11 +12,13 @@ namespace DSOperationControllers
         public ArrayLevelManager LevelManager;
         private Queue<QueuedArrayOperation> QueuedOperations = new Queue<QueuedArrayOperation>();
         private bool _queueProcessingLock = false;
-        
+
         // Logging stuff
         public GameObject LoggingView;
         public Text LoggingText;
         public Button LoggingToggle;
+
+        private QueueFinished _queueFinishedListener { get; set; }
 
         void Start()
         {
@@ -76,6 +78,7 @@ namespace DSOperationControllers
             if (QueuedOperations.Count == 0)
             {
                 _queueProcessingLock = false;
+                _queueFinishedListener?.Invoke();
                 return;
             }
             
@@ -127,6 +130,8 @@ namespace DSOperationControllers
         }
 
     }
+
+    public delegate void QueueFinished();
 
     public class QueuedArrayOperation
     {
