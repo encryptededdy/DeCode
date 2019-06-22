@@ -1,5 +1,4 @@
 ﻿#if UNITY_EDITOR
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,84 +21,23 @@ namespace LevelManager
 
             if (GUILayout.Button("Move"))
             {
-                myScript.AddElement(_freshSpawn,
+                myScript.WriteToArray(_freshSpawn, 0,
                     status => { Debug.Log(status ? "Successfully written to array" : "Failed to write to array"); });
             }
 
-            if (GUILayout.Button("CopyFromIndexToTempVar"))
+            if (GUILayout.Button("Create"))
             {
-                myScript.CopyFromIndexToTempVar(0,
-                    status =>
+                myScript.CreateNewCarpark(2, status =>
+                {
+                    if (status)
                     {
-                        Debug.Log(status ? "Successfully copy to temp variable" : "Failed to copy to temp variable");
-                    });
-            }
-
-            if (GUILayout.Button("CopyFromTempVarToIndex"))
-            {
-                myScript.CopyFromTempVarToIndex(1, status =>
-                {
-                    Debug.Log(status
-                        ? "Successfully copy from tempVar to array"
-                        : "Failed to copy from tempVar to array");
-                });
-            }
-
-            if (GUILayout.Button("CopyFromIndexToIndex"))
-            {
-                myScript.CopyFromIndexToIndex(0, 1,
-                    status =>
+                        Debug.Log("Successfully created new carpark");
+                    }
+                    else
                     {
-                        Debug.Log(status
-                            ? "Successfully copy from index to index"
-                            : "Failed to copy from index to index");
-                    });
-            }
-
-            if (GUILayout.Button("Destroy"))
-            {
-                myScript.Destroy(0,
-                    status => { Debug.Log(status ? "Successfully destroyed a car" : "Failed to destroy a car"); });
-            }
-
-            if (GUILayout.Button("ArrayState"))
-            {
-                List<VehicleType> vehicleTypes = myScript.GetArrayState();
-                for (var i = 0; i < vehicleTypes.Count; i++)
-                {
-                    Debug.Log("Vehicle at: " + i + " is " + vehicleTypes[i]);
-                }
-            }
-
-            if (GUILayout.Button("Reset"))
-            {
-                myScript.ResetLevel(status =>
-                {
-                    Debug.Log(status ? "Successfully reset level" : "Failed to reset level");
+                        Debug.Log("Failed to create new carpark");
+                    }
                 });
-            }
-
-            if (GUILayout.Button("NextStage"))
-            {
-                myScript.Expand(status =>
-                {
-                    Debug.Log(status ? "Successfully change to next stage" : "Failed to change to next stage");
-                });
-            }
-        }
-    }
-    
-    [CustomEditor(typeof(CarparkManager))]
-    public class CarparkManagerEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            DrawDefaultInspector();
-            CarparkManager myScript = (CarparkManager) target;
-
-            if (GUILayout.Button("AddCarpark"))
-            {
-                myScript.AddCarpark();
             }
         }
     }

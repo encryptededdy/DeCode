@@ -11,8 +11,8 @@ namespace CustomGridGraph
     {
         private static readonly Vector3 NorthEast = new Vector3(1, 0, 0);
         private static readonly Vector3 NorthWest = new Vector3(0, 0, 1);
-        private static readonly Vector3 SouthEast = new Vector3(-1, 0, 0);
-        private static readonly Vector3 SouthWest = new Vector3(0, 0, -1);
+        private static readonly Vector3 SouthEast = new Vector3(0, 0, -1);
+        private static readonly Vector3 SouthWest = new Vector3(-1, 0, 0);
 
         private static readonly Vector3[] AdjacentPositions =
         {
@@ -79,8 +79,7 @@ namespace CustomGridGraph
                     HashSet<INode> neighbours = new HashSet<INode>();
                     foreach (var adjacentCell in adjacentCells)
                     {
-                        Node neighbour;
-                        if (grid.TryGetValue(adjacentCell, out neighbour))
+                        if (grid.TryGetValue(adjacentCell, out Node neighbour))
                         {
                             if (Traversable(isoTransform.Position, neighbour.Position, tile))
                             {

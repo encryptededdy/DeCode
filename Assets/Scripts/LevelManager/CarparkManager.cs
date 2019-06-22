@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
+using CustomGridGraph;
 using UnityEngine;
 
 namespace LevelManager
@@ -25,13 +26,15 @@ namespace LevelManager
                 Debug.Log("Maximum carpark size reached");
                 return false;
             }
+
             Carparks[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkTile;
+            Carparks[_currentSize].GetOrAddComponent<TileRules>().NE = true;
             CarparkEntrance[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkEntranceTile;
-            
+            CarparkEntrance[_currentSize].GetComponent<TileRules>().SW = true;
+
             _currentSize++;
             FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph();
             return true;
         }
-
     }
 }

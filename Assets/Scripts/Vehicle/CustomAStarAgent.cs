@@ -28,15 +28,15 @@ namespace Vehicle
             var endNode = Graph.ClosestNode(destination);
             if (startNode == null)
             {
-                Debug.LogError("Invalid position, no node found close enough to " +
-                               GetComponent<IsoTransform>().Position);
+                Debug.Log("Invalid position, no node found close enough to " +
+                          GetComponent<IsoTransform>().Position);
                 callback?.Invoke(false);
                 yield break;
             }
 
             if (endNode == null)
             {
-                Debug.LogError("Invalid position, no node found close enough to " + destination);
+                Debug.Log("Invalid position, no node found close enough to " + destination);
                 callback?.Invoke(false);
                 yield break;
             }

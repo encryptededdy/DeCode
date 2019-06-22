@@ -22,11 +22,12 @@ namespace LevelManager
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
 
-        protected void Awake()
+        protected abstract void OnAwake();
+
+        void Awake()
         {
             _activeVehicles = new ConcurrentDictionary<GameObject, VehicleType>();
-            SetNewSpawnPoint(ActiveSpawnTile);
-            SetNewDestroyPoint(ActiveDestroyTile);
+            OnAwake();
             LoadAssets();
         }
 
@@ -72,7 +73,7 @@ namespace LevelManager
                 Debug.Log("Cannot spawn vehicle, this vehicle type already spawned");
             }
 
-            Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
+            Debug.Log($"There are {_activeVehicles.Count} active vehicles");
         }
 
         private IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
@@ -100,7 +101,7 @@ namespace LevelManager
                     {
                         DestroyImmediate(vehicle);
                         ResetVehicle(type);
-                        Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
+                        Debug.Log($"There are {_activeVehicles.Count} active vehicles");
                         yield break;
                     }
                 }
@@ -112,10 +113,11 @@ namespace LevelManager
         protected IEnumerator WriteToIndex(GameObject clone, Vector3 carpark, Action<bool> callback, bool fast = false)
         {
             int completed = 0;
-            if (GetVehicleAtPosition(carpark) == null)
+            int expected = 2;
+            if (!GetVehicleAtPosition(carpark, out _))
             {
                 Debug.Log("No need to overwrite");
-                completed++;
+                expected--;
             }
             else
             {
@@ -134,42 +136,52 @@ namespace LevelManager
                 }, fast));
             }
 
-            StartCoroutine(MoveTo(clone, carpark, status =>
+            if (clone.GetComponent<IsoTransform>().Position.Equals(carpark))
             {
-                if (status)
+                Debug.Log("Vehicle already at destination");
+                expected--;
+            }
+            else
+            {
+                StartCoroutine(MoveTo(clone, carpark, status =>
                 {
-                    Debug.Log("Successfully move vehicle to index");
-                    completed++;
-                }
-                else
-                {
-                    Debug.Log("Failed to move vehicle to index");
-                    callback?.Invoke(false);
-                }
-            }, fast));
+                    if (status)
+                    {
+                        Debug.Log("Successfully move vehicle to index");
+                        completed++;
+                    }
+                    else
+                    {
+                        Debug.Log("Failed to move vehicle to index");
+                        callback?.Invoke(false);
+                    }
+                }, fast));
+            }
 
-            yield return new WaitUntil(() => completed == 2);
+            yield return new WaitUntil(() => completed == expected);
             callback?.Invoke(true);
         }
 
-        protected GameObject GetVehicleAtPosition(Vector3 position)
+        protected bool GetVehicleAtPosition(Vector3 position, out GameObject vehicle)
         {
-            foreach (var vehicle in _activeVehicles.Keys)
+            foreach (var activeVehicle in _activeVehicles.Keys)
             {
-                var isoTransform = vehicle.GetComponent<IsoTransform>();
+                var isoTransform = activeVehicle.GetComponent<IsoTransform>();
                 if (isoTransform.Position.Equals(position))
                 {
-                    return vehicle;
+                    vehicle = activeVehicle;
+                    return true;
                 }
             }
 
-            return null;
+            vehicle = null;
+            return false;
         }
 
         protected bool AddVehicle(GameObject vehicle, VehicleType vehicleType)
         {
             bool added = _activeVehicles.TryAdd(vehicle, vehicleType);
-            Debug.Log("There are " + _activeVehicles.Count + " active vehicles");
+            Debug.Log($"There are {_activeVehicles.Count} active vehicles");
             return added;
         }
 
@@ -251,11 +263,6 @@ namespace LevelManager
         protected void SetNewDestroyPoint(IsoTransform destroyTile)
         {
             _destroyPoint = ConvertTileToPosition(destroyTile);
-        }
-
-        protected void SetNewActiveCarpark(List<IsoTransform> carpark)
-        {
-            ActiveCarpark = carpark;
         }
     }
 }
