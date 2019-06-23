@@ -44,7 +44,7 @@ namespace DSOperationControllers
             LoggingText.text = "";
         }
 
-        private void AppendLog(String line)
+        public void AppendLog(String line)
         {
             LoggingText.text = LoggingText.text + "\n" + line;
         }
