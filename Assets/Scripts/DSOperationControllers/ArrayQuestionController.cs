@@ -111,6 +111,9 @@ namespace DSOperationControllers
                 }
             }
             
+            // Reset log
+            OperationQueue.ResetLog();
+            
             GreenButton.gameObject.SetActive(true);
             GreenButton.GetComponentInChildren<Text>().text = "Check";
             GreenButton.onClick.RemoveAllListeners();

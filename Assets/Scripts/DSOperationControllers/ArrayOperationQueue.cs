@@ -18,7 +18,7 @@ namespace DSOperationControllers
         public Text LoggingText;
         public Button LoggingToggle;
 
-        private QueueFinished _queueFinishedListener { get; set; }
+        public QueueFinished QueueFinishedListener { get; set; }
 
         void Start()
         {
@@ -37,6 +37,11 @@ namespace DSOperationControllers
         private void ToggleLoggingView()
         {
             LoggingView.SetActive(!LoggingView.activeInHierarchy);
+        }
+
+        public void ResetLog()
+        {
+            LoggingText.text = "";
         }
 
         private void AppendLog(String line)
@@ -62,7 +67,10 @@ namespace DSOperationControllers
         public void QueueOperation(QueuedArrayOperation operation)
         {
             QueuedOperations.Enqueue(operation);
-            AppendLog(operation.CodeLine);
+            if (operation.CodeLine != null)
+            {
+                AppendLog(operation.CodeLine);
+            }
             TryExecuteQueue();
         }
 
@@ -78,7 +86,7 @@ namespace DSOperationControllers
             if (QueuedOperations.Count == 0)
             {
                 _queueProcessingLock = false;
-                _queueFinishedListener?.Invoke();
+                QueueFinishedListener?.Invoke();
                 return;
             }
             
