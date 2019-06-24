@@ -16,7 +16,7 @@ namespace LevelManager
             ListLevelManager myScript = (ListLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.Spawn( obj => { _freshSpawn = obj; }, VehicleType.garbage_b);
+                myScript.Spawn(obj => { _freshSpawn = obj; });
             }
 
             if (GUILayout.Button("Move"))

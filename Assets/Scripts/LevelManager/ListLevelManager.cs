@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using Misc;
 using UnityEngine;
@@ -42,13 +43,6 @@ namespace LevelManager
             else
             {
                 GameObject carpark = Instantiate(Carpark);
-                
-                foreach (Transform child in carpark.transform)
-                {
-                    StartCoroutine(Transitions.FadeIn(child.gameObject, 0.5f, 1f));
-
-                }
-                
                 IsoTransform isoTransform = carpark.GetComponent<IsoTransform>();
                 _shiftAmount = new Vector3(isoTransform.Size.x, 0, 0);
 
@@ -72,6 +66,7 @@ namespace LevelManager
 
         private IEnumerator CopyVehiclesToNewCarpark(Action<bool> callback)
         {
+            yield return StartCoroutine(SpawnCarparkEffect());
             if (CurrentCarpark != null)
             {
                 int completed = 0;
@@ -104,8 +99,7 @@ namespace LevelManager
                 Debug.Log("Finished copying cars");
 
                 yield return Transitions.PanCamera(FindObjectOfType<Camera>(), _shiftAmount);
-                DestroyImmediate(CurrentCarpark.gameObject);
-                Debug.Log("Destroyed old carpark");
+                yield return StartCoroutine(DestroyCarparkEffect());
             }
 
             CurrentCarpark = NewCarpark;
@@ -114,6 +108,43 @@ namespace LevelManager
             SetNewDestroyPoint(NewCarpark.DestroyTile);
             _gridGraph.UpdateGraph();
             callback?.Invoke(true);
+        }
+
+        private IEnumerator SpawnCarparkEffect()
+        {
+            List<GameObject> tiles = new List<GameObject>();
+            foreach (Transform child in NewCarpark.transform)
+            {
+                tiles.Add(child.gameObject);
+                Material material = child.GetComponent<SpriteRenderer>().material;
+                var color = material.color;
+                color.a = 0f;
+                material.color = color;
+            }
+
+            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
+            foreach (GameObject child in shuffledList)
+            {
+                yield return StartCoroutine(Transitions.FadeAnimation(child, Transitions.FadeDirection.In));
+            }
+        }
+        
+        private IEnumerator DestroyCarparkEffect()
+        {
+            List<GameObject> tiles = new List<GameObject>();
+            foreach (Transform child in CurrentCarpark.transform)
+            {
+                tiles.Add(child.gameObject);
+            }
+
+            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
+            foreach (GameObject child in shuffledList)
+            {
+                yield return StartCoroutine(Transitions.FadeAnimation(child, Transitions.FadeDirection.Out));
+            }
+            
+            DestroyImmediate(CurrentCarpark.gameObject);
+            Debug.Log("Destroyed old carpark");
         }
     }
 }
