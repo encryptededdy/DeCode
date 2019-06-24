@@ -101,7 +101,7 @@ namespace LevelManager
 
             foreach (var carPark in ActiveCarpark)
             {
-                if (GetVehicleAtPosition(ConvertTileToPosition(carPark), out GameObject vehicle))
+                if (!GetVehicleAtPosition(ConvertTileToPosition(carPark), out GameObject vehicle))
                 {
                     array.Add(VehicleType.empty);
                 }

@@ -189,6 +189,9 @@ namespace DSOperationControllers
             _greenButton.gameObject.SetActive(false);
             _orangeButton.gameObject.SetActive(false);
             
+            _greenButton.onClick.RemoveAllListeners();
+            _orangeButton.onClick.RemoveAllListeners();
+            
             _greenButton.onClick.AddListener(NextStep);
             _orangeButton.onClick.AddListener(OnOrangeClick);
             
