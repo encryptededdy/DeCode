@@ -12,6 +12,7 @@ namespace LevelManager
     public abstract class LevelManager : MonoBehaviour
     {
         public List<GameObject> VehicleAssets;
+        public List<GameObject> CustomVehicleAssets;
         public List<IsoTransform> ActiveCarpark;
         public IsoTransform ActiveSpawnTile;
         public IsoTransform ActiveDestroyTile;
@@ -21,6 +22,7 @@ namespace LevelManager
         // Only using the key as we want thread-safe DSes with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
+        private ConcurrentDictionary<VehicleType, GameObject> _customSpawnableVehicles;
 
         protected abstract void OnAwake();
 
@@ -68,8 +70,25 @@ namespace LevelManager
                     callback?.Invoke(null);
                 }
             }
+            else if (_customSpawnableVehicles.TryGetValue(vehicleType, out vehicleAsset))
+            {
+                GameObject obj = Instantiate(vehicleAsset);
+                obj.GetComponent<IsoTransform>().Position = _spawnPoint;
+                obj.GetComponent<CustomAStarAgent>().Graph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
+                if (_activeVehicles.TryAdd(obj, vehicleType))
+                {
+                    _customSpawnableVehicles.TryRemove(vehicleType, out _);
+                    callback?.Invoke(obj);
+                }
+                else
+                {
+                    DestroyImmediate(obj);
+                    callback?.Invoke(null);
+                }
+            }
             else
             {
+                callback?.Invoke(null);
                 Debug.Log("Cannot spawn vehicle, this vehicle type already spawned");
             }
 
@@ -199,11 +218,24 @@ namespace LevelManager
         private void LoadAssets()
         {
             _spawnableVehicles = new ConcurrentDictionary<VehicleType, GameObject>();
+            _customSpawnableVehicles = new ConcurrentDictionary<VehicleType, GameObject>();
+
             foreach (var asset in VehicleAssets)
             {
                 if (Enum.TryParse(asset.name, out VehicleType vehicleType))
                 {
                     if (_spawnableVehicles.TryAdd(vehicleType, asset))
+                    {
+                        Debug.Log($"Added Vehicle {asset.name}");
+                    }
+                }
+            }
+
+            foreach (var asset in CustomVehicleAssets)
+            {
+                if (Enum.TryParse(asset.name, out VehicleType vehicleType))
+                {
+                    if (_customSpawnableVehicles.TryAdd(vehicleType, asset))
                     {
                         Debug.Log($"Added Vehicle {asset.name}");
                     }
@@ -230,6 +262,22 @@ namespace LevelManager
                         if (_spawnableVehicles.TryAdd(vehicleType, asset))
                         {
                             Debug.Log($"Added Vehicle {asset.name}");
+                            return;
+                        }
+                    }
+                }
+            }
+
+            foreach (var asset in CustomVehicleAssets)
+            {
+                if (Enum.TryParse(asset.name, out VehicleType type))
+                {
+                    if (vehicleType.Equals(type))
+                    {
+                        if (_customSpawnableVehicles.TryAdd(vehicleType, asset))
+                        {
+                            Debug.Log($"Added Vehicle {asset.name}");
+                            return;
                         }
                     }
                 }
