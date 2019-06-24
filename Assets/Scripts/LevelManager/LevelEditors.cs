@@ -27,7 +27,7 @@ namespace LevelManager
 
             if (GUILayout.Button("Create"))
             {
-                myScript.CreateNewCarpark(2, status =>
+                myScript.CreateNewCarpark(8, status =>
                 {
                     if (status)
                     {

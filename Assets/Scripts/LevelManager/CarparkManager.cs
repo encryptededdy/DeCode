@@ -11,7 +11,7 @@ namespace LevelManager
         public List<IsoTransform> CarparkEntrance;
 
         public Sprite CarparkTile;
-        public Sprite CarparkEntranceTile;
+        public List<Sprite> CarparkEntranceTile;
 
         public IsoTransform SpawnTile;
         public IsoTransform DestroyTile;
@@ -29,7 +29,8 @@ namespace LevelManager
 
             Carparks[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkTile;
             Carparks[_currentSize].GetOrAddComponent<TileRules>().NE = true;
-            CarparkEntrance[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkEntranceTile;
+            
+            CarparkEntrance[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkEntranceTile[_currentSize];
             CarparkEntrance[_currentSize].GetComponent<TileRules>().SW = true;
 
             _currentSize++;

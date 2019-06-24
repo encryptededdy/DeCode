@@ -21,7 +21,7 @@ namespace LevelManager
 
         public new void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
         {
-            if (ActiveCarpark == null)
+            if (CurrentCarpark == null)
             {
                 Debug.Log("There are no active carparks");
                 callback?.Invoke(null);
@@ -42,6 +42,13 @@ namespace LevelManager
             else
             {
                 GameObject carpark = Instantiate(Carpark);
+                
+                foreach (Transform child in carpark.transform)
+                {
+                    StartCoroutine(Transitions.FadeIn(child.gameObject, 0.5f, 1f));
+
+                }
+                
                 IsoTransform isoTransform = carpark.GetComponent<IsoTransform>();
                 _shiftAmount = new Vector3(isoTransform.Size.x, 0, 0);
 
@@ -65,7 +72,7 @@ namespace LevelManager
 
         private IEnumerator CopyVehiclesToNewCarpark(Action<bool> callback)
         {
-            if (ActiveCarpark != null)
+            if (CurrentCarpark != null)
             {
                 int completed = 0;
                 int expected = ActiveCarpark.Count;
