@@ -16,6 +16,7 @@ namespace DSOperationControllers
         public Button OrangeButton;
 
         private ArrayQuestionData _currentQuestion;
+        private bool _runArrayAlgoIntro = false;
 
         private void Start()
         {
@@ -38,32 +39,38 @@ namespace DSOperationControllers
                 }
              ));
             
-            _questions.Enqueue(new ArrayQuestionData(
-                "Swap Elements",
-                "Swap the blue car with the red car, leaving all other cars in the same place",
-                new List<VehicleType>()
-                {
-                    VehicleType.ambulance, VehicleType.blue, VehicleType.garbage, VehicleType.red, VehicleType.taxi
-                },
-                (answer) => answer.SequenceEqual(new List<VehicleType>()
-                {
-                    VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
-                })));
-            
-            _questions.Enqueue(new ArrayQuestionData(
-                "Sort Array",
-                "Sort the array according to car type, ascending - Ambulance, Police, Taxi, Silver, Black.",
-                new List<VehicleType>()
-                {
-                    VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
-                },
-                (answer) => answer.SequenceEqual(new List<VehicleType>()
-                {
-                    VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
-                })));
+            // TODO: Removed for testing only...
+//            _questions.Enqueue(new ArrayQuestionData(
+//                "Swap Elements",
+//                "Swap the blue car with the red car, leaving all other cars in the same place",
+//                new List<VehicleType>()
+//                {
+//                    VehicleType.ambulance, VehicleType.blue, VehicleType.garbage, VehicleType.red, VehicleType.taxi
+//                },
+//                (answer) => answer.SequenceEqual(new List<VehicleType>()
+//                {
+//                    VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
+//                })));
+//            
+//            _questions.Enqueue(new ArrayQuestionData(
+//                "Sort Array",
+//                "Sort the array according to car type, ascending - Ambulance, Police, Taxi, Silver, Black.",
+//                new List<VehicleType>()
+//                {
+//                    VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
+//                },
+//                (answer) => answer.SequenceEqual(new List<VehicleType>()
+//                {
+//                    VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
+//                })));
                         
             NextQuestion();
             
+        }
+
+        public void AlgorithmIntroductionComplete()
+        {
+            NextQuestion();
         }
 
         private void NextQuestion()
@@ -71,12 +78,12 @@ namespace DSOperationControllers
             // Clear parking lot
             OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
 
-            if (_questions.Count == 0)
+            if (_questions.Count == 0 && !_runArrayAlgoIntro)
             {
-                Title.text = "Level Complete!";
-                Description.text = "ligma";
-                GreenButton.gameObject.SetActive(false);
-                OrangeButton.gameObject.SetActive(false);
+                var algoIntroCtlr = new ArrayAlgorithmIntroductionController(OperationQueue, Title, Description,
+                    GreenButton, OrangeButton, this);
+                algoIntroCtlr.Start();
+                _runArrayAlgoIntro = true;
                 return;
             }
             _currentQuestion = _questions.Dequeue();

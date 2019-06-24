@@ -6,13 +6,14 @@ namespace DSOperationControllers
 {
     public class ArrayAlgorithmIntroductionController
     {
-        private ArrayOperationQueue _operationQueue;
+        private readonly ArrayOperationQueue _operationQueue;
+        private readonly ArrayQuestionController _arrayQuestionController;
         private readonly Text _title;
         private readonly Text _description;
         private readonly Button _greenButton;
         private readonly Button _orangeButton;
 
-        private Queue<AlgorithmStepData> _algorithmSteps = new Queue<AlgorithmStepData>();
+        private readonly Queue<AlgorithmStepData> _algorithmSteps = new Queue<AlgorithmStepData>();
 
         private AlgorithmStepData _currentStep;
 
@@ -26,9 +27,9 @@ namespace DSOperationControllers
                     _greenButton.gameObject.SetActive(false);
                     queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 0, VehicleType.garbage_b));
                     queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 1, VehicleType.garbage_a));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 0, VehicleType.garbage_e));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 0, VehicleType.garbage_d));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 0, VehicleType.garbage_c));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 2, VehicleType.garbage_e));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 3, VehicleType.garbage_d));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 4, VehicleType.garbage_c));
                     queue.QueueFinishedListener = ReEnableGreenButton;
                 }));
             
@@ -91,9 +92,9 @@ namespace DSOperationControllers
                     _orangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     // Perform Swap
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 3, "// Swap cars at index 3 and 4\ntemp = array[4]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 2, 3, "array[4] = array[3]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 2, "array[3] = temp"));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 4, "// Swap cars at index 3 and 4\ntemp = array[4]"));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 3, 4, "array[4] = array[3]"));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 3, "array[3] = temp"));
                     
                 }));
             
@@ -149,20 +150,25 @@ namespace DSOperationControllers
 
         }
 
-        public ArrayAlgorithmIntroductionController(ArrayOperationQueue operationQueue, Text title, Text description, Button greenButton, Button orangeButton)
+        public ArrayAlgorithmIntroductionController(ArrayOperationQueue operationQueue, Text title, Text description, Button greenButton, Button orangeButton, ArrayQuestionController arrayQuestionController)
         {
             _operationQueue = operationQueue;
             _title = title;
             _description = description;
             _greenButton = greenButton;
             _orangeButton = orangeButton;
+            _arrayQuestionController = arrayQuestionController;
             
             SetupStepsBubbleSort();
-            
-            operationQueue.ResetLog(); // Reset log so user doesn't have to aimlessly scroll
-            NextStep();
         }
 
+        public void Start()
+        {
+                        
+            _operationQueue.ResetLog(); // Reset log so user doesn't have to aimlessly scroll
+            NextStep();
+        }
+        
         private void ReEnableGreenButton()
         {
             _greenButton.gameObject.SetActive(true);
@@ -182,7 +188,9 @@ namespace DSOperationControllers
         {
             if (_algorithmSteps.Count == 0)
             {
-                // TODO: End code
+                _greenButton.onClick.RemoveAllListeners();
+                _orangeButton.onClick.RemoveAllListeners();
+                _arrayQuestionController.AlgorithmIntroductionComplete();
                 return;
             }
 
