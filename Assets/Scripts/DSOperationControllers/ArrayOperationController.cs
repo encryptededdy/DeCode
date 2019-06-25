@@ -44,6 +44,7 @@ namespace DSOperationControllers
         private void ProcessExecution()
         {
             var index = IndexDropdown.value;
+            int index2;
             string code;
             
             switch (OperationType)
@@ -71,10 +72,18 @@ namespace DSOperationControllers
                     break;
                 case ArrayOperations.CopyTo:
                     // Parse the second field
-                    var index2 = IndexDropdown2.value;                    
+                    index2 = IndexDropdown2.value;                    
                     code = $"array[{index2}] = array[{index}];";
                     CodePreviewView.text = code;
                     _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, index, index2, code));
+                    break;
+                case ArrayOperations.Swap:
+                    // Parse the second field
+                    index2 = IndexDropdown2.value;          
+                    code = $"temp = array[{index}];\n" +
+                           $"array[{index}] = array[{index2}];\n" +
+                           $"array[{index2}] = temp;";
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Swap, index, index2, code));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -90,6 +99,7 @@ namespace DSOperationControllers
         Delete,
         CopyTo,
         Reset,
-        AddSpecific
+        AddSpecific,
+        Swap
     }
 }

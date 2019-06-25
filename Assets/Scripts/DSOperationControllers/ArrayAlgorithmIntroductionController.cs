@@ -25,11 +25,11 @@ namespace DSOperationControllers
                 queue =>
                 {
                     _greenButton.gameObject.SetActive(false);
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 0, VehicleType.garbage_b));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 1, VehicleType.garbage_a));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 2, VehicleType.garbage_e));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 3, VehicleType.garbage_d));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, 4, VehicleType.garbage_c));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 0, VehicleType.garbage_b));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 1, VehicleType.garbage_a));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 2, VehicleType.garbage_e));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 3, VehicleType.garbage_d));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 4, VehicleType.garbage_c));
                     queue.QueueFinishedListener = ReEnableGreenButton;
                 }));
             
@@ -142,6 +142,14 @@ namespace DSOperationControllers
                 queue =>
                 {
                     queue.AppendLog("// Iteration 3 results in no swaps");
+                    _greenButton.gameObject.SetActive(true);
+                }
+            ));
+            
+            _algorithmSteps.Enqueue(new AlgorithmStepData("Try yourself",
+                "Now you can check your understanding of BubbleSort yourself by manually performing iterations/loops of the algorithm...",
+                queue =>
+                {
                     _greenButton.gameObject.SetActive(true);
                 }
             ));

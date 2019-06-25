@@ -70,23 +70,88 @@ namespace DSOperationControllers
 
         public void AlgorithmIntroductionComplete()
         {
+            // Show only swap operation
+            OperationQueue.ShowOperation(ArrayOperations.Swap);
+            
+            // Add questions...
+            _questions.Enqueue(new ArrayQuestionData(
+                "First iteration",
+                "Perform the first loop/iteration of the bubblesort algorithm, swapping pairs as required. If no swaps are required, just click Check",
+                new List<VehicleType>()
+                {
+                    VehicleType.garbage_c, VehicleType.garbage_b, VehicleType.garbage_a, VehicleType.garbage_e, VehicleType.garbage_d
+                },
+                (answer) => answer.SequenceEqual(new List<VehicleType>()
+                {
+                    VehicleType.garbage_b, VehicleType.garbage_a, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
+                })));
+            
+            _questions.Enqueue(new ArrayQuestionData(
+                "Second iteration",
+                "Perform the second loop/iteration of the bubblesort algorithm, swapping pairs as required. If no swaps are required, just click Check",
+                new List<VehicleType>()
+                {
+                    VehicleType.garbage_b, VehicleType.garbage_a, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
+                },
+                (answer) => answer.SequenceEqual(new List<VehicleType>()
+                {
+                    VehicleType.garbage_a, VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
+                })));
+            
+            _questions.Enqueue(new ArrayQuestionData(
+                "Third iteration",
+                "Perform the third loop/iteration of the bubblesort algorithm, swapping pairs as required. If no swaps are required, just click Check",
+                new List<VehicleType>()
+                {
+                    VehicleType.garbage_a, VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
+                },
+                (answer) => answer.SequenceEqual(new List<VehicleType>()
+                {
+                    VehicleType.garbage_a, VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
+                })));
+            
             NextQuestion();
+        }
+
+        private void NextLevel()
+        {
+            // TODO: Load the lists level...
         }
 
         private void NextQuestion()
         {
-            // Clear parking lot
-            OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
 
-            if (_questions.Count == 0 && !_runArrayAlgoIntro)
+            switch (_questions.Count)
             {
-                var algoIntroCtlr = new ArrayAlgorithmIntroductionController(OperationQueue, Title, Description,
-                    GreenButton, OrangeButton, this);
-                algoIntroCtlr.Start();
-                _runArrayAlgoIntro = true;
-                return;
+                case 0 when !_runArrayAlgoIntro:
+                {
+                    // Hide all buttons...
+                    OperationQueue.HideAllOperations();
+                    var algoIntroCtlr = new ArrayAlgorithmIntroductionController(OperationQueue, Title, Description,
+                        GreenButton, OrangeButton, this);
+                    algoIntroCtlr.Start();
+                    _runArrayAlgoIntro = true;
+                    return;
+                }
+                case 0:
+                    Title.text = "Arrays complete!";
+                    Description.text = "We will now move on to lists, a resizable extension of arrays...";
+                    GreenButton.gameObject.SetActive(true);
+                    GreenButton.GetComponentInChildren<Text>().text = "Start";
+                    GreenButton.onClick.RemoveAllListeners();
+                    GreenButton.onClick.AddListener(NextLevel);
+                    OrangeButton.gameObject.SetActive(false);
+                    break;
             }
+
             _currentQuestion = _questions.Dequeue();
+
+            if (!OperationQueue.GetArrayState().SequenceEqual(_currentQuestion.InitialState))
+            {
+                // Clear parking lot
+                OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
+            }
+
             // Fill in UI
             Title.text = _currentQuestion.Title;
             Description.text = "Click Start to begin question";
@@ -105,19 +170,22 @@ namespace DSOperationControllers
             Title.text = _currentQuestion.Title;
             Description.text = _currentQuestion.Description;
 
-            // Clear parking lot
-            OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
-            // Add cars
-            for (var i = 0; i < _currentQuestion.InitialState.Count; i++)
+            // Clear parking lot and repopulate iff it is needed
+            if (!OperationQueue.GetArrayState().SequenceEqual(_currentQuestion.InitialState))
             {
-                // Work around issue with trying to insert VehicleType.empty
-                if (!_currentQuestion.InitialState[i].Equals(VehicleType.empty))
+                OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
+                // Add cars
+                for (var i = 0; i < _currentQuestion.InitialState.Count; i++)
                 {
-                    OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, i,
-                        _currentQuestion.InitialState[i]));
+                    // Work around issue with trying to insert VehicleType.empty
+                    if (!_currentQuestion.InitialState[i].Equals(VehicleType.empty))
+                    {
+                        OperationQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, i,
+                            _currentQuestion.InitialState[i]));
+                    }
                 }
             }
-            
+
             // Reset log
             OperationQueue.ResetLog();
             

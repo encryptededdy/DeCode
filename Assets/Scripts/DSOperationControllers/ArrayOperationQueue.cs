@@ -34,6 +34,25 @@ namespace DSOperationControllers
             LoggingToggle.onClick.AddListener(ToggleLoggingView);
         }
 
+        public void HideAllOperations()
+        {
+            OperationControllers.ForEach(obj =>
+            {
+                obj.gameObject.SetActive(false);
+            });
+        }
+
+        public void ShowOperation(ArrayOperations operation)
+        {
+            OperationControllers.ForEach(obj =>
+            {
+                if (obj.OperationType.Equals(operation))
+                {
+                    obj.gameObject.SetActive(true);
+                }
+            });
+        }
+
         private void ToggleLoggingView()
         {
             LoggingView.SetActive(!LoggingView.activeInHierarchy);
@@ -131,6 +150,15 @@ namespace DSOperationControllers
                     {
                         LevelManager.WriteToArray(obj, operation.Index1, Callback, true);
                     }, operation.VehicleType);
+                    break;
+                case ArrayOperations.Swap:
+                    LevelManager.CopyFromIndexToTempVar(operation.Index1, obj =>
+                    {
+                        LevelManager.CopyFromIndexToIndex(operation.Index2, operation.Index1, obj2 =>
+                        {
+                            LevelManager.CopyFromTempVarToIndex(operation.Index2, Callback);
+                        });
+                    });
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
