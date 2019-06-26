@@ -40,29 +40,29 @@ namespace DSOperationControllers
              ));
             
             // TODO: Removed for testing only...
-//            _questions.Enqueue(new ArrayQuestionData(
-//                "Swap Elements",
-//                "Swap the blue car with the red car, leaving all other cars in the same place",
-//                new List<VehicleType>()
-//                {
-//                    VehicleType.ambulance, VehicleType.blue, VehicleType.garbage, VehicleType.red, VehicleType.taxi
-//                },
-//                (answer) => answer.SequenceEqual(new List<VehicleType>()
-//                {
-//                    VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
-//                })));
-//            
-//            _questions.Enqueue(new ArrayQuestionData(
-//                "Sort Array",
-//                "Sort the array according to car type, ascending - Ambulance, Police, Taxi, Silver, Black.",
-//                new List<VehicleType>()
-//                {
-//                    VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
-//                },
-//                (answer) => answer.SequenceEqual(new List<VehicleType>()
-//                {
-//                    VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
-//                })));
+            _questions.Enqueue(new ArrayQuestionData(
+                "Swap Elements",
+                "Swap the blue car with the red car, leaving all other cars in the same place",
+                new List<VehicleType>()
+                {
+                    VehicleType.ambulance, VehicleType.blue, VehicleType.garbage, VehicleType.red, VehicleType.taxi
+                },
+                (answer) => answer.SequenceEqual(new List<VehicleType>()
+                {
+                    VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
+                })));
+            
+            _questions.Enqueue(new ArrayQuestionData(
+                "Sort Array",
+                "Sort the array according to car type, ascending - Ambulance, Police, Taxi, Silver, Black.",
+                new List<VehicleType>()
+                {
+                    VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
+                },
+                (answer) => answer.SequenceEqual(new List<VehicleType>()
+                {
+                    VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
+                })));
                         
             NextQuestion();
             
