@@ -19,23 +19,28 @@ namespace LevelManager
         private int _currentSize;
         private static int _maxSize = 8;
 
-        public bool AddCarpark()
+        public void AddCarpark()
         {
             if (_currentSize.Equals(_maxSize))
             {
                 Debug.Log("Maximum carpark size reached");
-                return false;
             }
+            else
+            {
+                Carparks[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkTile;
+                Carparks[_currentSize].GetOrAddComponent<TileRules>().NE = true;
 
-            Carparks[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkTile;
-            Carparks[_currentSize].GetOrAddComponent<TileRules>().NE = true;
-            
-            CarparkEntrance[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkEntranceTile[_currentSize];
-            CarparkEntrance[_currentSize].GetComponent<TileRules>().SW = true;
+                CarparkEntrance[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkEntranceTile[_currentSize];
+                CarparkEntrance[_currentSize].GetComponent<TileRules>().SW = true;
 
-            _currentSize++;
-            FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph();
-            return true;
+                _currentSize++;
+                FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph();
+            }
+        }
+
+        public int getSize()
+        {
+            return _currentSize;
         }
     }
 }
