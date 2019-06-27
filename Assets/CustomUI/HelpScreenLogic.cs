@@ -16,18 +16,28 @@ public class HelpScreenLogic : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        // Hide the second page, show the first one...
-        Page2.SetActive(false);
-        Page1.SetActive(true);
+        if (Page2 != null)
+        {
+            // Hide the second page, show the first one...
+            Page2.SetActive(false);
+            Page1.SetActive(true);
+        }
+        else
+        {
+            Page1.SetActive(true);
+        }
         Background.SetActive(true);
         NextButton.onClick.AddListener(nextButtonClickHandler);
     }
 
     private void nextButtonClickHandler()
     {
-        if (onPage2)
+        if (onPage2 || Page2 == null)
         {
-            Page2.SetActive(false);
+            if (Page2 != null)
+            {
+                Page2.SetActive(false);
+            }
             Page1.SetActive(false);
             NextButton.gameObject.SetActive(false);
             Background.SetActive(false);

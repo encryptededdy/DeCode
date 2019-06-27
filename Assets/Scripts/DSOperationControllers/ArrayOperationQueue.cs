@@ -86,10 +86,6 @@ namespace DSOperationControllers
         public void QueueOperation(QueuedArrayOperation operation)
         {
             QueuedOperations.Enqueue(operation);
-            if (operation.CodeLine != null)
-            {
-                AppendLog(operation.CodeLine);
-            }
             TryExecuteQueue();
         }
 
@@ -122,25 +118,61 @@ namespace DSOperationControllers
                 TryExecuteQueue();
             }
 
+            string code;
+
             switch (operation.Operation)
             {
                 case ArrayOperations.Add:
                     LevelManager.Spawn(obj =>
                     {
-                        LevelManager.WriteToArray(obj, operation.Index1, Callback);
+                        LevelManager.WriteToArray(obj, operation.Index1, obj2 =>
+                        {
+                            code = $"car = {LevelManager.GetArrayState()[operation.Index1]};\n" +
+                                   $"array[{operation.Index1}] = car;";
+                            if (operation.CodeLine != null)
+                            {
+                                operation.CodeLine.text = code;
+                            }
+                            AppendLog(code);
+                            Callback(true);
+                        });
                     });
                     break;
                 case ArrayOperations.ToTemp:
                     LevelManager.CopyFromIndexToTempVar(operation.Index1, Callback);
+                    code = $"temp = array[{operation.Index1}];";
+                    if (operation.CodeLine != null)
+                    {
+                        operation.CodeLine.text = code;
+                    }
+                    AppendLog(code);
                     break;
                 case ArrayOperations.FromTemp:
                     LevelManager.CopyFromTempVarToIndex(operation.Index1, Callback);
+                    code = $"array[{operation.Index1}] = temp;";
+                    if (operation.CodeLine != null)
+                    {
+                        operation.CodeLine.text = code;
+                    }
+                    AppendLog(code);
                     break;
                 case ArrayOperations.Delete:
                     LevelManager.Destroy(operation.Index1, Callback);
+                    code = $"array[{operation.Index1}] = null;";
+                    if (operation.CodeLine != null)
+                    {
+                        operation.CodeLine.text = code;
+                    }
+                    AppendLog(code);
                     break;
                 case ArrayOperations.CopyTo:
                     LevelManager.CopyFromIndexToIndex(operation.Index1, operation.Index2, Callback);
+                    code = $"array[{operation.Index2}] = array[{operation.Index1}];";
+                    if (operation.CodeLine != null)
+                    {
+                        operation.CodeLine.text = code;
+                    }
+                    AppendLog(code);
                     break;
                 case ArrayOperations.Reset:
                     LevelManager.ResetLevel(Callback);
@@ -159,6 +191,14 @@ namespace DSOperationControllers
                             LevelManager.CopyFromTempVarToIndex(operation.Index2, Callback);
                         });
                     });
+                    code = $"temp = array[{operation.Index1}];\n" +
+                           $"array[{operation.Index1}] = array[{operation.Index2}];\n" +
+                           $"array[{operation.Index2}] = temp;";
+                    if (operation.CodeLine != null)
+                    {
+                        operation.CodeLine.text = code;
+                    }
+                    AppendLog(code);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -176,10 +216,10 @@ namespace DSOperationControllers
         public int Index2 { get; }
         public VehicleType VehicleType { get; }
         
-        public String CodeLine { get; }
+        public Text CodeLine { get; }
         
         // Used for CopyTo
-        public QueuedArrayOperation(ArrayOperations operation, int index1, int index2, string codeLine)
+        public QueuedArrayOperation(ArrayOperations operation, int index1, int index2, Text codeLine)
         {
             Operation = operation;
             Index1 = index1;
@@ -202,7 +242,7 @@ namespace DSOperationControllers
         }
 
         // Used for all other operations
-        public QueuedArrayOperation(ArrayOperations operation, int index1, string codeLine)
+        public QueuedArrayOperation(ArrayOperations operation, int index1, Text codeLine)
         {
             Operation = operation;
             Index1 = index1;

@@ -44,10 +44,11 @@ namespace DSOperationControllers
                 {
                     _orangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
+                    queue.AppendLog("// Swap cars at index 0 and 1");
                     // Perform Swap
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 1, "// Swap cars at index 0 and 1\ntemp = array[1]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 0, 1, "array[1] = array[0]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 0, "array[0] = temp"));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 1, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 0, 1, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 0, null));
                     
                 }));
             
@@ -72,9 +73,10 @@ namespace DSOperationControllers
                     _orangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     // Perform Swap
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 3, "// Swap cars at index 2 and 3\ntemp = array[3]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 2, 3, "array[3] = array[2]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 2, "array[2] = temp"));
+                    queue.AppendLog("// Swap cars at index 2 and 3");
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 3, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 2, 3, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 2, null));
                     
                 }));
 
@@ -92,9 +94,10 @@ namespace DSOperationControllers
                     _orangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     // Perform Swap
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 4, "// Swap cars at index 3 and 4\ntemp = array[4]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 3, 4, "array[4] = array[3]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 3, "array[3] = temp"));
+                    queue.AppendLog("// Swap cars at index 3 and 4");
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 4, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 3, 4, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 3, null));
                     
                 }));
             
@@ -121,9 +124,10 @@ namespace DSOperationControllers
                     _orangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     // Perform Swap
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 3, "// Swap cars at index 2 and 3\ntemp = array[3]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 2, 3, "array[3] = array[2]"));
-                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 2, "array[2] = temp"));                    
+                    queue.AppendLog("// Swap cars at index 2 and 3");
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, 3, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, 2, 3, null));
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, 2, null));                    
                 }
             ));
             

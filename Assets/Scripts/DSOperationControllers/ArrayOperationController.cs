@@ -50,40 +50,26 @@ namespace DSOperationControllers
             switch (OperationType)
             {
                 case ArrayOperations.Add:
-                    code = "car = new Car();\n" +
-                                    $"array[{index}] = car;";
-                    CodePreviewView.text = code;
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, index, code));
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Add, index, CodePreviewView));
                     break;
                 case ArrayOperations.ToTemp:
-                    code = $"temp = array[{index}];";
-                    CodePreviewView.text = code;
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, index, code));
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.ToTemp, index, CodePreviewView));
                     break;
                 case ArrayOperations.FromTemp:
-                    code = $"array[{index}] = temp;";
-                    CodePreviewView.text = code;
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, index, code));
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.FromTemp, index, CodePreviewView));
                     break;
                 case ArrayOperations.Delete:
-                    code = $"array[{index}] = null;";
-                    CodePreviewView.text = code;
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Delete, index, code));
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Delete, index, CodePreviewView));
                     break;
                 case ArrayOperations.CopyTo:
                     // Parse the second field
                     index2 = IndexDropdown2.value;                    
-                    code = $"array[{index2}] = array[{index}];";
-                    CodePreviewView.text = code;
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, index, index2, code));
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.CopyTo, index, index2, CodePreviewView));
                     break;
                 case ArrayOperations.Swap:
                     // Parse the second field
                     index2 = IndexDropdown2.value;          
-                    code = $"temp = array[{index}];\n" +
-                           $"array[{index}] = array[{index2}];\n" +
-                           $"array[{index2}] = temp;";
-                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Swap, index, index2, code));
+                    _operationsQueue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Swap, index, index2, CodePreviewView));
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
