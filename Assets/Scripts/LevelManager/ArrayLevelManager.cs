@@ -15,6 +15,11 @@ namespace LevelManager
             SetNewDestroyPoint(ActiveDestroyTile);
         }
 
+        public void StartLevel(Action<bool> callback)
+        {
+            callback(true);
+        }
+
         public void WriteToArray(GameObject vehicle, int index, Action<bool> callback, bool fast = false)
         {
             StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(ActiveCarpark[index]), callback, fast));

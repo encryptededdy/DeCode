@@ -75,19 +75,38 @@ namespace LevelManager
                 {
                     if (GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[i]), out GameObject vehicle))
                     {
-                        StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(NewCarpark.Carparks[i]),
-                            status =>
-                            {
-                                if (status)
+                        if (i < NewCarpark.getSize())
+                        {
+                            StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(NewCarpark.Carparks[i]),
+                                status =>
                                 {
-                                    completed++;
-                                }
-                                else
+                                    if (status)
+                                    {
+                                        completed++;
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("Failed to copy cars");
+                                        callback(false);
+                                    }
+                                }));
+                        }
+                        else
+                        {
+                            Destroy(i,
+                                status =>
                                 {
-                                    Debug.Log("Failed to copy cars");
-                                    callback(false);
-                                }
-                            }));
+                                    if (status)
+                                    {
+                                        completed++;
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("Failed to destroy car when not list is smaller");
+                                        callback(false);
+                                    }
+                                });
+                        }
                     }
                     else
                     {
@@ -128,7 +147,7 @@ namespace LevelManager
                 yield return StartCoroutine(Transitions.FadeAnimation(child, Transitions.FadeDirection.In));
             }
         }
-        
+
         private IEnumerator DestroyCarparkEffect()
         {
             List<GameObject> tiles = new List<GameObject>();
@@ -142,7 +161,7 @@ namespace LevelManager
             {
                 yield return StartCoroutine(Transitions.FadeAnimation(child, Transitions.FadeDirection.Out));
             }
-            
+
             DestroyImmediate(CurrentCarpark.gameObject);
             Debug.Log("Destroyed old carpark");
         }
