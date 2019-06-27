@@ -45,7 +45,6 @@ namespace DSOperationControllers
         {
             var index = IndexDropdown.value;
             int index2;
-            string code;
             
             switch (OperationType)
             {
