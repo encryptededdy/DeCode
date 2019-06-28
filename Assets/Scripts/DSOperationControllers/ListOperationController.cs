@@ -69,6 +69,10 @@ namespace DSOperationControllers
                     break;
                 case ListOperations.Reset:
                     break;
+                case ListOperations.AddSpecific:
+                    break;
+                case ListOperations.SetSize:
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -78,8 +82,10 @@ namespace DSOperationControllers
     public enum ListOperations
     {
         Add,
+        AddSpecific,
         CopyOne,
         CopyDouble,
+        SetSize,
         Delete,
         Reset,
     }

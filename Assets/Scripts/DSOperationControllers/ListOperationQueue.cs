@@ -48,7 +48,7 @@ namespace DSOperationControllers
             });
         }
 
-        public void ShowOperation(ArrayOperations operation)
+        public void ShowOperation(ListOperations operation)
         {
             OperationControllers.ForEach(obj =>
             {
@@ -173,6 +173,12 @@ namespace DSOperationControllers
                     break;
                 case ListOperations.Reset:
                     LevelManager.ResetLevel(Callback);
+                    break;
+                case ListOperations.SetSize:
+                    LevelManager.CreateNewCarpark(operation.Index1, Callback);
+                    break;
+                case ListOperations.AddSpecific:
+                    throw new ArgumentOutOfRangeException("Unimplemented for Lists");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
