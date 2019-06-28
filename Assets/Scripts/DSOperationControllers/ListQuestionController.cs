@@ -102,6 +102,24 @@ namespace DSOperationControllers
                     OperationQueue.ShowOperation(ListOperations.CopyDouble);
                 }
             ));
+            
+            _questions.Enqueue(new ListQuestionData(
+                "Expand and Add Again",
+                "Now, add another 3 vehicles. We can see that the doubling method is much more efficient, as it avoids overusing the expensive copying operation.",
+                new List<VehicleType>()
+                {
+                    VehicleType.empty, VehicleType.empty
+                },
+                (answer) =>
+                {
+                    var correct = true;
+                    foreach (var obj in answer)
+                    {
+                        if (obj.Equals(VehicleType.empty)) correct = false;
+                    }
+                    return correct && answer.Count == 5;
+                }
+            ));
                         
             NextQuestion();
             
@@ -193,7 +211,7 @@ namespace DSOperationControllers
 
         private void CheckQuestion()
         {
-            OperationQueue.GetArrayState().ForEach(obj => print(obj));
+//            OperationQueue.GetArrayState().ForEach(obj => print(obj));
             if (_currentQuestion.AnswerChecker(OperationQueue.GetArrayState()))
             {
                 // Correct!
