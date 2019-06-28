@@ -16,6 +16,8 @@ namespace LevelManager
         public List<IsoTransform> ActiveCarpark;
         public IsoTransform ActiveSpawnTile;
         public IsoTransform ActiveDestroyTile;
+        public GameObject Carpark;
+        protected CustomGridGraph.CustomGridGraph GridGraph;
         private Vector3 _spawnPoint;
         private Vector3 _destroyPoint;
 
@@ -29,8 +31,8 @@ namespace LevelManager
         void Awake()
         {
             _activeVehicles = new ConcurrentDictionary<GameObject, VehicleType>();
-            OnAwake();
             LoadAssets();
+            OnAwake();
         }
 
         protected IEnumerator Spawn(VehicleType vehicleType, Action<GameObject> callback = null)

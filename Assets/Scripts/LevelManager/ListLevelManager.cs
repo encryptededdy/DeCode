@@ -11,9 +11,6 @@ namespace LevelManager
     {
         public CarparkManager CurrentCarpark;
         public CarparkManager NewCarpark;
-
-        public GameObject Carpark;
-        private CustomGridGraph.CustomGridGraph _gridGraph;
         private Vector3 _shiftAmount;
 
         protected override void OnAwake()
@@ -57,8 +54,8 @@ namespace LevelManager
                     NewCarpark.AddCarpark();
                 }
 
-                _gridGraph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
-                _gridGraph.UpdateGraph();
+                GridGraph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
+                GridGraph.UpdateGraph();
 
                 StartCoroutine(CopyVehiclesToNewCarpark(callback));
             }
@@ -125,7 +122,7 @@ namespace LevelManager
             ActiveCarpark = NewCarpark.Carparks;
             SetNewSpawnPoint(NewCarpark.SpawnTile);
             SetNewDestroyPoint(NewCarpark.DestroyTile);
-            _gridGraph.UpdateGraph();
+            GridGraph.UpdateGraph();
             callback?.Invoke(true);
         }
 

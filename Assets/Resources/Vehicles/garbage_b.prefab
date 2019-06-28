@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6457995941146750253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.34641019, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowBounds: 1
-  _position: {x: 0, y: 0.4, z: 0}
-  _size: {x: 1, y: 0.4, z: 1}
+  _position: {x: 0, y: 0, z: 0}
+  _size: {x: 0.5, y: 0.4, z: 0.5}
   _parent: {fileID: 0}
 --- !u!212 &6457995941146750248
 SpriteRenderer:
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1282488609
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 6006975526033606081, guid: b999348a6e1905e4b957d3d73f98b219,
     type: 3}
@@ -134,8 +134,8 @@ MonoBehaviour:
   _isoTransform: {fileID: 6457995941146750251}
   _isTrigger: 0
   _material: {fileID: 0}
-  _size: {x: 1, y: 0.4, z: 1}
-  _center: {x: 1, y: 0.4, z: 1}
+  _size: {x: 0.5, y: 0.4, z: 0.5}
+  _center: {x: 0, y: 0, z: 0}
 --- !u!114 &6457995941146750255
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -15,19 +15,14 @@ namespace LevelManager
             SetNewDestroyPoint(ActiveDestroyTile);
         }
 
-        public void StartLevel(Action<bool> callback)
+        public void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
         {
-            callback(true);
+            StartCoroutine(Spawn(vehicleType, callback));
         }
 
         public void WriteToArray(GameObject vehicle, int index, Action<bool> callback, bool fast = false)
         {
             StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(ActiveCarpark[index]), callback, fast));
-        }
-
-        public void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
-        {
-            StartCoroutine(base.Spawn(vehicleType, callback));
         }
 
         public void CopyFromIndexToTempVar(int index, Action<bool> callback)

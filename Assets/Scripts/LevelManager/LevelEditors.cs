@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LevelManager
 {
-    [CustomEditor(typeof(ListLevelManager))]
+    [CustomEditor(typeof(QueueLevelManager))]
     public class ListLevelEditor : Editor
     {
         private GameObject _freshSpawn;
@@ -13,29 +13,23 @@ namespace LevelManager
         {
             DrawDefaultInspector();
 
-            ListLevelManager myScript = (ListLevelManager) target;
+            QueueLevelManager myScript = (QueueLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.Spawn(obj => { _freshSpawn = obj; });
+                myScript.Spawn(obj => { _freshSpawn = obj; }, VehicleType.ambulance);
             }
 
-            if (GUILayout.Button("Move"))
+            if (GUILayout.Button("Enqueue"))
             {
-                myScript.WriteToArray(_freshSpawn, 0,
-                    status => { Debug.Log(status ? "Successfully written to array" : "Failed to write to array"); });
-            }
-
-            if (GUILayout.Button("Create"))
-            {
-                myScript.CreateNewCarpark(8, status =>
+                myScript.Enqueue(_freshSpawn, status =>
                 {
                     if (status)
                     {
-                        Debug.Log("Successfully created new carpark");
+                        Debug.Log("Successfully Enqueued");
                     }
                     else
                     {
-                        Debug.Log("Failed to create new carpark");
+                        Debug.Log("Failed to Enqueue");
                     }
                 });
             }

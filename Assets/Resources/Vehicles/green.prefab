@@ -29,7 +29,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6457995941146750253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.34641019, z: 0.4}
+  m_LocalPosition: {x: 0, y: 0, z: 0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowBounds: 1
-  _position: {x: 0, y: 0.4, z: 0}
-  _size: {x: 1, y: 0.4, z: 1}
+  _position: {x: 0, y: 0, z: 0}
+  _size: {x: 0.4, y: 0.4, z: 0.3}
   _parent: {fileID: 0}
 --- !u!212 &6457995941146750248
 SpriteRenderer:
@@ -98,7 +98,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &6457995941146750249
 Animator:
   serializedVersion: 3
@@ -133,8 +133,8 @@ MonoBehaviour:
   _isoTransform: {fileID: 6457995941146750251}
   _isTrigger: 0
   _material: {fileID: 0}
-  _size: {x: 1, y: 0.4, z: 1}
-  _center: {x: 1, y: 0.4, z: 1}
+  _size: {x: 0.4, y: 0.4, z: 0.3}
+  _center: {x: 0, y: 0, z: 0}
 --- !u!114 &6457995941146750255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,6 +148,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JumpHeight: 0
-  Speed: 3
   Graph: {fileID: 0}
   Heuristic: 0
