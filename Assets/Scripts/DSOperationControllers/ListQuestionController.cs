@@ -16,7 +16,6 @@ namespace DSOperationControllers
         public Button OrangeButton;
 
         private ListQuestionData _currentQuestion;
-        private bool _runArrayAlgoIntro = false;
 
         private void Start()
         {

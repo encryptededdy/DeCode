@@ -178,8 +178,7 @@ namespace DSOperationControllers
                     LevelManager.CreateNewCarpark(operation.Index1, Callback);
                     break;
                 case ListOperations.AddSpecific:
-                    throw new ArgumentOutOfRangeException("Unimplemented for Lists");
-                    break;
+                    throw new ArgumentOutOfRangeException($"Unimplemented for Lists");
                 default:
                     throw new ArgumentOutOfRangeException();
             }
