@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LevelManager
 {
-    public class CarparkManager : MonoBehaviour
+    public class ListCarparkManager : MonoBehaviour
     {
         public List<IsoTransform> Carparks;
         public List<IsoTransform> CarparkEntrance;
@@ -38,9 +38,14 @@ namespace LevelManager
             }
         }
 
-        public int getSize()
+        public int GetSize()
         {
             return _currentSize;
+        }
+
+        public static int GetMaxSize()
+        {
+            return _maxSize;
         }
     }
 }

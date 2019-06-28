@@ -87,6 +87,7 @@ namespace LevelManager
                 if (status)
                 {
                     _carInQueue--;
+                    callback(true);
                 }
                 else
                 {
@@ -162,6 +163,16 @@ namespace LevelManager
         public void SetHiddenImplementation(bool hidden)
         {
             Building.SetActive(!hidden);
+        }
+
+        public int getMaxQueueSize()
+        {
+            return ActiveCarpark.Count;
+        }
+
+        public int getNumElements()
+        {
+            return _carInQueue;
         }
     }
 }

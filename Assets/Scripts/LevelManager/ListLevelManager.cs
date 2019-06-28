@@ -9,8 +9,8 @@ namespace LevelManager
 {
     public class ListLevelManager : ArrayLevelManager
     {
-        public CarparkManager CurrentCarpark;
-        public CarparkManager NewCarpark;
+        public ListCarparkManager CurrentListCarpark;
+        public ListCarparkManager NewListCarpark;
         private Vector3 _shiftAmount;
 
         protected override void OnAwake()
@@ -19,7 +19,7 @@ namespace LevelManager
 
         public new void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
         {
-            if (CurrentCarpark == null)
+            if (CurrentListCarpark == null)
             {
                 Debug.Log("There are no active carparks");
                 callback?.Invoke(null);
@@ -32,9 +32,9 @@ namespace LevelManager
 
         public void CreateNewCarpark(int size, Action<bool> callback)
         {
-            if (size > Carpark.GetComponent<CarparkManager>().Carparks.Count)
+            if (size > Carpark.GetComponent<ListCarparkManager>().Carparks.Count)
             {
-                Debug.Log($"Maximum carpark size is {Carpark.GetComponent<CarparkManager>().Carparks.Count}");
+                Debug.Log($"Maximum carpark size is {Carpark.GetComponent<ListCarparkManager>().Carparks.Count}");
                 callback(false);
             }
             else
@@ -43,15 +43,15 @@ namespace LevelManager
                 IsoTransform isoTransform = carpark.GetComponent<IsoTransform>();
                 _shiftAmount = new Vector3(isoTransform.Size.x, 0, 0);
 
-                if (CurrentCarpark != null)
+                if (CurrentListCarpark != null)
                 {
-                    isoTransform.Position = CurrentCarpark.GetComponent<IsoTransform>().Position + _shiftAmount;
+                    isoTransform.Position = CurrentListCarpark.GetComponent<IsoTransform>().Position + _shiftAmount;
                 }
 
-                NewCarpark = carpark.GetComponent<CarparkManager>();
+                NewListCarpark = carpark.GetComponent<ListCarparkManager>();
                 for (int i = 0; i < size; i++)
                 {
-                    NewCarpark.AddCarpark();
+                    NewListCarpark.AddCarpark();
                 }
 
                 GridGraph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
@@ -64,7 +64,7 @@ namespace LevelManager
         private IEnumerator CopyVehiclesToNewCarpark(Action<bool> callback)
         {
             yield return StartCoroutine(SpawnCarparkEffect());
-            if (CurrentCarpark != null)
+            if (CurrentListCarpark != null)
             {
                 int completed = 0;
                 int expected = ActiveCarpark.Count;
@@ -72,9 +72,9 @@ namespace LevelManager
                 {
                     if (GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[i]), out GameObject vehicle))
                     {
-                        if (i < NewCarpark.getSize())
+                        if (i < NewListCarpark.GetSize())
                         {
-                            StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(NewCarpark.Carparks[i]),
+                            StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(NewListCarpark.Carparks[i]),
                                 status =>
                                 {
                                     if (status)
@@ -118,10 +118,10 @@ namespace LevelManager
                 yield return StartCoroutine(DestroyCarparkEffect());
             }
 
-            CurrentCarpark = NewCarpark;
-            ActiveCarpark = NewCarpark.Carparks;
-            SetNewSpawnPoint(NewCarpark.SpawnTile);
-            SetNewDestroyPoint(NewCarpark.DestroyTile);
+            CurrentListCarpark = NewListCarpark;
+            ActiveCarpark = NewListCarpark.Carparks;
+            SetNewSpawnPoint(NewListCarpark.SpawnTile);
+            SetNewDestroyPoint(NewListCarpark.DestroyTile);
             GridGraph.UpdateGraph();
             callback?.Invoke(true);
         }
@@ -129,7 +129,7 @@ namespace LevelManager
         private IEnumerator SpawnCarparkEffect()
         {
             List<GameObject> tiles = new List<GameObject>();
-            foreach (Transform child in NewCarpark.transform)
+            foreach (Transform child in NewListCarpark.transform)
             {
                 tiles.Add(child.gameObject);
                 Material material = child.GetComponent<SpriteRenderer>().material;
@@ -148,7 +148,7 @@ namespace LevelManager
         private IEnumerator DestroyCarparkEffect()
         {
             List<GameObject> tiles = new List<GameObject>();
-            foreach (Transform child in CurrentCarpark.transform)
+            foreach (Transform child in CurrentListCarpark.transform)
             {
                 tiles.Add(child.gameObject);
             }
@@ -159,13 +159,18 @@ namespace LevelManager
                 yield return StartCoroutine(Transitions.FadeAnimation(child, Transitions.FadeDirection.Out));
             }
 
-            DestroyImmediate(CurrentCarpark.gameObject);
+            DestroyImmediate(CurrentListCarpark.gameObject);
             Debug.Log("Destroyed old carpark");
         }
 
         public new int GetArraySize()
         {
-            return CurrentCarpark == null ? 0 : CurrentCarpark.getSize();
+            return CurrentListCarpark == null ? 0 : CurrentListCarpark.GetSize();
+        }
+
+        public int GetMaxListSize()
+        {
+            return ListCarparkManager.GetMaxSize();
         }
     }
 }
