@@ -15,24 +15,12 @@ namespace LevelManager
 
         protected override void OnAwake()
         {
-        }
-
-        public new void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
-        {
-            if (CurrentListCarpark == null)
-            {
-                Debug.Log("There are no active carparks");
-                callback?.Invoke(null);
-            }
-            else
-            {
-                base.Spawn(callback, vehicleType);
-            }
+            GridGraph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
         }
 
         public void CreateNewCarpark(int size, Action<bool> callback)
         {
-            if (size > Carpark.GetComponent<ListCarparkManager>().Carparks.Count)
+            if (size > GetMaxListSize())
             {
                 Debug.Log($"Maximum carpark size is {Carpark.GetComponent<ListCarparkManager>().Carparks.Count}");
                 callback(false);
@@ -49,19 +37,14 @@ namespace LevelManager
                 }
 
                 NewListCarpark = carpark.GetComponent<ListCarparkManager>();
-                for (int i = 0; i < size; i++)
-                {
-                    NewListCarpark.AddCarpark();
-                }
-
-                GridGraph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
+                List<IsoTransform> newCarpark = NewListCarpark.CreateCarpark(size);
                 GridGraph.UpdateGraph();
 
-                StartCoroutine(CopyVehiclesToNewCarpark(callback));
+                StartCoroutine(CopyVehiclesToNewCarpark(newCarpark, callback));
             }
         }
 
-        private IEnumerator CopyVehiclesToNewCarpark(Action<bool> callback)
+        private IEnumerator CopyVehiclesToNewCarpark(List<IsoTransform> newCarpark, Action<bool> callback)
         {
             yield return StartCoroutine(SpawnCarparkEffect());
             if (CurrentListCarpark != null)
@@ -72,7 +55,7 @@ namespace LevelManager
                 {
                     if (GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[i]), out GameObject vehicle))
                     {
-                        if (i < NewListCarpark.GetSize())
+                        if (i < newCarpark.Count)
                         {
                             StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(NewListCarpark.Carparks[i]),
                                 status =>
@@ -119,7 +102,7 @@ namespace LevelManager
             }
 
             CurrentListCarpark = NewListCarpark;
-            ActiveCarpark = NewListCarpark.Carparks;
+            ActiveCarpark = newCarpark;
             SetNewSpawnPoint(NewListCarpark.SpawnTile);
             SetNewDestroyPoint(NewListCarpark.DestroyTile);
             GridGraph.UpdateGraph();
@@ -161,11 +144,6 @@ namespace LevelManager
 
             DestroyImmediate(CurrentListCarpark.gameObject);
             Debug.Log("Destroyed old carpark");
-        }
-
-        public new int GetArraySize()
-        {
-            return CurrentListCarpark == null ? 0 : CurrentListCarpark.GetSize();
         }
 
         public int GetMaxListSize()

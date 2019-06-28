@@ -16,31 +16,28 @@ namespace LevelManager
         public IsoTransform SpawnTile;
         public IsoTransform DestroyTile;
 
-        private int _currentSize;
         private static int _maxSize = 8;
 
-        public void AddCarpark()
+        public List<IsoTransform> CreateCarpark(int size)
         {
-            if (_currentSize.Equals(_maxSize))
+            List<IsoTransform> carpark = new List<IsoTransform>();
+            if (size <= _maxSize)
             {
-                Debug.Log("Maximum carpark size reached");
+                for (int i = 0; i < size; i++)
+                {
+                    Carparks[i].GetComponent<SpriteRenderer>().sprite = CarparkTile;
+                    Carparks[i].GetOrAddComponent<TileRules>().NE = true;
+                    carpark.Add(Carparks[i]);
+                    CarparkEntrance[i].GetComponent<SpriteRenderer>().sprite = CarparkEntranceTile[i];
+                    CarparkEntrance[i].GetComponent<TileRules>().SW = true;
+                }
             }
             else
             {
-                Carparks[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkTile;
-                Carparks[_currentSize].GetOrAddComponent<TileRules>().NE = true;
-
-                CarparkEntrance[_currentSize].GetComponent<SpriteRenderer>().sprite = CarparkEntranceTile[_currentSize];
-                CarparkEntrance[_currentSize].GetComponent<TileRules>().SW = true;
-
-                _currentSize++;
-                FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph();
+                Debug.Log("Maximum carpark size reached");
             }
-        }
 
-        public int GetSize()
-        {
-            return _currentSize;
+            return carpark;
         }
 
         public static int GetMaxSize()
