@@ -64,7 +64,6 @@ namespace LevelManager
         {
             if (_carInQueue != 0)
             {
-                _carInQueue--;
                 if (_isCircularQueue)
                 {
                     StartCoroutine(CircularDequeue(callback));
@@ -83,7 +82,18 @@ namespace LevelManager
 
         private IEnumerator CircularDequeue(Action<bool> callback)
         {
-            StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[_head]), callback));
+            StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[_head]), status =>
+            {
+                if (status)
+                {
+                    _carInQueue--;
+                }
+                else
+                {
+                    Debug.Log("Failed to dequeue car");
+                    callback(false);
+                }
+            }));
             _head = ++_head % ActiveCarpark.Count;
             HeadTile.GetComponent<IsoTransform>().Position = ActiveCarpark[_head].Position;
             yield break;
@@ -93,7 +103,11 @@ namespace LevelManager
         {
             StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[_head]), status =>
             {
-                if (!status)
+                if (status)
+                {
+                    _carInQueue--;
+                }
+                else
                 {
                     Debug.Log("Failed to dequeue car");
                     callback(false);
