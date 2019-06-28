@@ -165,5 +165,10 @@ namespace LevelManager
             DestroyImmediate(CurrentCarpark.gameObject);
             Debug.Log("Destroyed old carpark");
         }
+
+        public new int GetArraySize()
+        {
+            return CurrentCarpark == null ? 0 : CurrentCarpark.getSize();
+        }
     }
 }
