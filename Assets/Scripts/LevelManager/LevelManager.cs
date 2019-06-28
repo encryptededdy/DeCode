@@ -97,7 +97,7 @@ namespace LevelManager
             Debug.Log($"There are {_activeVehicles.Count} active vehicles");
         }
 
-        private IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
+        protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
         {
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
             if (fast)

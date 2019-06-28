@@ -16,7 +16,7 @@ namespace LevelManager
             QueueLevelManager myScript = (QueueLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.Spawn(obj => { _freshSpawn = obj; }, VehicleType.ambulance);
+                myScript.Spawn(obj => { _freshSpawn = obj; });
             }
 
             if (GUILayout.Button("Enqueue"))
@@ -32,6 +32,31 @@ namespace LevelManager
                         Debug.Log("Failed to Enqueue");
                     }
                 });
+            }
+
+            if (GUILayout.Button("Dequeue"))
+            {
+                myScript.Dequeue(status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully Dequeued");
+                    }
+                    else
+                    {
+                        Debug.Log("Failed to Dequeue");
+                    }
+                });
+            }
+
+            if (GUILayout.Button("Circular"))
+            {
+                myScript.SetType(true);
+            }
+
+            if (GUILayout.Button("HideImplementation"))
+            {
+                myScript.SetHiddenImplementation(true);
             }
         }
     }

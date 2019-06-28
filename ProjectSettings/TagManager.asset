@@ -50,3 +50,6 @@ TagManager:
   - name: Ground1
     uniqueID: 3937085287
     locked: 0
+  - name: Building
+    uniqueID: 2892726669
+    locked: 0
