@@ -13,6 +13,8 @@ namespace DSOperationControllers
         public ListOperations OperationType;
         private ListOperationQueue _operationsQueue;
         private int _maxIndex = 0;
+
+        private const int MaxArraySize = 8;
         
         // Start is called before the first frame update
         void Start()
@@ -29,6 +31,12 @@ namespace DSOperationControllers
         {
             set
             {
+                if (OperationType.Equals(ListOperations.CopyOne) && value >= MaxArraySize - 1 || OperationType.Equals(ListOperations.CopyDouble) && (value+1)*2 > MaxArraySize )
+                {
+                    ExecuteOperationButton.gameObject.SetActive(false);
+                    CodePreviewView.text = "Max array size reached";
+                }
+                
                 if (IndexDropdown != null)
                 {
                     _maxIndex = value;
