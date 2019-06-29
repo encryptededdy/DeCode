@@ -75,12 +75,12 @@ namespace DSOperationControllers
         }
 
         // Call if the CarPark size changes
-        public void UpdateSize()
+        public void UpdateSize(int size)
         {
-            var size = LevelManager.GetArraySize() - 1;
+            // var size = LevelManager.GetArraySize() - 1;
             OperationControllers.ForEach(obj =>
             {
-                obj.MaxIndex = size;
+                obj.MaxIndex = size - 1;
             });
         }
 
@@ -99,7 +99,6 @@ namespace DSOperationControllers
         void Callback(bool _)
         {
             print("Got callback!");
-            UpdateSize(); // In case the previous operation changed things
             // Unlock first
             _queueProcessingLock = false;
             TryExecuteQueue();
@@ -131,6 +130,7 @@ namespace DSOperationControllers
                 case ListOperations.Add:
                     LevelManager.Spawn(obj =>
                     {
+                        print($"Writing to array at {operation.Index1}");
                         LevelManager.WriteToArray(obj, operation.Index1, obj2 =>
                         {
                             code = $"car = {LevelManager.GetArrayState()[operation.Index1]};\n" +
@@ -146,6 +146,7 @@ namespace DSOperationControllers
                     break;
                 case ListOperations.CopyOne:
                     LevelManager.CreateNewCarpark(LevelManager.GetArraySize() + 1, Callback);
+                    UpdateSize(LevelManager.GetArraySize() + 1);
                     code = $"// Expand internal array to {LevelManager.GetArraySize() + 1}";
                     if (operation.CodeLine != null)
                     {
@@ -155,6 +156,7 @@ namespace DSOperationControllers
                     break;
                 case ListOperations.CopyDouble:
                     LevelManager.CreateNewCarpark(LevelManager.GetArraySize()*2, Callback);
+                    UpdateSize(LevelManager.GetArraySize() * 2);
                     code = $"// Expand internal array to {LevelManager.GetArraySize() * 2}";
                     if (operation.CodeLine != null)
                     {

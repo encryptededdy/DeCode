@@ -42,7 +42,7 @@ namespace DSOperationControllers
                     _maxIndex = value;
                     var options = Enumerable.Range(0, _maxIndex + 1).Select(i => $"Index {i}").ToList();
                     // Now populate dropdown
-                    IndexDropdown.options.Clear();
+                    IndexDropdown.ClearOptions();
                     IndexDropdown.AddOptions(options);
                 }
             }

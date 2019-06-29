@@ -104,7 +104,7 @@ namespace DSOperationControllers
             
             _questions.Enqueue(new ListQuestionData(
                 "Expand and Add Again",
-                "Now, add another 3 vehicles. We can see that the doubling method is much more efficient, as it avoids overusing the expensive copying operation.",
+                "Now, add another 3 vehicles (sequentially, 5 total). We can see that the doubling method is much more efficient, as it avoids overusing the expensive copying operation.",
                 new List<VehicleType>()
                 {
                     VehicleType.empty, VehicleType.empty
@@ -112,11 +112,13 @@ namespace DSOperationControllers
                 (answer) =>
                 {
                     var correct = true;
-                    foreach (var obj in answer)
+                    for (var index = answer.Count - 4; index >= 0; index--) // Loop skipping the last three...
                     {
+                        var obj = answer[index];
                         if (obj.Equals(VehicleType.empty)) correct = false;
                     }
-                    return correct && answer.Count == 5;
+
+                    return correct && answer.Count == 8;
                 }
             ));
                         
