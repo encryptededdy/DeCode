@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CustomUI;
 using LevelManager;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ namespace DSOperationControllers
         public Text Description;
         public Button GreenButton;
         public Button OrangeButton;
+
+        public QuestionScreenLogic QuestionScreenLogic;
 
         private ListQuestionData _currentQuestion;
 
@@ -99,6 +102,10 @@ namespace DSOperationControllers
                     OperationQueue.HideAllOperations();
                     OperationQueue.ShowOperation(ListOperations.Add);
                     OperationQueue.ShowOperation(ListOperations.CopyDouble);
+                    QuestionScreenLogic.ShowNewQuestion("If we have a list that starts at size 0, and we add elements one-by-one until we reach size 100, how many cars do we end up having to perform the (relatively slow) copy operation on?",
+                        "1 + 2 + 3 + ... + 99 = 4950 times",
+                        new []{"100 times", "99 times", "101 times"},
+                        attempts => print($"{attempts} attempts until correct"));
                 }
             ));
             
