@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
+using Misc;
 using UnityEngine;
 
 namespace LevelManager
@@ -11,6 +12,7 @@ namespace LevelManager
 
         protected override void OnAwake()
         {
+            StartCoroutine(Transitions.SpawnCarparkEffect(Carpark));
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
         }
