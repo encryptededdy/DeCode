@@ -9,7 +9,7 @@ namespace Misc
     public class Transitions
     {
         public static IEnumerator PanCamera(Camera camera, Vector3 shiftAmount, Action<bool> callback = null,
-            float duration = 1f)
+            float duration = 0.5f)
         {
             float t = 0.0f;
             Vector3 cameraPos = camera.GetComponent<IsoTransform>().Position;
@@ -67,7 +67,7 @@ namespace Misc
 
         private static IEnumerator FadeAnimation(GameObject tile, FadeDirection fadeDirection,
             Action<bool> callback = null,
-            float duration = 0.02f)
+            float duration = 0.01f)
         {
             float t = 0f;
 
