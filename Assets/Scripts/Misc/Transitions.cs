@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UnityEngine;
 
 namespace Misc
 {
-    public static class Transitions
+    public class Transitions
     {
         public static IEnumerator PanCamera(Camera camera, Vector3 shiftAmount, Action<bool> callback = null,
             float duration = 1f)
@@ -24,7 +25,45 @@ namespace Misc
             callback?.Invoke(true);
         }
 
-        public static IEnumerator FadeAnimation(GameObject tile, FadeDirection fadeDirection,
+        public static IEnumerator SpawnCarparkEffect(GameObject carpark)
+        {
+            List<GameObject> tiles = new List<GameObject>();
+            foreach (Transform child in carpark.transform)
+            {
+                tiles.Add(child.gameObject);
+                Material material = child.GetComponent<SpriteRenderer>().material;
+                var color = material.color;
+                color.a = 0f;
+                material.color = color;
+            }
+
+            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
+            foreach (GameObject child in shuffledList)
+            {
+                yield return FadeAnimation(child, FadeDirection.In);
+            }
+
+            Debug.Log("Created a new carpark");
+        }
+
+        public static IEnumerator DestroyCarparkEffect(GameObject carpark)
+        {
+            List<GameObject> tiles = new List<GameObject>();
+            foreach (Transform child in carpark.transform)
+            {
+                tiles.Add(child.gameObject);
+            }
+
+            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
+            foreach (GameObject child in shuffledList)
+            {
+                yield return FadeAnimation(child, FadeDirection.Out);
+            }
+
+            Debug.Log("Destroyed old carpark");
+        }
+
+        private static IEnumerator FadeAnimation(GameObject tile, FadeDirection fadeDirection,
             Action<bool> callback = null,
             float duration = 0.025f)
         {

@@ -9,8 +9,7 @@ namespace LevelManager
 {
     public class ListLevelManager : ArrayLevelManager
     {
-        public ListCarparkManager CurrentListCarpark;
-        public ListCarparkManager NewListCarpark;
+        private ListCarparkManager _currentListCarpark;
         private Vector3 _shiftAmount;
 
         protected override void OnAwake()
@@ -31,23 +30,29 @@ namespace LevelManager
                 IsoTransform isoTransform = carpark.GetComponent<IsoTransform>();
                 _shiftAmount = new Vector3(isoTransform.Size.x, 0, 0);
 
-                if (CurrentListCarpark != null)
+                if (_currentListCarpark != null)
                 {
-                    isoTransform.Position = CurrentListCarpark.GetComponent<IsoTransform>().Position + _shiftAmount;
+                    isoTransform.Position = _currentListCarpark.GetComponent<IsoTransform>().Position + _shiftAmount;
                 }
 
-                NewListCarpark = carpark.GetComponent<ListCarparkManager>();
-                List<IsoTransform> newCarpark = NewListCarpark.CreateCarpark(size);
-                GridGraph.UpdateGraph();
-
-                StartCoroutine(CopyVehiclesToNewCarpark(newCarpark, callback));
+                ListCarparkManager newCarparkManager = carpark.GetComponent<ListCarparkManager>();
+                if (newCarparkManager.CreateCarpark(size, out List<IsoTransform> newCarpark))
+                {
+                    GridGraph.UpdateGraph();
+                    StartCoroutine(CopyVehiclesToNewCarpark(newCarparkManager, newCarpark, callback));
+                }
+                else
+                {
+                    DestroyImmediate(carpark);
+                }
             }
         }
 
-        private IEnumerator CopyVehiclesToNewCarpark(List<IsoTransform> newCarpark, Action<bool> callback)
+        private IEnumerator CopyVehiclesToNewCarpark(ListCarparkManager newCarparkManager,
+            List<IsoTransform> newCarpark, Action<bool> callback)
         {
-            yield return StartCoroutine(SpawnCarparkEffect());
-            if (CurrentListCarpark != null)
+            yield return StartCoroutine(Transitions.SpawnCarparkEffect(newCarparkManager.gameObject));
+            if (_currentListCarpark != null)
             {
                 int completed = 0;
                 int expected = ActiveCarpark.Count;
@@ -57,7 +62,7 @@ namespace LevelManager
                     {
                         if (i < newCarpark.Count)
                         {
-                            StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(NewListCarpark.Carparks[i]),
+                            StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(newCarparkManager.Carparks[i]),
                                 status =>
                                 {
                                     if (status)
@@ -98,53 +103,18 @@ namespace LevelManager
                 Debug.Log("Finished copying cars");
 
                 yield return Transitions.PanCamera(FindObjectOfType<Camera>(), _shiftAmount);
-                yield return StartCoroutine(DestroyCarparkEffect());
+                yield return StartCoroutine(Transitions.DestroyCarparkEffect(_currentListCarpark.gameObject));
+                DestroyImmediate(_currentListCarpark.gameObject);
             }
 
-            CurrentListCarpark = NewListCarpark;
+            _currentListCarpark = newCarparkManager;
             ActiveCarpark = newCarpark;
-            SetNewSpawnPoint(NewListCarpark.SpawnTile);
-            SetNewDestroyPoint(NewListCarpark.DestroyTile);
+            SetNewSpawnPoint(_currentListCarpark.SpawnTile);
+            SetNewDestroyPoint(_currentListCarpark.DestroyTile);
             GridGraph.UpdateGraph();
             callback?.Invoke(true);
         }
 
-        private IEnumerator SpawnCarparkEffect()
-        {
-            List<GameObject> tiles = new List<GameObject>();
-            foreach (Transform child in NewListCarpark.transform)
-            {
-                tiles.Add(child.gameObject);
-                Material material = child.GetComponent<SpriteRenderer>().material;
-                var color = material.color;
-                color.a = 0f;
-                material.color = color;
-            }
-
-            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
-            foreach (GameObject child in shuffledList)
-            {
-                yield return StartCoroutine(Transitions.FadeAnimation(child, Transitions.FadeDirection.In));
-            }
-        }
-
-        private IEnumerator DestroyCarparkEffect()
-        {
-            List<GameObject> tiles = new List<GameObject>();
-            foreach (Transform child in CurrentListCarpark.transform)
-            {
-                tiles.Add(child.gameObject);
-            }
-
-            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
-            foreach (GameObject child in shuffledList)
-            {
-                yield return StartCoroutine(Transitions.FadeAnimation(child, Transitions.FadeDirection.Out));
-            }
-
-            DestroyImmediate(CurrentListCarpark.gameObject);
-            Debug.Log("Destroyed old carpark");
-        }
 
         public int GetMaxListSize()
         {
