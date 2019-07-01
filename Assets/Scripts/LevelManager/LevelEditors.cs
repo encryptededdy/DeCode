@@ -19,7 +19,7 @@ namespace LevelManager
                 myScript.Spawn(obj => { _freshSpawn = obj; });
             }
 
-            if (GUILayout.Button("Dequeue"))
+            if (GUILayout.Button("Enqueue"))
             {
                 myScript.Enqueue(_freshSpawn, status =>
                 {
@@ -34,7 +34,7 @@ namespace LevelManager
                 });
             }
 
-            if (GUILayout.Button("Enqueue"))
+            if (GUILayout.Button("Dequeue"))
             {
                 myScript.Dequeue(status =>
                 {
