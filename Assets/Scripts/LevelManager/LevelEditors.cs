@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LevelManager
 {
-    [CustomEditor(typeof(StackLevelManager))]
+    [CustomEditor(typeof(QueueLevelManager))]
     public class ArrayLevelEditor : Editor
     {
         private GameObject _freshSpawn;
@@ -13,15 +13,15 @@ namespace LevelManager
         {
             DrawDefaultInspector();
 
-            StackLevelManager myScript = (StackLevelManager) target;
+            QueueLevelManager myScript = (QueueLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
                 myScript.Spawn(obj => { _freshSpawn = obj; });
             }
 
-            if (GUILayout.Button("Push"))
+            if (GUILayout.Button("Dequeue"))
             {
-                myScript.Push(_freshSpawn, status =>
+                myScript.Enqueue(_freshSpawn, status =>
                 {
                     if (status)
                     {
@@ -34,9 +34,9 @@ namespace LevelManager
                 });
             }
 
-            if (GUILayout.Button("Pop"))
+            if (GUILayout.Button("Enqueue"))
             {
-                myScript.Pop(status =>
+                myScript.Dequeue(status =>
                 {
                     if (status)
                     {
@@ -48,6 +48,12 @@ namespace LevelManager
                     }
                 });
             }
+
+            if (GUILayout.Button("Circular"))
+            {
+                myScript.SetCircularQueue(true);
+            }
+
 
             if (GUILayout.Button("HideImplementation"))
             {

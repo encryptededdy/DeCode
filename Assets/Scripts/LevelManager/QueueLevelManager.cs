@@ -112,7 +112,7 @@ namespace LevelManager
             callback(true);
         }
 
-        public void SetQueueType(bool circular)
+        public void SetCircularQueue(bool circular)
         {
             _isCircularQueue = circular;
         }
