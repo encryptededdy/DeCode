@@ -39,9 +39,9 @@ namespace CustomUI
             correctButton.GetComponentInChildren<Text>().text = correctAnswer;
             correctButton.onClick.AddListener((() =>
             {
-                correctButton.GetComponent<Image>().color = new Color(29,137,13);
                 _noAttempts++;
                 NextButton.gameObject.SetActive(true);
+                correctButton.GetComponent<Image>().color = new Color(0.55f, 0.8f, 0.42f);
             }));
 
             var questionsVisited = 0;
@@ -55,7 +55,7 @@ namespace CustomUI
                 thisButton.onClick.AddListener((() =>
                 {
                     _noAttempts++;
-                    thisButton.GetComponent<Image>().color = new Color(201,0,0);
+                    thisButton.GetComponent<Image>().color = new Color(0.77f, 0.34f, 0.2f);
                 }));
             }
 

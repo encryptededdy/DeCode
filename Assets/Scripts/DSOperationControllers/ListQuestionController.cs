@@ -60,6 +60,16 @@ namespace DSOperationControllers
                         if (obj.Equals(VehicleType.empty)) correct = false;
                     }
                     return correct && answer.Count == 3;
+                },
+                () =>
+                {
+                    OperationQueue.HideAllOperations();
+                    OperationQueue.ShowOperation(ListOperations.Add);
+                    OperationQueue.ShowOperation(ListOperations.CopyDouble);
+                    QuestionScreenLogic.ShowNewQuestion("If we need a list that can get larger, we could just implement it by having a massive array (e.g size 2147483647) instead of doing the slow expansion operation every time. Why don't we? Select the answer that is incorrect.",
+                        "It's not possible to leave unused spaces in arrays",
+                        new []{"It would allocate too much memory", "Creating the array initially may be slow", "Any copies that are required will be extremely wasteful"},
+                        attempts => print($"{attempts} attempts until correct"));
                 }
             ));
             
@@ -126,6 +136,16 @@ namespace DSOperationControllers
                     }
 
                     return correct && answer.Count == 8;
+                },
+                () =>
+                {
+                    OperationQueue.HideAllOperations();
+                    OperationQueue.ShowOperation(ListOperations.Add);
+                    OperationQueue.ShowOperation(ListOperations.CopyDouble);
+                    QuestionScreenLogic.ShowNewQuestion("If we perform the same operation (start at 0, add elements until we reach size 100) but we use doubling instead, how many cares do we end up copying?",
+                        "1 + 2 + 4 + 8 + ... + 64 = 127 times",
+                        new []{"99 times", "100 x 100 = 10000 times", "50 times"},
+                        attempts => print($"{attempts} attempts until correct"));
                 }
             ));
                         
