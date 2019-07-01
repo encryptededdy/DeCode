@@ -166,12 +166,12 @@ namespace LevelManager
             Building.SetActive(!hidden);
         }
 
-        public int getMaxQueueSize()
+        public int GetMaxQueueSize()
         {
             return ActiveCarpark.Count;
         }
 
-        public int getNumElements()
+        public int GetNumElements()
         {
             return _carInQueue;
         }

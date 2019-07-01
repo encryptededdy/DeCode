@@ -67,7 +67,7 @@ namespace Misc
 
         private static IEnumerator FadeAnimation(GameObject tile, FadeDirection fadeDirection,
             Action<bool> callback = null,
-            float duration = 0.025f)
+            float duration = 0.03f)
         {
             float t = 0f;
 
@@ -81,7 +81,7 @@ namespace Misc
             float endingOpacity;
             if (fadeDirection.Equals(FadeDirection.In))
             {
-                startingPos = new Vector3(position.x, position.y - 0.4f, position.z);
+                startingPos = new Vector3(position.x, position.y - 0.2f, position.z);
                 endingPos = new Vector3(position.x, position.y, position.z);
                 startingOpacity = 0.1f;
                 endingOpacity = 1f;
@@ -89,7 +89,7 @@ namespace Misc
             else
             {
                 startingPos = new Vector3(position.x, position.y, position.z);
-                endingPos = new Vector3(position.x, position.y - 0.4f, position.z);
+                endingPos = new Vector3(position.x, position.y - 0.2f, position.z);
                 startingOpacity = 1f;
                 endingOpacity = 0.1f;
             }
