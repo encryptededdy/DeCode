@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LevelManager
 {
-    [CustomEditor(typeof(QueueLevelManager))]
+    [CustomEditor(typeof(StackLevelManager))]
     public class ArrayLevelEditor : Editor
     {
         private GameObject _freshSpawn;
@@ -13,45 +13,40 @@ namespace LevelManager
         {
             DrawDefaultInspector();
 
-            QueueLevelManager myScript = (QueueLevelManager) target;
+            StackLevelManager myScript = (StackLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
                 myScript.Spawn(obj => { _freshSpawn = obj; });
             }
 
-            if (GUILayout.Button("Enqueue"))
+            if (GUILayout.Button("Push"))
             {
-                myScript.Enqueue(_freshSpawn, status =>
+                myScript.Push(_freshSpawn, status =>
                 {
                     if (status)
                     {
-                        Debug.Log("Successfully Enqueued");
+                        Debug.Log("Successfully pushed");
                     }
                     else
                     {
-                        Debug.Log("Failed to Enqueue");
+                        Debug.Log("Failed to push");
                     }
                 });
             }
 
-            if (GUILayout.Button("Dequeue"))
+            if (GUILayout.Button("Pop"))
             {
-                myScript.Dequeue(status =>
+                myScript.Pop(status =>
                 {
                     if (status)
                     {
-                        Debug.Log("Successfully Dequeued");
+                        Debug.Log("Successfully popped");
                     }
                     else
                     {
-                        Debug.Log("Failed to Dequeue");
+                        Debug.Log("Failed to pop");
                     }
                 });
-            }
-
-            if (GUILayout.Button("Circular"))
-            {
-                myScript.SetType(true);
             }
 
             if (GUILayout.Button("HideImplementation"))
