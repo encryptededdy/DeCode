@@ -18,7 +18,7 @@ namespace LevelManager
 
         private static int _maxSize = 8;
 
-        public List<IsoTransform> CreateCarpark(int size)
+        public bool CreateCarpark(int size, out List<IsoTransform> newCarpark)
         {
             List<IsoTransform> carpark = new List<IsoTransform>();
             if (size <= _maxSize)
@@ -35,9 +35,12 @@ namespace LevelManager
             else
             {
                 Debug.Log("Maximum carpark size reached");
+                newCarpark = null;
+                return false;
             }
 
-            return carpark;
+            newCarpark = carpark;
+            return true;
         }
 
         public static int GetMaxSize()

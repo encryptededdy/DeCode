@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LevelManager
 {
     [CustomEditor(typeof(QueueLevelManager))]
-    public class ListLevelEditor : Editor
+    public class ArrayLevelEditor : Editor
     {
         private GameObject _freshSpawn;
 
@@ -19,40 +19,41 @@ namespace LevelManager
                 myScript.Spawn(obj => { _freshSpawn = obj; });
             }
 
-            if (GUILayout.Button("Enqueue"))
+            if (GUILayout.Button("Dequeue"))
             {
                 myScript.Enqueue(_freshSpawn, status =>
                 {
                     if (status)
                     {
-                        Debug.Log("Successfully Enqueued");
+                        Debug.Log("Successfully pushed");
                     }
                     else
                     {
-                        Debug.Log("Failed to Enqueue");
+                        Debug.Log("Failed to push");
                     }
                 });
             }
 
-            if (GUILayout.Button("Dequeue"))
+            if (GUILayout.Button("Enqueue"))
             {
                 myScript.Dequeue(status =>
                 {
                     if (status)
                     {
-                        Debug.Log("Successfully Dequeued");
+                        Debug.Log("Successfully popped");
                     }
                     else
                     {
-                        Debug.Log("Failed to Dequeue");
+                        Debug.Log("Failed to pop");
                     }
                 });
             }
 
             if (GUILayout.Button("Circular"))
             {
-                myScript.SetType(true);
+                myScript.SetCircularQueue(true);
             }
+
 
             if (GUILayout.Button("HideImplementation"))
             {

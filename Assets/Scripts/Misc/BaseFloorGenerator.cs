@@ -1,6 +1,5 @@
 using System;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
-using UltimateIsometricToolkit.physics;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,7 +17,7 @@ namespace Misc
         // Default size
         public int SizeX = 16;
         public int SizeZ = 16;
-        
+
         void Awake()
         {
             this.GetOrAddComponent<IsoTransform>();
@@ -57,7 +56,8 @@ namespace Misc
                 {
                     var x = parentX + dx;
                     var z = parentZ + dz;
-                    Insert(Prefab, Prefix + " (" + x + ", " + z + ")", x, Prefab.GetComponent<IsoTransform>().Position.y + parentY, z);
+                    Insert(Prefab, Prefix + " (" + x + ", " + z + ")", x,
+                        Prefab.GetComponent<IsoTransform>().Position.y + parentY, z);
                 }
             }
         }
@@ -71,9 +71,8 @@ namespace Misc
             var isoTransform = gameObject.GetComponent<IsoTransform>();
             isoTransform.Position = new Vector3(x, y, z);
         }
-    
     }
-    
+
 #if UNITY_EDITOR
     [CustomEditor(typeof(BaseFloorGenerator))]
     public class ObjectBuilderEditor : Editor

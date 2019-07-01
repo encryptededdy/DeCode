@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UnityEngine;
 
 namespace Misc
 {
-    public static class Transitions
+    public class Transitions
     {
         public static IEnumerator PanCamera(Camera camera, Vector3 shiftAmount, Action<bool> callback = null,
             float duration = 1f)
@@ -24,9 +25,49 @@ namespace Misc
             callback?.Invoke(true);
         }
 
-        public static IEnumerator FadeAnimation(GameObject tile, FadeDirection fadeDirection,
+        public static IEnumerator SpawnCarparkEffect(GameObject carpark, Action<bool> callback = null)
+        {
+            List<GameObject> tiles = new List<GameObject>();
+            foreach (Transform child in carpark.transform)
+            {
+                tiles.Add(child.gameObject);
+                Material material = child.GetComponent<SpriteRenderer>().material;
+                var color = material.color;
+                color.a = 0f;
+                material.color = color;
+            }
+
+            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
+            foreach (GameObject child in shuffledList)
+            {
+                yield return FadeAnimation(child, FadeDirection.In);
+            }
+
+            callback?.Invoke(true);
+            Debug.Log("Created a new carpark");
+        }
+
+        public static IEnumerator DestroyCarparkEffect(GameObject carpark, Action<bool> callback = null)
+        {
+            List<GameObject> tiles = new List<GameObject>();
+            foreach (Transform child in carpark.transform)
+            {
+                tiles.Add(child.gameObject);
+            }
+
+            List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
+            foreach (GameObject child in shuffledList)
+            {
+                yield return FadeAnimation(child, FadeDirection.Out);
+            }
+
+            callback?.Invoke(true);
+            Debug.Log("Destroyed old carpark");
+        }
+
+        private static IEnumerator FadeAnimation(GameObject tile, FadeDirection fadeDirection,
             Action<bool> callback = null,
-            float duration = 0.025f)
+            float duration = 0.03f)
         {
             float t = 0f;
 
@@ -40,7 +81,7 @@ namespace Misc
             float endingOpacity;
             if (fadeDirection.Equals(FadeDirection.In))
             {
-                startingPos = new Vector3(position.x, position.y - 0.4f, position.z);
+                startingPos = new Vector3(position.x, position.y - 0.2f, position.z);
                 endingPos = new Vector3(position.x, position.y, position.z);
                 startingOpacity = 0.1f;
                 endingOpacity = 1f;
@@ -48,7 +89,7 @@ namespace Misc
             else
             {
                 startingPos = new Vector3(position.x, position.y, position.z);
-                endingPos = new Vector3(position.x, position.y - 0.4f, position.z);
+                endingPos = new Vector3(position.x, position.y - 0.2f, position.z);
                 startingOpacity = 1f;
                 endingOpacity = 0.1f;
             }
