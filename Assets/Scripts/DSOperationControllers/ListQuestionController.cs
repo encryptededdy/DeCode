@@ -67,8 +67,8 @@ namespace DSOperationControllers
                     OperationQueue.ShowOperation(ListOperations.Add);
                     OperationQueue.ShowOperation(ListOperations.CopyDouble);
                     QuestionScreenLogic.ShowNewQuestion("If we need a list that can get larger, we could just implement it by having a massive array (e.g size 2147483647) instead of doing the slow expansion operation every time. Why don't we? Select the answer that is incorrect.",
-                        "It's not possible to leave unused spaces in arrays",
-                        new []{"It would allocate too much memory", "Creating the array initially may be slow", "Any copies that are required will be extremely wasteful"},
+                        "You can't have empty elements",
+                        new []{"Memory usage too high", "Creating the array may be slow", "Algorithms that copy would be slow"},
                         attempts => print($"{attempts} attempts until correct"));
                 }
             ));
