@@ -63,9 +63,6 @@ namespace DSOperationControllers
                 },
                 () =>
                 {
-                    OperationQueue.HideAllOperations();
-                    OperationQueue.ShowOperation(ListOperations.Add);
-                    OperationQueue.ShowOperation(ListOperations.CopyDouble);
                     QuestionScreenLogic.ShowNewQuestion("If we need a list that can get larger, we could just implement it by having a massive array (e.g size 2147483647) instead of doing the slow expansion operation every time. Why don't we? Select the answer that is incorrect.",
                         "You can't have empty elements",
                         new []{"Memory usage too high", "Creating the array may be slow", "Algorithms that copy would be slow"},
@@ -139,9 +136,6 @@ namespace DSOperationControllers
                 },
                 () =>
                 {
-                    OperationQueue.HideAllOperations();
-                    OperationQueue.ShowOperation(ListOperations.Add);
-                    OperationQueue.ShowOperation(ListOperations.CopyDouble);
                     QuestionScreenLogic.ShowNewQuestion("If we perform the same operation (start at 0, add elements until we reach size 100) but we use doubling instead, how many cares do we end up copying?",
                         "1 + 2 + 4 + 8 + ... + 64 = 127 times",
                         new []{"99 times", "100 x 100 = 10000 times", "50 times"},
@@ -293,6 +287,4 @@ namespace DSOperationControllers
             AnswerChecker = answerChecker;
         }
     }
-
-    public delegate void ExecuteBefore();
 }

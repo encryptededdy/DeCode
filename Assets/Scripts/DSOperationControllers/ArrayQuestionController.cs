@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using CustomUI;
 using LevelManager;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ namespace DSOperationControllers
         public Text Description;
         public Button GreenButton;
         public Button OrangeButton;
+
+        public QuestionScreenLogic QuestionScreenLogic;
 
         private ArrayQuestionData _currentQuestion;
         private bool _runArrayAlgoIntro = false;
@@ -39,7 +42,6 @@ namespace DSOperationControllers
                 }
              ));
             
-            // TODO: Removed for testing only...
             _questions.Enqueue(new ArrayQuestionData(
                 "Swap Elements",
                 "Swap the blue car with the red car, leaving all other cars in the same place",
@@ -84,7 +86,15 @@ namespace DSOperationControllers
                 (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
                     VehicleType.garbage_b, VehicleType.garbage_a, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
-                })));
+                }),
+                // TODO: Is this question too hard?
+                () =>
+                {
+                    QuestionScreenLogic.ShowNewQuestion("If we were to implement BubbleSort in code, how many other helper variables do we need to allow it to function, in addition to the input array? Swapped is a variable that records whether two elements were swapped this iteration",
+                        "temp and swapped",
+                        new []{"temp, swapped and a second copy of the array", "Just temp", "A second copy of the array"},
+                        attempts => print($"{attempts} attempts until correct"));
+                }));
             
             _questions.Enqueue(new ArrayQuestionData(
                 "Second iteration",
@@ -108,7 +118,14 @@ namespace DSOperationControllers
                 (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
                     VehicleType.garbage_a, VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
-                })));
+                }),
+                () =>
+                {
+                    QuestionScreenLogic.ShowNewQuestion("Some sorting algorithms are faster than BubbleSort for some types of arrays. However, BubbleSort is the fastest possible (i.e. it is not possible to have a faster algorithm) for at least one type of array. Which type is it?",
+                        "Already sorted array",
+                        new []{"Elements in reverse order", "Sorted but one", "Randomised array"},
+                        attempts => print($"{attempts} attempts until correct"));
+                }));
             
             NextQuestion();
         }
@@ -162,6 +179,8 @@ namespace DSOperationControllers
             GreenButton.onClick.AddListener(StartQuestion);
             
             OrangeButton.gameObject.SetActive(false);
+            
+            _currentQuestion.ExecuteBefore?.Invoke();
         }
 
         private void StartQuestion()
@@ -237,6 +256,16 @@ namespace DSOperationControllers
         public string Description { get; }
         public List<VehicleType> InitialState { get; }
         public AnswerChecker AnswerChecker { get; }
+        public ExecuteBefore ExecuteBefore { get; }
+
+        public ArrayQuestionData(string title, string description, List<VehicleType> initialState, AnswerChecker answerChecker, ExecuteBefore executeBefore)
+        {
+            Title = title;
+            Description = description;
+            InitialState = initialState;
+            AnswerChecker = answerChecker;
+            ExecuteBefore = executeBefore;
+        }
 
         public ArrayQuestionData(string title, string description, List<VehicleType> initialState, AnswerChecker answerChecker)
         {
@@ -248,4 +277,5 @@ namespace DSOperationControllers
     }
 
     public delegate bool AnswerChecker(List<VehicleType> answer);
+    public delegate void ExecuteBefore();
 }

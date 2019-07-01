@@ -23,7 +23,11 @@ namespace CustomUI
             _noAttempts = 0;
             
             NextButton.onClick.RemoveAllListeners();
-            foreach (var optionButton in OptionButtons) optionButton.onClick.RemoveAllListeners();
+            foreach (var optionButton in OptionButtons)
+            {
+                optionButton.onClick.RemoveAllListeners();
+                optionButton.GetComponent<Image>().color = Color.white;
+            }
 
             NextButton.onClick.AddListener(() =>
             {
