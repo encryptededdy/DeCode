@@ -25,7 +25,7 @@ namespace Misc
             callback?.Invoke(true);
         }
 
-        public static IEnumerator SpawnCarparkEffect(GameObject carpark)
+        public static IEnumerator SpawnCarparkEffect(GameObject carpark, Action<bool> callback = null)
         {
             List<GameObject> tiles = new List<GameObject>();
             foreach (Transform child in carpark.transform)
@@ -43,10 +43,11 @@ namespace Misc
                 yield return FadeAnimation(child, FadeDirection.In);
             }
 
+            callback?.Invoke(true);
             Debug.Log("Created a new carpark");
         }
 
-        public static IEnumerator DestroyCarparkEffect(GameObject carpark)
+        public static IEnumerator DestroyCarparkEffect(GameObject carpark, Action<bool> callback = null)
         {
             List<GameObject> tiles = new List<GameObject>();
             foreach (Transform child in carpark.transform)
@@ -60,6 +61,7 @@ namespace Misc
                 yield return FadeAnimation(child, FadeDirection.Out);
             }
 
+            callback?.Invoke(true);
             Debug.Log("Destroyed old carpark");
         }
 

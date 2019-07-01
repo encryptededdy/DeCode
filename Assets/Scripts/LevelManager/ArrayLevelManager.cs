@@ -12,9 +12,9 @@ namespace LevelManager
 
         protected override void OnAwake()
         {
-            StartCoroutine(Transitions.SpawnCarparkEffect(Carpark));
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
+            StartCoroutine(Transitions.SpawnCarparkEffect(Carpark));
         }
 
         public void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)

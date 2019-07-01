@@ -25,6 +25,7 @@ namespace LevelManager
             HeadTile.GetComponent<IsoTransform>().Position = ActiveCarpark[_head].Position;
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
+            StartCoroutine(Transitions.SpawnCarparkEffect(Carpark));
         }
 
         void Update()
