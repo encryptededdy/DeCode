@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
-using Misc;
 using UnityEngine;
 
 namespace LevelManager
@@ -51,7 +50,7 @@ namespace LevelManager
         private IEnumerator CopyVehiclesToNewCarpark(ListCarparkManager newCarparkManager,
             List<IsoTransform> newCarpark, Action<bool> callback)
         {
-            yield return StartCoroutine(Transitions.SpawnCarparkEffect(newCarparkManager.gameObject));
+            yield return StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, newCarparkManager.Decorations));
             if (_currentListCarpark != null)
             {
                 int completed = 0;
@@ -102,8 +101,8 @@ namespace LevelManager
                 yield return new WaitUntil(() => completed == expected);
                 Debug.Log("Finished copying cars");
 
-                yield return Transitions.PanCamera(FindObjectOfType<Camera>(), _shiftAmount);
-                yield return StartCoroutine(Transitions.DestroyCarparkEffect(_currentListCarpark.gameObject));
+                yield return TransitionManager.PanCameraEffect(FindObjectOfType<Camera>(), _shiftAmount);
+                yield return StartCoroutine(TransitionManager.DestroyCarparkEffect(_currentListCarpark.gameObject, _currentListCarpark.Decorations));
                 DestroyImmediate(_currentListCarpark.gameObject);
             }
 

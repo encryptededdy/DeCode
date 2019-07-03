@@ -17,9 +17,11 @@ namespace LevelManager
         public IsoTransform ActiveSpawnTile;
         public IsoTransform ActiveDestroyTile;
         public GameObject Carpark;
+        public GameObject Decorations;
         protected CustomGridGraph.CustomGridGraph GridGraph;
         private Vector3 _spawnPoint;
         private Vector3 _destroyPoint;
+        protected TransitionManager TransitionManager;
 
         // Only using the key as we want thread-safe DSes with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
@@ -30,6 +32,7 @@ namespace LevelManager
 
         void Awake()
         {
+            TransitionManager = gameObject.AddComponent<TransitionManager>();
             _activeVehicles = new ConcurrentDictionary<GameObject, VehicleType>();
             LoadAssets();
             OnAwake();

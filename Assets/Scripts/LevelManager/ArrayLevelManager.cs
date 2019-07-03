@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assets.UltimateIsometricToolkit.Scripts.Core;
-using Misc;
 using UnityEngine;
 
 namespace LevelManager
@@ -14,7 +13,7 @@ namespace LevelManager
         {
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
-            StartCoroutine(Transitions.SpawnCarparkEffect(Carpark));
+            StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations));
         }
 
         public void Spawn(Action<Tuple<VehicleType, GameObject>> callback, VehicleType vehicleType = VehicleType.random)

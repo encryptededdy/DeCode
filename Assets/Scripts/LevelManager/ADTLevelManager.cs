@@ -20,7 +20,7 @@ namespace LevelManager
             HeadTile.SetActive(false);
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
-            StartCoroutine(Transitions.SpawnCarparkEffect(Carpark));
+            StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations));
         }
 
         void Update()
