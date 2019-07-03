@@ -125,7 +125,7 @@ namespace DSOperationControllers
                 case ArrayOperations.Add:
                     LevelManager.Spawn(obj =>
                     {
-                        LevelManager.WriteToArray(obj, operation.Index1, obj2 =>
+                        LevelManager.WriteToArray(obj.Item2, operation.Index1, obj2 =>
                         {
                             code = $"car = {LevelManager.GetArrayState()[operation.Index1]};\n" +
                                    $"array[{operation.Index1}] = car;";
@@ -180,7 +180,7 @@ namespace DSOperationControllers
                 case ArrayOperations.AddSpecific:
                     LevelManager.Spawn(obj =>
                     {
-                        LevelManager.WriteToArray(obj, operation.Index1, Callback, true);
+                        LevelManager.WriteToArray(obj.Item2, operation.Index1, Callback, true);
                     }, operation.VehicleType);
                     break;
                 case ArrayOperations.Swap:

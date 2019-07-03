@@ -28,7 +28,7 @@ namespace LevelManager
             CheckIfCarIsEnteringOrExitingCarpark();
         }
 
-        public void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
+        public void Spawn(Action<Tuple<VehicleType, GameObject>> callback, VehicleType vehicleType = VehicleType.random)
         {
             if (!NumElements.Equals(ActiveCarpark.Count))
             {

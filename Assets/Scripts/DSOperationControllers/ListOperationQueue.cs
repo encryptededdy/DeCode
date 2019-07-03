@@ -131,7 +131,7 @@ namespace DSOperationControllers
                     LevelManager.Spawn(obj =>
                     {
                         print($"Writing to array at {operation.Index1}");
-                        LevelManager.WriteToArray(obj, operation.Index1, obj2 =>
+                        LevelManager.WriteToArray(obj.Item2, operation.Index1, obj2 =>
                         {
                             code = $"car = {LevelManager.GetArrayState()[operation.Index1]};\n" +
                                    $"list[{operation.Index1}] = car;";

@@ -35,7 +35,7 @@ namespace LevelManager
             OnAwake();
         }
 
-        protected IEnumerator Spawn(VehicleType vehicleType, Action<GameObject> callback = null)
+        protected IEnumerator Spawn(VehicleType vehicleType, Action<Tuple<VehicleType, GameObject>> callback = null)
         {
             foreach (var vehicle in _activeVehicles.Keys)
             {
@@ -64,7 +64,7 @@ namespace LevelManager
                 if (_activeVehicles.TryAdd(obj, vehicleType))
                 {
                     _spawnableVehicles.TryRemove(vehicleType, out _);
-                    callback?.Invoke(obj);
+                    callback?.Invoke(new Tuple<VehicleType, GameObject>(vehicleType, obj));
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace LevelManager
                 if (_activeVehicles.TryAdd(obj, vehicleType))
                 {
                     _customSpawnableVehicles.TryRemove(vehicleType, out _);
-                    callback?.Invoke(obj);
+                    callback?.Invoke(new Tuple<VehicleType, GameObject>(vehicleType, obj));
                 }
                 else
                 {
@@ -286,7 +286,12 @@ namespace LevelManager
             }
         }
 
-        protected IEnumerator ResetLevel(Action<bool> callback, bool fast = false)
+        public void ResetLevel(Action<bool> callback, bool fast = false)
+        {
+            StartCoroutine(RemoveAllVehicles(callback, fast));
+        }
+
+        protected IEnumerator RemoveAllVehicles(Action<bool> callback, bool fast = false)
         {
             foreach (GameObject activeVehicle in _activeVehicles.Keys)
             {

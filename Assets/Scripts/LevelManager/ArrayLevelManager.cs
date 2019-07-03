@@ -17,7 +17,7 @@ namespace LevelManager
             StartCoroutine(Transitions.SpawnCarparkEffect(Carpark));
         }
 
-        public void Spawn(Action<GameObject> callback, VehicleType vehicleType = VehicleType.random)
+        public void Spawn(Action<Tuple<VehicleType, GameObject>> callback, VehicleType vehicleType = VehicleType.random)
         {
             StartCoroutine(Spawn(vehicleType, callback));
         }
@@ -85,11 +85,6 @@ namespace LevelManager
         public void Destroy(int index, Action<bool> callback, bool fast = false)
         {
             StartCoroutine(base.Destroy(ConvertTileToPosition(ActiveCarpark[index]), callback, fast));
-        }
-
-        public new void ResetLevel(Action<bool> callback, bool fast = false)
-        {
-            StartCoroutine(base.ResetLevel(callback, fast));
         }
 
         public int GetArraySize()

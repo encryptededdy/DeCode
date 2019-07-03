@@ -1,4 +1,5 @@
 ﻿#if UNITY_EDITOR
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace LevelManager
     [CustomEditor(typeof(QueueLevelManager))]
     public class ArrayLevelEditor : Editor
     {
-        private GameObject _freshSpawn;
+        private Tuple<VehicleType, GameObject>  _freshSpawn;
 
         public override void OnInspectorGUI()
         {
@@ -16,12 +17,16 @@ namespace LevelManager
             QueueLevelManager myScript = (QueueLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
-                myScript.Spawn(obj => { _freshSpawn = obj; });
+                myScript.Spawn(obj =>
+                {
+                    _freshSpawn = obj; 
+                    Debug.Log(_freshSpawn.Item1);
+                });
             }
 
             if (GUILayout.Button("Enqueue"))
             {
-                myScript.Enqueue(_freshSpawn, status =>
+                myScript.Enqueue(_freshSpawn.Item2, status =>
                 {
                     if (status)
                     {
@@ -58,6 +63,11 @@ namespace LevelManager
             if (GUILayout.Button("HideImplementation"))
             {
                 myScript.SetHiddenImplementation(true);
+            }
+            
+            if (GUILayout.Button("ResetLevel"))
+            {
+                myScript.ResetLevel(status => { });
             }
         }
     }
