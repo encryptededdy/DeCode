@@ -24,8 +24,6 @@ namespace DSOperationControllers
             // Hide Logging stuff
             LoggingView.SetActive(false);
             LoggingToggle.onClick.AddListener(ToggleLoggingView);
-
-            _queueProcessingLock = true;
         }
 
         private void ToggleLoggingView()
@@ -62,7 +60,6 @@ namespace DSOperationControllers
         // Callback for when operation is complete
         void Callback(bool _)
         {
-            print("Got callback!");
             // Unlock first
             _queueProcessingLock = false;
             TryExecuteQueue();
@@ -86,7 +83,7 @@ namespace DSOperationControllers
             
             // Have lock, try to do stuff
             var operation = QueuedOperations.Dequeue();
-            
+
             string code;
 
             switch (operation.Operation)
@@ -127,6 +124,13 @@ namespace DSOperationControllers
                     }, operation.Type);
                     break;
                 case QueueOperations.Dequeue:
+                    code = "queue.dequeue();";
+                    if (operation.CodeLine != null)
+                    {
+                        operation.CodeLine.text = code;
+                    }
+                    AppendLog(code);
+
                     LevelManager.Dequeue(Callback); 
                     break;
                 default:
