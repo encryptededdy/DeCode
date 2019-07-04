@@ -8,7 +8,7 @@ namespace LevelManager
     [CustomEditor(typeof(QueueLevelManager))]
     public class ArrayLevelEditor : Editor
     {
-        private Tuple<VehicleType, GameObject>  _freshSpawn;
+        private Tuple<VehicleType, GameObject> _freshSpawn;
 
         public override void OnInspectorGUI()
         {
@@ -19,7 +19,7 @@ namespace LevelManager
             {
                 myScript.Spawn(obj =>
                 {
-                    _freshSpawn = obj; 
+                    _freshSpawn = obj;
                     Debug.Log(_freshSpawn.Item1);
                 });
             }
@@ -64,7 +64,7 @@ namespace LevelManager
             {
                 myScript.SetHiddenImplementation(true);
             }
-            
+
             if (GUILayout.Button("ResetLevel"))
             {
                 myScript.ResetLevel(status => { });

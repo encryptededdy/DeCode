@@ -29,7 +29,7 @@ namespace LevelManager
         private ConcurrentDictionary<VehicleType, GameObject> _customSpawnableVehicles;
 
         protected abstract void OnAwake();
-
+        
         void Awake()
         {
             TransitionManager = gameObject.AddComponent<TransitionManager>();

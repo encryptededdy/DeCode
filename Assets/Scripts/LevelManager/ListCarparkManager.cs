@@ -10,6 +10,7 @@ namespace LevelManager
         public List<IsoTransform> Carparks;
         public List<IsoTransform> CarparkEntrance;
         public GameObject Decorations;
+        public GameObject GroundTiles;
 
         public Sprite CarparkTile;
         public List<Sprite> CarparkEntranceTile;

@@ -50,7 +50,8 @@ namespace LevelManager
         private IEnumerator CopyVehiclesToNewCarpark(ListCarparkManager newCarparkManager,
             List<IsoTransform> newCarpark, Action<bool> callback)
         {
-            yield return StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, newCarparkManager.Decorations));
+            yield return StartCoroutine(TransitionManager.SpawnCarparkEffect(newCarparkManager.GroundTiles,
+                newCarparkManager.Decorations));
             if (_currentListCarpark != null)
             {
                 int completed = 0;
@@ -102,7 +103,8 @@ namespace LevelManager
                 Debug.Log("Finished copying cars");
 
                 yield return TransitionManager.PanCameraEffect(FindObjectOfType<Camera>(), _shiftAmount);
-                yield return StartCoroutine(TransitionManager.DestroyCarparkEffect(_currentListCarpark.gameObject, _currentListCarpark.Decorations));
+                yield return StartCoroutine(TransitionManager.DestroyCarparkEffect(_currentListCarpark.GroundTiles,
+                    _currentListCarpark.Decorations));
                 DestroyImmediate(_currentListCarpark.gameObject);
             }
 

@@ -23,7 +23,7 @@ namespace LevelManager
             StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations));
         }
 
-        void Update()
+        private void Update()
         {
             CheckIfCarIsEnteringOrExitingCarpark();
         }

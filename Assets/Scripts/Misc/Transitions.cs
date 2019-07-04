@@ -8,20 +8,22 @@ namespace Misc
 {
     public class TransitionManager : MonoBehaviour
     {
-        public IEnumerator PanCameraEffect(Camera camera, Vector3 shiftAmount, Action<bool> callback = null,
+        public IEnumerator PanCameraEffect(Camera sceneCamera, Vector3 shiftAmount, Action<bool> callback = null,
             float duration = 0.5f)
         {
             float t = 0.0f;
-            Vector3 cameraPos = camera.GetComponent<IsoTransform>().Position;
+            Vector3 cameraPos = sceneCamera.GetComponent<IsoTransform>().Position;
             Vector3 startingPos = new Vector3(cameraPos.x, cameraPos.y, cameraPos.z);
 
             while (t < 1.0f)
             {
                 t += Time.deltaTime * (Time.timeScale / duration);
-                camera.GetComponent<IsoTransform>().Position = Vector3.Lerp(startingPos, startingPos + shiftAmount, t);
+                sceneCamera.GetComponent<IsoTransform>().Position =
+                    Vector3.Lerp(startingPos, startingPos + shiftAmount, t);
                 yield return 0;
             }
 
+            Debug.Log("Pan Camera");
             callback?.Invoke(true);
         }
 
@@ -83,8 +85,10 @@ namespace Misc
         }
 
         public IEnumerator DestroyCarparkEffect(GameObject carpark, GameObject decorations,
-            Action<bool> callback = null)
+            Action<bool> callback = null, int tilesPerIteration = 8)
         {
+            callback?.Invoke(true);
+
             foreach (Transform child in decorations.transform)
             {
                 StartCoroutine(FadeAnimation(child.gameObject, FadeDirection.Out, false, null, 1f));
@@ -97,9 +101,30 @@ namespace Misc
             }
 
             List<GameObject> shuffledList = Randomiser.ShuffleList(tiles);
-            foreach (GameObject child in shuffledList)
+
+            for (int i = 0; i < shuffledList.Count; i = i + tilesPerIteration)
             {
-                yield return FadeAnimation(child, FadeDirection.Out, true);
+                int completed = 0;
+                int expected = tilesPerIteration;
+                for (int j = 0; j < tilesPerIteration; j++)
+                {
+                    if (i + j < shuffledList.Count)
+                    {
+                        StartCoroutine(FadeAnimation(shuffledList[i + j], FadeDirection.Out, true, status =>
+                        {
+                            if (status)
+                            {
+                                completed++;
+                            }
+                        }));
+                    }
+                    else
+                    {
+                        expected--;
+                    }
+                }
+
+                yield return new WaitUntil(() => completed == expected);
             }
 
             callback?.Invoke(true);
@@ -160,7 +185,7 @@ namespace Misc
             callback?.Invoke(true);
         }
 
-        public enum FadeDirection
+        private enum FadeDirection
         {
             In,
             Out
