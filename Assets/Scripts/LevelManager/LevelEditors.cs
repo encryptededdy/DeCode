@@ -24,6 +24,48 @@ namespace LevelManager
                 });
             }
 
+            if (GUILayout.Button("BugRepro"))
+            {
+                myScript.Dequeue(status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully popped");
+                        myScript.Dequeue(status2 =>
+                        {
+                            if (status2)
+                            {
+                                Debug.Log("Successfully popped 2");
+                                myScript.Spawn(obj =>
+                                {    
+                                    myScript.Enqueue(obj.Item2, status3 =>
+                                    {
+                                        if (status3)
+                                        {
+                                            Debug.Log("Successfully pushed");
+                                        }
+                                        else
+                                        {
+                                            Debug.Log("Failed to push");
+                                        }
+                                    });
+                                });
+                            }
+                            else
+                            {
+                                Debug.Log("Failed to pop");
+                            }
+                        });
+
+                    }
+                    else
+                    {
+                        Debug.Log("Failed to pop");
+                    }
+                });
+
+            }
+
             if (GUILayout.Button("Enqueue"))
             {
                 myScript.Enqueue(_freshSpawn.Item2, status =>
