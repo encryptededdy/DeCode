@@ -30,14 +30,17 @@ namespace Misc
         public IEnumerator SpawnCarparkEffect(GameObject carpark, GameObject decorations, Action<bool> callback = null,
             int tilesPerIteration = 8)
         {
-            foreach (Transform child in decorations.transform)
+            if (decorations != null)
             {
-                Material material = child.GetComponent<SpriteRenderer>().material;
-                var color = material.color;
-                color.a = 0f;
-                material.color = color;
+                foreach (Transform child in decorations.transform)
+                {
+                    Material material = child.GetComponent<SpriteRenderer>().material;
+                    var color = material.color;
+                    color.a = 0f;
+                    material.color = color;
+                }
             }
-
+            
             List<GameObject> tiles = new List<GameObject>();
             foreach (Transform child in carpark.transform)
             {
@@ -75,9 +78,12 @@ namespace Misc
                 yield return new WaitUntil(() => completed == expected);
             }
 
-            foreach (Transform child in decorations.transform)
+            if (decorations != null)
             {
-                StartCoroutine(FadeAnimation(child.gameObject, FadeDirection.In, false, null, 1f));
+                foreach (Transform child in decorations.transform)
+                {
+                    StartCoroutine(FadeAnimation(child.gameObject, FadeDirection.In, false, null, 1f));
+                }
             }
 
             callback?.Invoke(true);
