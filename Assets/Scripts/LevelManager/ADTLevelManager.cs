@@ -20,7 +20,12 @@ namespace LevelManager
             HeadTile.SetActive(false);
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
-            StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations));
+            StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations,
+                (status) =>
+                {
+                    FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph(); 
+                    
+                }));
         }
 
         private void Update()

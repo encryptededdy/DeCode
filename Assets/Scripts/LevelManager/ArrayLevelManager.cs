@@ -13,7 +13,12 @@ namespace LevelManager
         {
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
-            StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations));
+            StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations,
+                (status) =>
+                {
+                    FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph(); 
+                    
+                }));
         }
 
         public void Spawn(Action<Tuple<VehicleType, GameObject>> callback, VehicleType vehicleType = VehicleType.random)
