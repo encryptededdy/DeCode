@@ -18,11 +18,11 @@ namespace LevelManager
         {
             if (NumElements != 0)
             {
+                NumElements--;
                 StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[NumElements - 1]), status =>
                 {
                     if (status)
                     {
-                        NumElements--;
                         if (NumElements == 0)
                         {
                             HeadTile.SetActive(false);
