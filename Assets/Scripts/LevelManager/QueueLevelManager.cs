@@ -48,11 +48,11 @@ namespace LevelManager
 
         private IEnumerator CircularDequeue(Action<bool> callback)
         {
+            NumElements--;
             yield return StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[_head]), status =>
             {
                 if (status)
                 {
-                    NumElements--;
                     if (NumElements == 0)
                     {
                         _head = 0;
@@ -76,11 +76,11 @@ namespace LevelManager
 
         private IEnumerator LinkedDequeue(Action<bool> callback)
         {
+            NumElements--;
             StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[_head]), status =>
             {
                 if (status)
                 {
-                    NumElements--;
                     if (NumElements == 0)
                     {
                         HeadTile.SetActive(false);
@@ -96,7 +96,7 @@ namespace LevelManager
             {
                 if (GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[i]), out GameObject vehicle))
                 {
-                    yield return StartCoroutine(MoveTo(vehicle, ConvertTileToPosition(ActiveCarpark[i - 1]),
+                    yield return MoveTo(vehicle, ConvertTileToPosition(ActiveCarpark[i - 1]),
                         status =>
                         {
                             if (!status)
@@ -104,7 +104,7 @@ namespace LevelManager
                                 Debug.Log("Failed to copy vehicles");
                                 callback(false);
                             }
-                        }));
+                        });
                 }
             }
 
