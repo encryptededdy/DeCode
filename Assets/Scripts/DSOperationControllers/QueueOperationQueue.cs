@@ -60,6 +60,7 @@ namespace DSOperationControllers
         // Callback for when operation is complete
         void Callback(bool _)
         {
+            print("Got Callback");
             // Unlock first
             _queueProcessingLock = false;
             TryExecuteQueue();
