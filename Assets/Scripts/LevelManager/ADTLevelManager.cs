@@ -21,11 +21,7 @@ namespace LevelManager
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
             StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations,
-                (status) =>
-                {
-                    FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph(); 
-                    
-                }));
+                (status) => { FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph(); }));
         }
 
         private void Update()
@@ -69,6 +65,13 @@ namespace LevelManager
         public void SetHiddenImplementation(bool hidden)
         {
             Building.SetActive(!hidden);
+        }
+
+        public new void ResetLevel(Action<bool> callback, bool fast = false)
+        {
+            NumElements = 0;
+            HeadTile.SetActive(false);
+            base.ResetLevel(callback, fast);
         }
 
         public int GetMaxSize()
