@@ -14,6 +14,8 @@ namespace DSOperationControllers
         public Button GreenButton;
         public Button OrangeButton;
 
+        public SmoothCameraMover CameraMover;
+
         public QuestionScreenLogic QuestionScreenLogic;
         private readonly Queue<QueueStepData> _algorithmSteps = new Queue<QueueStepData>();
 
@@ -33,6 +35,7 @@ namespace DSOperationControllers
                 },
                 queue =>
                 {
+                    CameraMover.ZoomEntrance();
                     OrangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     queue.AppendLog("// Enqueue A, B then C");
@@ -57,6 +60,7 @@ namespace DSOperationControllers
                 },
                 queue =>
                 {
+                    CameraMover.ZoomExit();
                     OrangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     queue.AppendLog("// Dequeue returns A");
@@ -68,6 +72,7 @@ namespace DSOperationControllers
                 "Now let's take a look at how a naive implementation of a queue could work, using an array. Try enqueuing a vehicle, then dequeuing one, and pay attention to what happens.",
                 queue =>
                 {
+                    CameraMover.ZoomNormal();
                     queue.SetHidden(true);
                     GreenButton.gameObject.SetActive(true);
                     ManualControls.SetActive(true);
@@ -103,6 +108,7 @@ namespace DSOperationControllers
                 },
                 queue =>
                 {
+                    CameraMover.ZoomNormalMagnified();
                     OrangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     queue.AppendLog("// Enqueue D, then dequeue.");
