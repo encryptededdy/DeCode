@@ -26,7 +26,7 @@ namespace DSOperationControllers
         private void SetupStackIntro()
         {
             _algorithmSteps.Enqueue(new StackStepData("Pushing",
-                "Let's pushing 3 vehicles - A, B, then C. We do this by calling \"push\" on the queue",
+                "Let's pushing 3 vehicles - A, B, then C. We do this by calling \"push\" on the stack",
                 queue =>
                 {
                     GreenButton.gameObject.SetActive(false);
@@ -35,10 +35,10 @@ namespace DSOperationControllers
                 },
                 queue =>
                 {
-                    CameraMover.ZoomEntrance();
+                    CameraMover.ZoomEntranceStack();
                     OrangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
-                    queue.AppendLog("// Enqueue A, B then C");
+                    queue.AppendLog("// Push A, B then C");
                     // Enqueue
                     queue.QueueOperation(new QueuedStackOperation(StackOperations.PushSpecific, VehicleType.garbage_a, null));
                     queue.QueueOperation(new QueuedStackOperation(StackOperations.PushSpecific, VehicleType.garbage_b, null));

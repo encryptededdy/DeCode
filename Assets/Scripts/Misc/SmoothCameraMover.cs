@@ -40,8 +40,8 @@ public class SmoothCameraMover : MonoBehaviour
 
     public void ZoomNormal()
     {
-        _targetPosition = new Vector3(0, 2, 2);
-        _targetZoom = 7f;
+        _targetPosition = new Vector3(0, 0, 0);
+        _targetZoom = 6f;
     }
     
     public void ZoomNormalMagnified()
@@ -56,4 +56,9 @@ public class SmoothCameraMover : MonoBehaviour
         _targetZoom = 3f;
     }
 
+    public void ZoomEntranceStack()
+    {
+        _targetPosition = new Vector3(-4, 1, 1);
+        _targetZoom = 3f;
+    }
 }
