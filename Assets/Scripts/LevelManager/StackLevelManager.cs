@@ -19,7 +19,7 @@ namespace LevelManager
             if (NumElements != 0)
             {
                 NumElements--;
-                StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[NumElements - 1]), status =>
+                StartCoroutine(Destroy(ConvertTileToPosition(ActiveCarpark[NumElements]), status =>
                 {
                     if (status)
                     {

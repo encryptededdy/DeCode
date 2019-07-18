@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace LevelManager
 {
-    [CustomEditor(typeof(QueueLevelManager))]
-    public class ArrayLevelEditor : Editor
+    [CustomEditor(typeof(StackLevelManager))]
+    public class LevelEditor : Editor
     {
         private Tuple<VehicleType, GameObject> _freshSpawn;
 
@@ -14,7 +14,7 @@ namespace LevelManager
         {
             DrawDefaultInspector();
 
-            QueueLevelManager myScript = (QueueLevelManager) target;
+            StackLevelManager myScript = (StackLevelManager) target;
             if (GUILayout.Button("Spawn"))
             {
                 myScript.Spawn(obj =>
@@ -24,80 +24,9 @@ namespace LevelManager
                 });
             }
 
-            if (GUILayout.Button("BugRepro"))
+            if (GUILayout.Button("Push"))
             {
-                myScript.Dequeue(status =>
-                {
-                    if (status)
-                    {
-                        Debug.Log("Successfully popped");
-                        myScript.Dequeue(status2 =>
-                        {
-                            if (status2)
-                            {
-                                Debug.Log("Successfully popped 2");
-                                myScript.Spawn(obj =>
-                                {    
-                                    myScript.Enqueue(obj.Item2, status3 =>
-                                    {
-                                        if (status3)
-                                        {
-                                            Debug.Log("Successfully pushed");
-                                        }
-                                        else
-                                        {
-                                            Debug.Log("Failed to push");
-                                        }
-                                    });
-                                });
-                            }
-                            else
-                            {
-                                Debug.Log("Failed to pop");
-                            }
-                        });
-
-                    }
-                    else
-                    {
-                        Debug.Log("Failed to pop");
-                    }
-                });
-
-            }
-            
-            if (GUILayout.Button("BugRepro2"))
-            {
-                        myScript.ResetLevel(status2 =>
-                        {
-                            if (status2)
-                            {
-                                Debug.Log("Successfully popped 2");
-                                myScript.Spawn(obj =>
-                                {    
-                                    myScript.Enqueue(obj.Item2, status3 =>
-                                    {
-                                        if (status3)
-                                        {
-                                            Debug.Log("Successfully pushed");
-                                        }
-                                        else
-                                        {
-                                            Debug.Log("Failed to push");
-                                        }
-                                    });
-                                });
-                            }
-                            else
-                            {
-                                Debug.Log("Failed to pop");
-                            }
-                        });
-            }
-
-            if (GUILayout.Button("Enqueue"))
-            {
-                myScript.Enqueue(_freshSpawn.Item2, status =>
+                myScript.Push(_freshSpawn.Item2, status =>
                 {
                     if (status)
                     {
@@ -110,9 +39,9 @@ namespace LevelManager
                 });
             }
 
-            if (GUILayout.Button("Dequeue"))
+            if (GUILayout.Button("Pop"))
             {
-                myScript.Dequeue(status =>
+                myScript.Pop(status =>
                 {
                     if (status)
                     {
@@ -124,12 +53,6 @@ namespace LevelManager
                     }
                 });
             }
-
-            if (GUILayout.Button("Circular"))
-            {
-                myScript.SetCircularQueue(true);
-            }
-
 
             if (GUILayout.Button("HideImplementation"))
             {
