@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using CustomUI;
 using LevelManager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace DSOperationControllers
@@ -199,7 +200,7 @@ namespace DSOperationControllers
             {
                 GreenButton.onClick.RemoveAllListeners();
                 OrangeButton.onClick.RemoveAllListeners();
-                // TODO: Next Level
+                SceneManager.LoadScene("Stack");
                 return;
             }
 

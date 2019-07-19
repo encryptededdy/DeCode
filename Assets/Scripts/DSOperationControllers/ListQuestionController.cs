@@ -3,6 +3,7 @@ using System.Linq;
 using CustomUI;
 using LevelManager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace DSOperationControllers
@@ -149,7 +150,7 @@ namespace DSOperationControllers
 
         private void NextLevel()
         {
-            // TODO: Load the queue level...
+            SceneManager.LoadScene("Queue");
         }
 
         private void NextQuestion()
