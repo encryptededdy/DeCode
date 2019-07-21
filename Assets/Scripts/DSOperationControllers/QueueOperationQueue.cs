@@ -92,6 +92,15 @@ namespace DSOperationControllers
                 case QueueOperations.Enqueue:
                     LevelManager.Spawn(obj =>
                     {
+                        if (obj == null)
+                        {
+                            if (operation.CodeLine != null)
+                            {
+                                operation.CodeLine.text = "Queue is full!";
+                            }
+                            Callback(true);
+                            return;
+                        }
                         code = $"car = {obj.Item1};\n" +
                                $"queue.enqueue(car);";
                         if (operation.CodeLine != null)

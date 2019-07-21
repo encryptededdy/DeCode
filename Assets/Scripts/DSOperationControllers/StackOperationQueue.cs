@@ -87,6 +87,15 @@ namespace DSOperationControllers
                 case StackOperations.Push:
                     LevelManager.Spawn(obj =>
                     {
+                        if (obj == null)
+                        {
+                            if (operation.CodeLine != null)
+                            {
+                                operation.CodeLine.text = "Stack is full!";
+                            }
+                            Callback(true);
+                            return;
+                        }
                         code = $"car = {obj.Item1};\n" +
                                $"queue.push(car);";
                         if (operation.CodeLine != null)

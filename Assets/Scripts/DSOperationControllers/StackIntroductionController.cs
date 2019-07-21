@@ -45,7 +45,71 @@ namespace DSOperationControllers
                     queue.QueueOperation(new QueuedStackOperation(StackOperations.PushSpecific, VehicleType.garbage_b, null));
                     queue.QueueOperation(new QueuedStackOperation(StackOperations.PushSpecific, VehicleType.garbage_c, null));
                 }));
+            _algorithmSteps.Enqueue(new StackStepData("Popping",
+                "We can now pop - we can see that X is popped since it was the last vehicle added (remember - last in, first out.)",
+                queue =>
+                {
+                    QuestionScreenLogic.ShowNewQuestion("We pushed A, then B, then C just before. Now if we pop, what element do we get back? Recall that a Stack is FILO (First-in, Last-out)",
+                        "C",
+                        new []{"A", "B", "None"},
+                        attempts =>
+                        {
+                            Description.text =
+                                "We can now pop - we can see that C is popped since it was the last vehicle added (remember - last in, first out.)";
+                            print($"{attempts} attempts until correct");
+                        });
 
+                    GreenButton.gameObject.SetActive(false);
+                    ManualControls.SetActive(false);
+                    OrangeButton.gameObject.SetActive(true);
+                },
+                queue =>
+                {
+                    CameraMover.ZoomEntranceStack();
+                    OrangeButton.gameObject.SetActive(false);
+                    queue.QueueFinishedListener = ReEnableGreenButton;
+                    queue.AppendLog("// Dequeue returns A");
+                    // Enqueue
+                    queue.QueueOperation(new QueuedStackOperation(StackOperations.Pop, null));
+                }));
+                        
+            _algorithmSteps.Enqueue(new StackStepData("Try yourself",
+                "Now let's take a look at how an array-based implementation of a stack could work, using an array. Try pushing a vehicle, then popping one, and pay attention to what happens.",
+                queue =>
+                {
+                    CameraMover.ZoomNormal();
+                    queue.SetHidden(true);
+                    GreenButton.gameObject.SetActive(true);
+                    ManualControls.SetActive(true);
+                    OrangeButton.gameObject.SetActive(false);
+                },
+                queue =>
+                {
+                    // Nothing.
+                }));
+            
+            _algorithmSteps.Enqueue(new StackStepData("Try yourself",
+                "Now let's take a look at how an array-based implementation of a stack could work, using an array. Try pushing a vehicle, then popping one, and pay attention to what happens.",
+                queue =>
+                {
+                    QuestionScreenLogic.ShowNewQuestion("Now let's consider performance. If we assume the size of the stack never exceeds the size of the array (i.e. we never have to expand the array), can we make this stack implementation any faster?",
+                        "No",
+                        new []{"Yes, Pop can be faster", "Yes, Push can be faster", "Yes, Push & Pop can be faster"},
+                        attempts =>
+                        {
+                            print($"{attempts} attempts until correct");
+                        });
+
+                    CameraMover.ZoomNormal();
+                    queue.SetHidden(true);
+                    GreenButton.gameObject.SetActive(true);
+                    ManualControls.SetActive(true);
+                    OrangeButton.gameObject.SetActive(false);
+                },
+                queue =>
+                {
+                    // Nothing.
+                }));
 
         }
 
