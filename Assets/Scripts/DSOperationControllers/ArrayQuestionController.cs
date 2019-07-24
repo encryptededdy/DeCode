@@ -67,8 +67,7 @@ namespace DSOperationControllers
                     VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
                 })));
                         
-            NextQuestion();
-            
+            OperationQueue.LevelManager.StartLevel(obj => NextQuestion());
         }
 
         public void AlgorithmIntroductionComplete()

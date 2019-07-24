@@ -176,7 +176,7 @@ namespace DSOperationControllers
         {
             SetupQueueIntro();
             OperationQueue.ResetLog(); // Reset log so user doesn't have to aimlessly scroll
-            NextStep();
+            OperationQueue.LevelManager.StartLevel(obj => NextStep());
         }
         
         private void ReEnableGreenButton()
