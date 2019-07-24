@@ -25,6 +25,7 @@ namespace DSOperationControllers
                 queue =>
                 {
                     _greenButton.gameObject.SetActive(false);
+                    queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.Reset));
                     queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 0, VehicleType.garbage_b));
                     queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 1, VehicleType.garbage_a));
                     queue.QueueOperation(new QueuedArrayOperation(ArrayOperations.AddSpecific, 2, VehicleType.garbage_e));

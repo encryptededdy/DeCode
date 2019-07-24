@@ -57,7 +57,7 @@ namespace DSOperationControllers
             
             _questions.Enqueue(new ArrayQuestionData(
                 "Sort Array",
-                "Sort the array according to car type, ascending - Ambulance (index 0), Police, Taxi, Silver, Black.",
+                "Sort the array according to car type, ascending - Ambulance (index 0), Police, Yellow Taxi, Silver, Black.",
                 new List<VehicleType>()
                 {
                     VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
