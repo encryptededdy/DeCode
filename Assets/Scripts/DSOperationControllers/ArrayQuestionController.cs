@@ -57,7 +57,7 @@ namespace DSOperationControllers
             
             _questions.Enqueue(new ArrayQuestionData(
                 "Sort Array",
-                "Sort the array according to car type, ascending - Ambulance, Police, Taxi, Silver, Black.",
+                "Sort the array according to car type, ascending - Ambulance (index 0), Police, Taxi, Silver, Black.",
                 new List<VehicleType>()
                 {
                     VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
@@ -122,9 +122,9 @@ namespace DSOperationControllers
                 }),
                 () =>
                 {
-                    QuestionScreenLogic.ShowNewQuestion("Some sorting algorithms are faster than BubbleSort for some types of arrays. However, BubbleSort is the fastest possible (i.e. it is not possible to have a faster algorithm) for at least one type of array. Which type is it?",
-                        "Already sorted array",
-                        new []{"Elements in reverse order", "Sorted but one", "Randomised array"},
+                    QuestionScreenLogic.ShowNewQuestion("Given arrays of the same length, which type of array would take the maximum number of iterations (i.e. the slowest) for BubbleSort to sort?",
+                        "Reverse sorted array",
+                        new []{"Already sorted array", "Sorted but one", "Array with duplicate values"},
                         attempts => print($"{attempts} attempts until correct"));
                 }));
             

@@ -64,7 +64,7 @@ namespace DSOperationControllers
                 },
                 () =>
                 {
-                    QuestionScreenLogic.ShowNewQuestion("If we need a list that can get larger, we could just implement it by having a massive array (e.g size 2147483647) instead of doing the slow expansion operation every time. Why don't we? Select the answer that is incorrect.",
+                    QuestionScreenLogic.ShowNewQuestion("If we need a list that can get larger, we could just implement it by having a massive array (e.g size 2147483647) instead of doing the slow expansion operation every time. Why don't we? - Here are four potential reasons, three of which are valid. Select the invalid reason.",
                         "You can't have empty elements",
                         new []{"Memory usage too high", "Creating the array may be slow", "Algorithms that copy would be slow"},
                         attempts => print($"{attempts} attempts until correct"));
@@ -119,7 +119,7 @@ namespace DSOperationControllers
             
             _questions.Enqueue(new ListQuestionData(
                 "Expand and Add Again",
-                "Now, add another 3 vehicles (sequentially, 5 total). We can see that the doubling method is much more efficient, as it avoids overusing the expensive copying operation.",
+                "Now, add another 3 vehicles (sequentially, to indices 2, 3, 4). We can see that the doubling method is much more efficient, as it avoids overusing the expensive copying operation.",
                 new List<VehicleType>()
                 {
                     VehicleType.empty, VehicleType.empty
@@ -137,7 +137,7 @@ namespace DSOperationControllers
                 },
                 () =>
                 {
-                    QuestionScreenLogic.ShowNewQuestion("If we perform the same operation (start at 0, add elements until we reach size 100) but we use doubling instead, how many cares do we end up copying?",
+                    QuestionScreenLogic.ShowNewQuestion("If we perform the same operation (start at 0, add elements until we reach size 100) but we use doubling instead, how many cars do we end up copying?",
                         "1 + 2 + 4 + 8 + ... + 64 = 127 times",
                         new []{"99 times", "100 x 100 = 10000 times", "50 times"},
                         attempts => print($"{attempts} attempts until correct"));

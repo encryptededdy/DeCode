@@ -111,8 +111,7 @@ namespace DSOperationControllers
             // Callback for when operation is complete
             void Callback(bool _)
             {
-                print("Got callback!");
-                
+                Debug.Log("Got write to array callback");
                 // Unlock first
                 _queueProcessingLock = false;
                 TryExecuteQueue();
@@ -123,10 +122,14 @@ namespace DSOperationControllers
             switch (operation.Operation)
             {
                 case ArrayOperations.Add:
+                    Debug.Log("Adding car");
                     LevelManager.Spawn(obj =>
                     {
+                        Debug.Log("Got spawn callback");
+                        if (obj == null) return;
                         LevelManager.WriteToArray(obj.Item2, operation.Index1, obj2 =>
                         {
+                            Debug.Log("Writing to array");
                             code = $"car = {LevelManager.GetArrayState()[operation.Index1]};\n" +
                                    $"array[{operation.Index1}] = car;";
                             if (operation.CodeLine != null)

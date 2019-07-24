@@ -33,10 +33,10 @@ namespace DSOperationControllers
                     GreenButton.gameObject.SetActive(false);
                     ManualControls.SetActive(false);
                     OrangeButton.gameObject.SetActive(true);
+                    CameraMover.ZoomEntrance();
                 },
                 queue =>
                 {
-                    CameraMover.ZoomEntrance();
                     OrangeButton.gameObject.SetActive(false);
                     queue.QueueFinishedListener = ReEnableGreenButton;
                     queue.AppendLog("// Enqueue A, B then C");
