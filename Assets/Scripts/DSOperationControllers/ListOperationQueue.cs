@@ -77,6 +77,7 @@ namespace DSOperationControllers
         // Call if the CarPark size changes
         public void UpdateSize(int size)
         {
+            print($"Update size to {size}");
             // var size = LevelManager.GetArraySize() - 1;
             OperationControllers.ForEach(obj =>
             {
@@ -175,6 +176,7 @@ namespace DSOperationControllers
                     break;
                 case ListOperations.Reset:
                     LevelManager.ResetLevel(Callback);
+                    UpdateSize(LevelManager.GetArraySize());
                     break;
                 case ListOperations.SetSize:
                     LevelManager.CreateNewCarpark(operation.Index1, Callback);

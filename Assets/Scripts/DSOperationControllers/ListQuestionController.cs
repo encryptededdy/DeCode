@@ -72,7 +72,7 @@ namespace DSOperationControllers
             ));
             
             _questions.Enqueue(new ListQuestionData(
-                "Expand and Add Again^2",
+                "Expand and Add Again 2",
                 "Add 1 more vehicle. To do this, you need to extend the array by 1 again.",
                 new List<VehicleType>()
                 {
@@ -158,12 +158,13 @@ namespace DSOperationControllers
             if (_questions.Count == 0)
             {
                 Title.text = "Lists complete!";
-                Description.text = "Lorem Ipsum...";
+                Description.text = "Click Start to continue onto Queues";
                 GreenButton.gameObject.SetActive(true);
                 GreenButton.GetComponentInChildren<Text>().text = "Start";
                 GreenButton.onClick.RemoveAllListeners();
                 GreenButton.onClick.AddListener(NextLevel);
                 OrangeButton.gameObject.SetActive(false);
+                return;
             }
 
             _currentQuestion = _questions.Dequeue();

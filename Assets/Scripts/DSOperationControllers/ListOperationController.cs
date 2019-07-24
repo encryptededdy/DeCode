@@ -36,6 +36,11 @@ namespace DSOperationControllers
                     ExecuteOperationButton.gameObject.SetActive(false);
                     CodePreviewView.text = "Max array size reached";
                 }
+                else
+                {
+                    ExecuteOperationButton.gameObject.SetActive(true);
+                    CodePreviewView.text = "";
+                }
                 
                 if (IndexDropdown != null)
                 {

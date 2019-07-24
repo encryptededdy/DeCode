@@ -158,7 +158,7 @@ namespace DSOperationControllers
                     GreenButton.onClick.RemoveAllListeners();
                     GreenButton.onClick.AddListener(NextLevel);
                     OrangeButton.gameObject.SetActive(false);
-                    break;
+                    return;
             }
 
             _currentQuestion = _questions.Dequeue();
