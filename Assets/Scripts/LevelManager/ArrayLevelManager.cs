@@ -62,6 +62,11 @@ namespace LevelManager
 
         public void CopyFromIndexToIndex(int fromIndex, int toIndex, Action<bool> callback)
         {
+            if (fromIndex == toIndex)
+            {
+                callback?.Invoke(true);
+                return;
+            }
             if (GetVehicleAtPosition(ConvertTileToPosition(ActiveCarpark[fromIndex]), out GameObject vehicle))
             {
                 GameObject clone = Instantiate(vehicle);
