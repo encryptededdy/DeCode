@@ -13,11 +13,24 @@ namespace LevelManager
         {
             SetNewSpawnPoint(ActiveSpawnTile);
             SetNewDestroyPoint(ActiveDestroyTile);
+        }
+        
+        public void StartLevel(Action<bool> callback)
+        {
+            Carpark.SetActive(true);
+            Decorations.SetActive(true);
             StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations,
-                (status) =>
+                status =>
                 {
-                    FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph(); 
-                    
+                    if (status)
+                    {
+                        FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph();
+                        callback(true);
+                    }
+                    else
+                    {
+                        callback(false);
+                    }
                 }));
         }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LevelManager
 {
-    [CustomEditor(typeof(StackLevelManager))]
+    [CustomEditor(typeof(QueueLevelManager))]
     public class LevelEditor : Editor
     {
         private Tuple<VehicleType, GameObject> _freshSpawn;
@@ -14,7 +14,23 @@ namespace LevelManager
         {
             DrawDefaultInspector();
 
-            StackLevelManager myScript = (StackLevelManager) target;
+            QueueLevelManager myScript = (QueueLevelManager) target;
+            
+            if (GUILayout.Button("StartLevel"))
+            {
+                myScript.StartLevel(status =>
+                {
+                    if (status)
+                    {
+                        Debug.Log("Successfully start level");
+                    }
+                    else
+                    {
+                        Debug.Log("Failed to start level");
+                    }
+                });
+            }
+            
             if (GUILayout.Button("Spawn"))
             {
                 myScript.Spawn(obj =>
@@ -26,7 +42,7 @@ namespace LevelManager
 
             if (GUILayout.Button("Push"))
             {
-                myScript.Push(_freshSpawn.Item2, status =>
+                myScript.Enqueue(_freshSpawn.Item2, status =>
                 {
                     if (status)
                     {
@@ -41,7 +57,7 @@ namespace LevelManager
 
             if (GUILayout.Button("Pop"))
             {
-                myScript.Pop(status =>
+                myScript.Dequeue(status =>
                 {
                     if (status)
                     {
