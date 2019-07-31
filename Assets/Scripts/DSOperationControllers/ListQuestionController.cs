@@ -64,9 +64,10 @@ namespace DSOperationControllers
                 },
                 () =>
                 {
-                    QuestionScreenLogic.ShowNewQuestion("If we need a list that can get larger, we could just implement it by having a massive array (e.g size 2147483647) instead of doing the slow expansion operation every time. Why don't we? - Here are four potential reasons, three of which are valid. Select the invalid reason.",
-                        "You can't have empty elements",
-                        new []{"Memory usage too high", "Creating the array may be slow", "Algorithms that copy would be slow"},
+                    QuestionScreenLogic.ShowNewQuestion("If we need a list that can get larger, we could just implement it by having a massive array (e.g size 2147483647) instead of doing the slow expansion operation every time. What is one reason why we might not?.",
+                        "High memory usage",
+                        new []{"Slow insertion performance", "Slow retrieval performance", "Hard to sort"},
+                        "Correct - we don't use a massive array since it would use up too much memory, especially if we aren't using the full size.",
                         attempts => print($"{attempts} attempts until correct"));
                 }
             ));
@@ -113,6 +114,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("If we have a list that starts at size 0, and we add elements one-by-one until we reach size 100, how many cars do we end up having to perform the (relatively slow) copy operation on?",
                         "1 + 2 + 3 + ... + 99 = 4950 times",
                         new []{"100 times", "99 times", "101 times"},
+                        "Correct. We have to copy one car the going from 1 -> 2, two cars from 2 -> 3 and so on and so forth.",
                         attempts => print($"{attempts} attempts until correct"));
                 }
             ));
@@ -140,6 +142,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("If we perform the same operation (start at 0, add elements until we reach size 100) but we use doubling instead, how many cars do we end up copying?",
                         "1 + 2 + 4 + 8 + ... + 64 = 127 times",
                         new []{"99 times", "100 x 100 = 10000 times", "50 times"},
+                        "Correct - We need to double 7 times. 1 -> 2 -> 4 -> 8 -> 16 -> 32 -> 64 -> 128, thus we copy 1, 2, 4, 8, 16, 32, 64 each time.",
                         attempts => print($"{attempts} attempts until correct"));
                 }
             ));

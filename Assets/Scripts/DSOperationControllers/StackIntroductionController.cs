@@ -52,6 +52,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("We pushed A, then B, then C just before. Now if we pop, what element do we get back? Recall that a Stack is FILO (First-in, Last-out)",
                         "C",
                         new []{"A", "B", "None"},
+                        "",
                         attempts =>
                         {
                             Description.text =
@@ -95,6 +96,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("Now let's consider performance. If we assume the size of the stack never exceeds the size of the array (i.e. we never have to expand the array), can we make this stack implementation any faster?",
                         "No",
                         new []{"Yes, Pop can be faster", "Yes, Push can be faster", "Yes, Push & Pop can be faster"},
+                        "No, since both push and pop only requiring writing/reading one element from the internal array. There are no additional operations to eliminate in order to speed it up.",
                         attempts =>
                         {
                             print($"{attempts} attempts until correct");

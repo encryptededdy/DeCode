@@ -12,14 +12,16 @@ namespace CustomUI
         public Button NextButton;
         public GameObject Prefab;
         public Text Title;
+        public Text Description;
         
         private int _noAttempts;
         
-        public void ShowNewQuestion(string question, string correctAnswer, string[] otherAnswers,
+        public void ShowNewQuestion(string question, string correctAnswer, string[] otherAnswers, string correctAnswerDesc,
             QuestionScreenCallback questionScreenCallback)
         {
             if (!Prefab.activeInHierarchy) Prefab.SetActive(true);
             NextButton.gameObject.SetActive(false);
+            Description.text = "";
             _noAttempts = 0;
             
             NextButton.onClick.RemoveAllListeners();
@@ -45,6 +47,8 @@ namespace CustomUI
             {
                 _noAttempts++;
                 NextButton.gameObject.SetActive(true);
+                // Show description
+                Description.text = correctAnswerDesc;
                 correctButton.GetComponent<Image>().color = new Color(0.55f, 0.8f, 0.42f);
             }));
 

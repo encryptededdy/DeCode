@@ -93,6 +93,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("If we were to implement BubbleSort in code, how many other helper variables do we need to allow it to function, in addition to the input array? Swapped is a variable that records whether two elements were swapped this iteration",
                         "temp and swapped",
                         new []{"temp, swapped and a second copy of the array", "Just temp", "A second copy of the array"},
+                        "Correct - we need temp and swapped to allow for swapping of elements and to know when to finish the algorithm respectively.",
                         attempts => print($"{attempts} attempts until correct"));
                 }));
             
@@ -124,6 +125,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("Given arrays of the same length, which type of array would take the maximum number of iterations (i.e. the slowest) for BubbleSort to sort?",
                         "Reverse sorted array",
                         new []{"Already sorted array", "Sorted but one", "Array with duplicate values"},
+                        "Correct - since we essentially move only one element every iteration with a reversed array, this is the slowest case.",
                         attempts => print($"{attempts} attempts until correct"));
                 }));
             

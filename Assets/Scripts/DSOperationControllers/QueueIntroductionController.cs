@@ -53,6 +53,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("We enqueued A, then B, then C just before. Now if we dequeue, what element do we get back? Recall that a Queue is FIFO (First-in, First-out)",
                         "A",
                         new []{"B", "C", "None"},
+                        "",
                         attempts => print($"{attempts} attempts until correct"));
 
                     GreenButton.gameObject.SetActive(false);
@@ -99,6 +100,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("What is a possible disadvantage of this naive implementation of a queue using an array that is copied every dequeue. Assume that the Queue is not expected to expand in size beyond 7.",
                         "Dequeue operations are slow",
                         new []{"Memory is wasted", "Enqueue operations are slow", "This is the most efficient implementation"},
+                        "Dequeue operations require the rest of the elements to be moved over. This is slow, and performance could be improved if this step could be eliminated",
                         attempts =>
                         {
                             print($"{attempts} attempts until correct");
@@ -126,10 +128,6 @@ namespace DSOperationControllers
                     GreenButton.gameObject.SetActive(true);
                     ManualControls.SetActive(true);
                     OrangeButton.gameObject.SetActive(false);
-                    QuestionScreenLogic.ShowNewQuestion("If we modify our implementation such that we can define the end of the queue arbitrarily at any index, would this result in improved performance when compared to the naive implementation shown beforehand?",
-                        "Yes, Dequeue would be sped up",
-                        new []{"Yes, Enqueue would be sped up", "Yes, De/Enqueue would both be sped up", "No, it would slow down"},
-                        attempts => print($"{attempts} attempts until correct"));
                 },
                 queue =>
                 {
@@ -151,6 +149,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("Why are dequeues faster with this new, improved implementation? Consider what had to happen when dequeues were done on the old, naive implementation.",
                         "No array copies are needed",
                         new []{"We use less memory", "The copy operation is faster", "Dequeues are not faster"},
+                        "By defining our own end point, the end does not need to be array index n. Therefore, we don't need to perform an array copy after each dequeue, thus improving performance.",
                         attempts =>
                         {
                             print($"{attempts} attempts until correct");
