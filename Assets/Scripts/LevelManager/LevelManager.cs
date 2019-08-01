@@ -103,13 +103,24 @@ namespace LevelManager
         protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
         {
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
+            
+            vehicle.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+            
             if (fast)
             {
-                yield return StartCoroutine(customAStarAgent.MoveTo(position, 10, callback));
+                yield return StartCoroutine(customAStarAgent.MoveTo(position, 10, status =>
+                {
+                    vehicle.GetComponent<SpriteRenderer>().color = new Color(0.745283f, 0.745283f, 0.745283f);
+                    callback(status);
+                }));
             }
             else
             {
-                yield return StartCoroutine(customAStarAgent.MoveTo(position, 3, callback));
+                yield return StartCoroutine(customAStarAgent.MoveTo(position, 3, status =>
+                {
+                    vehicle.GetComponent<SpriteRenderer>().color = new Color(0.745283f, 0.745283f, 0.745283f);
+                    callback(status);
+                }));
             }
         }
 
