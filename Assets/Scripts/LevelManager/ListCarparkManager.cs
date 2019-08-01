@@ -18,8 +18,13 @@ namespace LevelManager
         public IsoTransform SpawnTile;
         public IsoTransform DestroyTile;
 
+        // Currently capped at 8 due a constraint on the size of the carpark to fit on screen.
         private static int _maxSize = 8;
 
+        /*
+         * This is a method which dynamically creates a new carpark of the defined size by editing particular ground
+         * tile and the gridgraph
+         */
         public bool CreateCarpark(int size, out List<IsoTransform> newCarpark)
         {
             List<IsoTransform> carpark = new List<IsoTransform>();
@@ -45,6 +50,9 @@ namespace LevelManager
             return true;
         }
 
+        /**
+         * Returns the maximum size the list can be created
+         */
         public static int GetMaxSize()
         {
             return _maxSize;

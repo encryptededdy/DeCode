@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace LevelManager
 {
+    /*
+     * This class is used by the stack level.
+     */
     public class QueueLevelManager : ADTLevelManager
     {
         private bool _isCircularQueue;
@@ -17,6 +20,9 @@ namespace LevelManager
             base.OnAwake();
         }
 
+        /*
+         * This method adds a new car into the carpark, mimic operation of a queue.
+         */
         public void Enqueue(GameObject vehicle, Action<bool> callback)
         {
             HeadTile.GetComponent<IsoTransform>().Position = ActiveCarpark[_head].Position;
@@ -26,6 +32,9 @@ namespace LevelManager
             NumElements++;
         }
 
+        /**
+         * Dequeue a car from the carpark (see CircularDequeue or LinkedDequeue)
+         */
         public void Dequeue(Action<bool> callback)
         {
             if (NumElements != 0)
@@ -45,7 +54,11 @@ namespace LevelManager
                 callback(true);
             }
         }
-
+        
+        /*
+         * Used by the circular implementation to dequeue a car (where the head tile moves and the cars does not need
+         * to be copied)
+         */
         private IEnumerator CircularDequeue(Action<bool> callback)
         {
             NumElements--;
@@ -74,6 +87,10 @@ namespace LevelManager
             }));
         }
 
+        /*
+         * Used by the default implementation to dequeue a car (where the head tile does not move) and all cars
+         * shifts across by 1.
+         */
         private IEnumerator LinkedDequeue(Action<bool> callback)
         {
             NumElements--;
@@ -112,6 +129,9 @@ namespace LevelManager
             callback(true);
         }
 
+        /*
+         * Change the queue from the default implementation to a circular implementation
+         */
         public void SetCircularQueue(bool circular)
         {
             _isCircularQueue = circular;

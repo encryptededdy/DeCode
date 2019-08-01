@@ -1,5 +1,8 @@
 namespace LevelManager
 {
+    /*
+     * This enum is used to defined types of vehicle and used as filename for dynamic loading.
+     */
     public enum VehicleType
     {
         black,

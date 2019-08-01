@@ -23,13 +23,15 @@ namespace LevelManager
         private Vector3 _destroyPoint;
         protected TransitionManager TransitionManager;
 
-        // Only using the key as we want thread-safe DSes with ability to lookup in O(1).
         private ConcurrentDictionary<GameObject, VehicleType> _activeVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _spawnableVehicles;
         private ConcurrentDictionary<VehicleType, GameObject> _customSpawnableVehicles;
 
         protected abstract void OnAwake();
-        
+
+        /*
+         * This method is called as the scene is loaded (used for setup), dynamically loads all vehicle assets.
+         */
         void Awake()
         {
             TransitionManager = gameObject.AddComponent<TransitionManager>();
@@ -38,6 +40,48 @@ namespace LevelManager
             OnAwake();
         }
 
+        /*
+         * This method contains custom spawn animation for starting the level. Once completed, the callback will return
+         * true else if there are errors, it returns false.
+         */
+        public void StartLevel(Action<bool> callback)
+        {
+            Carpark.SetActive(true);
+            Decorations.SetActive(true);
+            StartCoroutine(TransitionManager.SpawnCarparkEffect(Carpark, Decorations,
+                status =>
+                {
+                    if (status)
+                    {
+                        // Need to update graph after the tiles are correctly loaded (as they move while the animation
+                        // is running.
+                        FindObjectOfType<CustomGridGraph.CustomGridGraph>().UpdateGraph();
+                        callback(true);
+                    }
+                    else
+                    {
+                        callback(false);
+                    }
+                }));
+        }
+
+        /*
+         * This method is used to reset the level by remove all cars from the carpark
+         */
+        public void ResetLevel(Action<bool> callback, bool fast = false)
+        {
+            StartCoroutine(RemoveAllVehicles(callback, fast));
+        }
+
+        /*
+         * This method is used to spawn a car at the defined spawn point. This is a coroutine which provides a callback
+         * so the animation can be queued up.
+         *
+         * If the input vehicleType is VehicleType.random then it spawns a random vehicle out of all spawnable one (ones
+         * that are not in the carpark). Otherwise, it will spawned the specified VehicleType if it is not already spawned.
+         *
+         * The separate _customSpawnableVehicles list is for managing custom assets (e.g. garbage A->E)
+         */
         protected IEnumerator Spawn(VehicleType vehicleType, Action<Tuple<VehicleType, GameObject>> callback = null)
         {
             foreach (var vehicle in _activeVehicles.Keys)
@@ -50,6 +94,7 @@ namespace LevelManager
                 }
             }
 
+            // Getting a random vehicle which is spawnable
             if (vehicleType == VehicleType.random)
             {
                 if (!Randomiser.RandomValuesFromDict(_spawnableVehicles, out vehicleType))
@@ -59,6 +104,7 @@ namespace LevelManager
                 }
             }
 
+            // Try to spawn the defined vehicleType (from spawnable list first then custom list)
             if (_spawnableVehicles.TryGetValue(vehicleType, out var vehicleAsset))
             {
                 GameObject obj = Instantiate(vehicleAsset);
@@ -100,30 +146,32 @@ namespace LevelManager
             Debug.Log($"There are {_activeVehicles.Count} active vehicles");
         }
 
+        /*
+         * This method is used to move a car to the specified position using A* pathfinding (via defined
+         * GridGraph on the level). This is a coroutine which provides a callback so the animation can be queued up.
+         *
+         * The fast parameter is used to speedup the animation.
+         */
         protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
         {
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
-            
-            vehicle.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
-            
+
             if (fast)
             {
-                yield return StartCoroutine(customAStarAgent.MoveTo(position, 10, status =>
-                {
-                    vehicle.GetComponent<SpriteRenderer>().color = new Color(0.745283f, 0.745283f, 0.745283f);
-                    callback(status);
-                }));
+                yield return StartCoroutine(customAStarAgent.MoveTo(position, 10, callback));
             }
             else
             {
-                yield return StartCoroutine(customAStarAgent.MoveTo(position, 3, status =>
-                {
-                    vehicle.GetComponent<SpriteRenderer>().color = new Color(0.745283f, 0.745283f, 0.745283f);
-                    callback(status);
-                }));
+                yield return StartCoroutine(customAStarAgent.MoveTo(position, 3, callback));
             }
         }
 
+        /*
+         * This method is used to remove car from the carpark, the car move to the destroy point before the gameobject
+         * is destroyed from the scene. This is a coroutine which provides a callback so the animation can be queued up.
+         *
+         * The parameter position is used to check if a car exist at that position.
+         */
         protected IEnumerator Destroy(Vector3 position, Action<bool> callback, bool fast = false)
         {
             foreach (var vehicle in _activeVehicles.Keys)
@@ -145,6 +193,12 @@ namespace LevelManager
             callback?.Invoke(false);
         }
 
+        /*
+         * This method is used to move the cloned vehicle from original position to the destination carpark. If a
+         * car exists at the destination, then that car is removed from the carpark (equivalent to losing reference to
+         * the variable). This is a coroutine which provides a callback so the animation can be queued up.
+         * 
+         */
         protected IEnumerator WriteToIndex(GameObject clone, Vector3 carpark, Action<bool> callback, bool fast = false)
         {
             int completed = 0;
@@ -197,6 +251,9 @@ namespace LevelManager
             callback?.Invoke(true);
         }
 
+        /*
+         * This method is used to get the vehicle from the specified position (if it exists)
+         */
         protected bool GetVehicleAtPosition(Vector3 position, out GameObject vehicle)
         {
             foreach (var activeVehicle in _activeVehicles.Keys)
@@ -213,6 +270,9 @@ namespace LevelManager
             return false;
         }
 
+        /*
+         * This method is used to add vehicle to the list of tracked vehicles once spawned or cloned.
+         */
         protected bool AddVehicle(GameObject vehicle, VehicleType vehicleType)
         {
             bool added = _activeVehicles.TryAdd(vehicle, vehicleType);
@@ -220,17 +280,28 @@ namespace LevelManager
             return added;
         }
 
+        /*
+         * This method is used to extract thev VehicleType for the specified vehicle
+         */
         protected VehicleType GetVehicleType(GameObject vehicle)
         {
             _activeVehicles.TryGetValue(vehicle, out VehicleType type);
             return type;
         }
 
+        /*
+         * This is used to convert the position of the tile to the position of the tile in the gridgraph (usually
+         * directly above the tile)
+         */
         protected static Vector3 ConvertTileToPosition(IsoTransform tile)
         {
             return new Vector3(tile.Position.x, tile.Position.y + tile.Size.y, tile.Position.z);
         }
 
+        /*
+         * This method is used to reset the list of spawnable vehicles so that it can be added again (done by reloading
+         * from dynamic assets)
+         */
         private void LoadAssets()
         {
             _spawnableVehicles = new ConcurrentDictionary<VehicleType, GameObject>();
@@ -259,6 +330,10 @@ namespace LevelManager
             }
         }
 
+        /*
+        * This method is used to dynamically load vehicles into spawnable and customSpawnable vehicle lists
+        * so they can be spawned again.
+        */
         private void ResetVehicle(VehicleType vehicleType)
         {
             foreach (VehicleType vehicle in _activeVehicles.Values)
@@ -300,12 +375,11 @@ namespace LevelManager
             }
         }
 
-        public void ResetLevel(Action<bool> callback, bool fast = false)
-        {
-            StartCoroutine(RemoveAllVehicles(callback, fast));
-        }
-
-        protected IEnumerator RemoveAllVehicles(Action<bool> callback, bool fast = false)
+        /*
+         * Resetting the level by removing all cars from the carpark and re-loading assets (so that it can spawned
+         * again)
+         */
+        private IEnumerator RemoveAllVehicles(Action<bool> callback, bool fast = false)
         {
             foreach (GameObject activeVehicle in _activeVehicles.Keys)
             {
@@ -324,11 +398,17 @@ namespace LevelManager
             callback?.Invoke(true);
         }
 
+        /**
+         * Used for setting spawn point
+         */
         protected void SetNewSpawnPoint(IsoTransform spawnTile)
         {
             _spawnPoint = ConvertTileToPosition(spawnTile);
         }
 
+        /**
+         * Used for setting destroy point
+         */
         protected void SetNewDestroyPoint(IsoTransform destroyTile)
         {
             _destroyPoint = ConvertTileToPosition(destroyTile);

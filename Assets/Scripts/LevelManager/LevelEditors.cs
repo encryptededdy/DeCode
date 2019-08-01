@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace LevelManager
 {
+    /*
+     * This class is used for quick testing via buttons in the editor
+     */
     [CustomEditor(typeof(StackLevelManager))]
     public class LevelEditor : Editor
     {
@@ -15,70 +18,30 @@ namespace LevelManager
             DrawDefaultInspector();
 
             StackLevelManager myScript = (StackLevelManager) target;
-            
-            if (GUILayout.Button("StartLevel"))
-            {
-                myScript.StartLevel(status =>
-                {
-                    if (status)
-                    {
-                        Debug.Log("Successfully start level");
-                    }
-                    else
-                    {
-                        Debug.Log("Failed to start level");
-                    }
-                });
-            }
-            
-            if (GUILayout.Button("Spawn"))
-            {
-                myScript.Spawn(obj =>
-                {
-                    _freshSpawn = obj;
-                    Debug.Log(_freshSpawn.Item1);
-                });
-            }
 
-            if (GUILayout.Button("Push"))
-            {
-                myScript.Push(_freshSpawn.Item2, status =>
-                {
-                    if (status)
-                    {
-                        Debug.Log("Successfully pushed");
-                    }
-                    else
-                    {
-                        Debug.Log("Failed to push");
-                    }
-                });
-            }
+//            if (GUILayout.Button("StartLevel"))
+//            {
+//                myScript.StartLevel(status =>
+//                {
+//                    if (status)
+//                    {
+//                        Debug.Log("Successfully start level");
+//                    }
+//                    else
+//                    {
+//                        Debug.Log("Failed to start level");
+//                    }
+//                });
+//            }
 
-            if (GUILayout.Button("Pop"))
-            {
-                myScript.Pop(status =>
-                {
-                    if (status)
-                    {
-                        Debug.Log("Successfully popped");
-                    }
-                    else
-                    {
-                        Debug.Log("Failed to pop");
-                    }
-                });
-            }
-
-            if (GUILayout.Button("HideImplementation"))
-            {
-                myScript.SetHiddenImplementation(true);
-            }
-
-            if (GUILayout.Button("ResetLevel"))
-            {
-                myScript.ResetLevel(status => { });
-            }
+//            if (GUILayout.Button("Spawn"))
+//            {
+//                myScript.Spawn(obj =>
+//                {
+//                    _freshSpawn = obj;
+//                    Debug.Log(_freshSpawn.Item1);
+//                });
+//            }
         }
     }
 }

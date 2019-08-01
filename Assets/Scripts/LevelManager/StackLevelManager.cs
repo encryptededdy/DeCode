@@ -4,8 +4,14 @@ using UnityEngine;
 
 namespace LevelManager
 {
+    /*
+     * This class is used by the stack level.
+     */
     public class StackLevelManager : ADTLevelManager
     {
+        /*
+         * This method adds a new car into the carpark, shifts the headtile (mimic operation of a stack).
+         */
         public void Push(GameObject vehicle, Action<bool> callback)
         {
             StartCoroutine(WriteToIndex(vehicle, ConvertTileToPosition(ActiveCarpark[NumElements]), callback));
@@ -14,6 +20,9 @@ namespace LevelManager
             NumElements++;
         }
 
+        /*
+         * This method pops the head element from the stack DS and shifts head element to the next (if it exist)
+         */
         public void Pop(Action<bool> callback)
         {
             if (NumElements != 0)

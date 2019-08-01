@@ -6,16 +6,28 @@ using UnityEngine;
 
 namespace LevelManager
 {
+    /*
+     * This class has all functionality from ArrayLevelManager (uses most of the inherited methods but not all) and
+     * it is used by the list level.
+     */
     public class ListLevelManager : ArrayLevelManager
     {
         private ListCarparkManager _currentListCarpark;
         private Vector3 _shiftAmount;
 
+        /*
+         * This method is called as the scene is loaded (used for setup)
+         */
         protected override void OnAwake()
         {
             GridGraph = FindObjectOfType<CustomGridGraph.CustomGridGraph>();
         }
 
+        /*
+         * Creates a new list carpark of the defined size, it also moves the cars from the existing carpark to the new 
+         * carpark and removes the old carpark afterwards. The callback will only return true if operations are
+         * successfully performed.
+         */
         public void CreateNewCarpark(int size, Action<bool> callback)
         {
             if (size > GetMaxListSize())
@@ -47,6 +59,11 @@ namespace LevelManager
             }
         }
 
+        /*
+         * This method copies the existing car from the old to the new carpark. If number of cars is greater than
+         * capacity of the new carpark, then they are destroyed. This is a coroutine which provides a callback so the
+         * animation can be queued up.
+         */
         private IEnumerator CopyVehiclesToNewCarpark(ListCarparkManager newCarparkManager,
             List<IsoTransform> newCarpark, Action<bool> callback)
         {
@@ -78,19 +95,18 @@ namespace LevelManager
                         }
                         else
                         {
-                            Destroy(i,
-                                status =>
+                            Destroy(i, status =>
+                            {
+                                if (status)
                                 {
-                                    if (status)
-                                    {
-                                        completed++;
-                                    }
-                                    else
-                                    {
-                                        Debug.Log("Failed to destroy car when not list is smaller");
-                                        callback(false);
-                                    }
-                                });
+                                    completed++;
+                                }
+                                else
+                                {
+                                    Debug.Log("Failed to destroy car when not list is smaller");
+                                    callback(false);
+                                }
+                            });
                         }
                     }
                     else
@@ -116,7 +132,9 @@ namespace LevelManager
             callback?.Invoke(true);
         }
 
-
+        /*
+         * This method returns the maxSize carpark that the list level manager can create.
+         */
         public int GetMaxListSize()
         {
             return ListCarparkManager.GetMaxSize();
