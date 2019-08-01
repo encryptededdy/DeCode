@@ -96,8 +96,7 @@ namespace DSOperationControllers
                             Callback(true);
                             return;
                         }
-                        code = $"car = {obj.Item1};\n" +
-                               $"queue.push(car);";
+                        code = $"queue.push({obj.Item1.ToCapitalizedString()});";
                         if (operation.CodeLine != null)
                         {
                             operation.CodeLine.text = code;

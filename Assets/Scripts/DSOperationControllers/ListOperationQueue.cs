@@ -134,8 +134,7 @@ namespace DSOperationControllers
                         print($"Writing to array at {operation.Index1}");
                         LevelManager.WriteToArray(obj.Item2, operation.Index1, obj2 =>
                         {
-                            code = $"car = {LevelManager.GetArrayState()[operation.Index1]};\n" +
-                                   $"list[{operation.Index1}] = car;";
+                            code = $"list[{operation.Index1}] = {LevelManager.GetArrayState()[operation.Index1].ToCapitalizedString()};";
                             if (operation.CodeLine != null)
                             {
                                 operation.CodeLine.text = code;
