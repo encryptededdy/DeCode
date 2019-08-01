@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Vehicle
 {
+    /*
+     * This car is used to change the direction the car is facing with the animator 
+     */
     public class CarAnimator
     {
         private Animator _animator;

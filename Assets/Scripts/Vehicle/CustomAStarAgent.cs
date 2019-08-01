@@ -7,6 +7,10 @@ using UnityEngine;
 
 namespace Vehicle
 {
+    /**
+     * This is used for most of the pathfinding behaviour (of the vehicles). Should not need to go into details of this.
+     * This is customised version extended from the IsoToolKit.
+     */
     [RequireComponent(typeof(IsoTransform))]
     public class CustomAStarAgent : MonoBehaviour
     {

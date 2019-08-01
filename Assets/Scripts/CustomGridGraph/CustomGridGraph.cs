@@ -14,6 +14,7 @@ namespace CustomGridGraph
         private static readonly Vector3 SouthEast = new Vector3(0, 0, -1);
         private static readonly Vector3 SouthWest = new Vector3(-1, 0, 0);
 
+        // Current only support movement in 4 direction (consistent with animator)
         private static readonly Vector3[] AdjacentPositions =
         {
             NorthEast, SouthEast, SouthWest, NorthWest
@@ -29,6 +30,7 @@ namespace CustomGridGraph
             UpdateGraph();
         }
 
+        // Used via button and editor to see current gridgraph set up
         void OnDrawGizmos()
         {
             if (!ShowGraph)
@@ -50,12 +52,14 @@ namespace CustomGridGraph
 
         #endregion
 
+        // Find exact position of the node (if it exists)
         public Node ClosestNode(Vector3 position)
         {
             return _gridGraph.Select(kvp => kvp.Value).OrderBy(n => (position - n.Position).sqrMagnitude)
                 .FirstOrDefault();
         }
 
+        // Update gridgraph in case of position change or new nodes added
         public void UpdateGraph()
         {
             _gridGraph =
@@ -105,6 +109,10 @@ namespace CustomGridGraph
             return grid;
         }
 
+        /*
+         * TileRules are added to tiles and used to set up gridgraph, this method checks if the car can move in a
+         * particular direction from their current postion.
+         */
         private bool Traversable(Vector3 from, Vector3 to, TileRules tileRules)
         {
             if (from.z.Equals(to.z))

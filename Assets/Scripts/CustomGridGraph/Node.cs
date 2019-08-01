@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace CustomGridGraph
 {
+    /*
+     * This class represents how nodes the gridgraph is internally stored
+     */
     public class Node : INode, IEquatable<Node>
     {
         public Vector3 Position { get; }

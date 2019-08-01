@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace CustomGridGraph
 {
+    // Used to defined movement rules on tiles
     [RequireComponent(typeof(IsoTransform))]
     public class TileRules : MonoBehaviour
     {
