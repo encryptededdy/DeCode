@@ -17,7 +17,7 @@ namespace CustomUI
         private int _noAttempts;
         
         public void ShowNewQuestion(string question, string correctAnswer, string[] otherAnswers, string correctAnswerDesc,
-            QuestionScreenCallback questionScreenCallback)
+            QuestionScreenCallback questionScreenCallback, bool showAnswer = true)
         {
             if (!Prefab.activeInHierarchy) Prefab.SetActive(true);
             NextButton.gameObject.SetActive(false);
@@ -45,11 +45,19 @@ namespace CustomUI
             correctButton.GetComponentInChildren<Text>().text = correctAnswer;
             correctButton.onClick.AddListener((() =>
             {
-                _noAttempts++;
-                NextButton.gameObject.SetActive(true);
-                // Show description
-                Description.text = correctAnswerDesc;
-                correctButton.GetComponent<Image>().color = new Color(0.55f, 0.8f, 0.42f);
+                if (showAnswer)
+                {
+                    _noAttempts++;
+                    NextButton.gameObject.SetActive(true);
+                    // Show description
+                    Description.text = correctAnswerDesc;
+                    correctButton.GetComponent<Image>().color = new Color(0.55f, 0.8f, 0.42f);
+                }
+                else
+                {
+                    Prefab.SetActive(false);
+                    questionScreenCallback(-1); // -1 signifies incorrect
+                }
             }));
 
             var questionsVisited = 0;
@@ -62,8 +70,16 @@ namespace CustomUI
                 thisButton.GetComponentInChildren<Text>().text = answer;
                 thisButton.onClick.AddListener((() =>
                 {
-                    _noAttempts++;
-                    thisButton.GetComponent<Image>().color = new Color(0.77f, 0.34f, 0.2f);
+                    if (showAnswer)
+                    {
+                        _noAttempts++;
+                        thisButton.GetComponent<Image>().color = new Color(0.77f, 0.34f, 0.2f);
+                    }
+                    else
+                    {
+                        Prefab.SetActive(false);
+                        questionScreenCallback(-1); // -1 signifies incorrect
+                    }
                 }));
             }
 
