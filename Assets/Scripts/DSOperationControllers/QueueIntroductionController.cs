@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CustomUI;
 using LevelManager;
+using Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -206,7 +207,7 @@ namespace DSOperationControllers
             {
                 GreenButton.onClick.RemoveAllListeners();
                 OrangeButton.onClick.RemoveAllListeners();
-                SceneManager.LoadScene("Stack");
+                LevelSwitchManager.Instance.SwitchLevel(3, 4);
                 return;
             }
 

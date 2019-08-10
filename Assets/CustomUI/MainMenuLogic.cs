@@ -1,4 +1,5 @@
 using System;
+using Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,11 +16,11 @@ namespace CustomUI
 
         private void Start()
         {
-            StartButton.onClick.AddListener(() => SceneManager.LoadScene("Array"));
-            ArrayButton.onClick.AddListener(() => SceneManager.LoadScene("Array"));
-            ListButton.onClick.AddListener(() => SceneManager.LoadScene("List"));
-            QueueButton.onClick.AddListener(() => SceneManager.LoadScene("Queue"));
-            StackButton.onClick.AddListener(() => SceneManager.LoadScene("Stack"));
+            StartButton.onClick.AddListener(() => LevelSwitchManager.Instance.SwitchLevel(0, 1));
+            ArrayButton.onClick.AddListener(() => LevelSwitchManager.Instance.SwitchLevel(0, 1));
+            ListButton.onClick.AddListener(() => LevelSwitchManager.Instance.SwitchLevel(0, 2));
+            QueueButton.onClick.AddListener(() => LevelSwitchManager.Instance.SwitchLevel(0, 3));
+            StackButton.onClick.AddListener(() => LevelSwitchManager.Instance.SwitchLevel(0, 4));
         }
     }
 }

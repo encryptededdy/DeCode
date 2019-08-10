@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CustomUI;
 using LevelManager;
+using Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -159,7 +160,7 @@ namespace DSOperationControllers
 
         private void NextLevel()
         {
-            SceneManager.LoadScene("Queue");
+            LevelSwitchManager.Instance.SwitchLevel(2, 3);
         }
 
         private void NextQuestion()

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CustomUI;
 using LevelManager;
+using Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -134,7 +135,7 @@ namespace DSOperationControllers
 
         private void NextLevel()
         {
-            SceneManager.LoadScene("List");
+            LevelSwitchManager.Instance.SwitchLevel(1, 2);
         }
 
         private void NextQuestion()

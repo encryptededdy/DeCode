@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CustomUI;
 using LevelManager;
+using Misc;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -143,7 +144,7 @@ namespace DSOperationControllers
             {
                 GreenButton.onClick.RemoveAllListeners();
                 OrangeButton.onClick.RemoveAllListeners();
-                SceneManager.LoadScene("Stats");
+                LevelSwitchManager.Instance.SwitchLevel(4, 5);
                 return;
             }
 
