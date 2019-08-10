@@ -4,10 +4,10 @@ using UnityEngine.SceneManagement;
 
 namespace Misc
 {
-    public class LevelSwitchManager: Singleton<LevelSwitchManager>
+    public class LevelSwitchStatisticsManager: Singleton<LevelSwitchStatisticsManager>
     {
         // Prevent non-singleton constructor use
-        protected LevelSwitchManager() { }
+        protected LevelSwitchStatisticsManager() { }
 
         private readonly int[] _levelTimes= {-1, -1, -1, -1, -1, -1};
         private readonly int[] _resetCounter= {0, 0, 0, 0, 0, 0};

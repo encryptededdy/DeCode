@@ -160,7 +160,7 @@ namespace DSOperationControllers
 
         private void NextLevel()
         {
-            LevelSwitchManager.Instance.SwitchLevel(2, 3);
+            LevelSwitchStatisticsManager.Instance.SwitchLevel(2, 3);
         }
 
         private void NextQuestion()
@@ -274,7 +274,7 @@ namespace DSOperationControllers
         
         private void ResetQuestion()
         {
-            LevelSwitchManager.Instance.LevelReset(2);
+            LevelSwitchStatisticsManager.Instance.LevelReset(2);
             StartQuestion();
         }
 

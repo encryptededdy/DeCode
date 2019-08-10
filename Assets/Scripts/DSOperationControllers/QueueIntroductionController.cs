@@ -207,7 +207,7 @@ namespace DSOperationControllers
             {
                 GreenButton.onClick.RemoveAllListeners();
                 OrangeButton.onClick.RemoveAllListeners();
-                LevelSwitchManager.Instance.SwitchLevel(3, 4);
+                LevelSwitchStatisticsManager.Instance.SwitchLevel(3, 4);
                 return;
             }
 

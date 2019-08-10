@@ -135,7 +135,7 @@ namespace DSOperationControllers
 
         private void NextLevel()
         {
-            LevelSwitchManager.Instance.SwitchLevel(1, 2);
+            LevelSwitchStatisticsManager.Instance.SwitchLevel(1, 2);
         }
 
         private void NextQuestion()
@@ -224,7 +224,7 @@ namespace DSOperationControllers
 
         private void ResetQuestion()
         {
-            LevelSwitchManager.Instance.LevelReset(1);
+            LevelSwitchStatisticsManager.Instance.LevelReset(1);
             StartQuestion();
         }
 
