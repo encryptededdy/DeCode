@@ -1,8 +1,6 @@
 using System;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Debug = UnityEngine.Debug;
 
 namespace Misc
 {
@@ -11,16 +9,21 @@ namespace Misc
         // Prevent non-singleton constructor use
         protected LevelSwitchManager() { }
 
-        //private Stopwatch _stopwatch = new Stopwatch();
-        private readonly int[] _levelTimes= new int[]{-1, -1, -1, -1, -1, -1};
+        private readonly int[] _levelTimes= {-1, -1, -1, -1, -1, -1};
+        private readonly int[] _resetCounter= {0, 0, 0, 0, 0, 0};
 
         public void SwitchLevel(int thisLevelID, int nextLevelID)
         {
             int thisLevelTime = (int) Math.Round(Time.timeSinceLevelLoad);
             _levelTimes[thisLevelID] = thisLevelTime;
-            Debug.Log($"Level {thisLevelID} took {thisLevelTime} seconds.");
+            Debug.Log($"Level {thisLevelID} took {thisLevelTime} seconds with {_resetCounter[thisLevelID]} resets.");
             // TODO: Transmit data async?
             SceneManager.LoadScene(nextLevelID);
+        }
+
+        public void LevelReset(int thisLevelID)
+        {
+            _resetCounter[thisLevelID]++;
         }
     }
 }

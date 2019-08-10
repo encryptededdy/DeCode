@@ -240,7 +240,7 @@ namespace DSOperationControllers
             OrangeButton.gameObject.SetActive(true);
             OrangeButton.GetComponentInChildren<Text>().text = "Reset";
             OrangeButton.onClick.RemoveAllListeners();
-            OrangeButton.onClick.AddListener(StartQuestion);
+            OrangeButton.onClick.AddListener(ResetQuestion);
         }
 
         private void CheckQuestion()
@@ -268,8 +268,14 @@ namespace DSOperationControllers
                 OrangeButton.gameObject.SetActive(true);
                 OrangeButton.GetComponentInChildren<Text>().text = "Retry";
                 OrangeButton.onClick.RemoveAllListeners();
-                OrangeButton.onClick.AddListener(StartQuestion);
+                OrangeButton.onClick.AddListener(ResetQuestion);
             }
+        }
+        
+        private void ResetQuestion()
+        {
+            LevelSwitchManager.Instance.LevelReset(2);
+            StartQuestion();
         }
 
     }
