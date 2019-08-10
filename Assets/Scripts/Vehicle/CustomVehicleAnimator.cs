@@ -1,17 +1,20 @@
+using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UnityEngine;
 
 namespace Vehicle
 {
     /*
-     * This car is used to change the direction the car is facing with the animator 
+     * This car is used to change the direction the car is facing with the animator as well as setting an arrow above
+     * the vehicle as a PointOfInterest indicator.
      */
-    public class CarAnimator
+    public class CustomVehicleAnimator : MonoBehaviour
     {
+        public GameObject PointOfInterestIndicator;
         private Animator _animator;
 
-        public CarAnimator(Animator animator)
+        private void Awake()
         {
-            _animator = animator;
+            _animator = gameObject.GetComponent<Animator>();
         }
 
         public void Animate(Vector3 from, Vector3 to)
@@ -41,6 +44,11 @@ namespace Vehicle
                     _animator.SetBool("SE", true);
                 }
             }
+        }
+
+        public void SetAsPointOfInterest(bool pointOfInterest)
+        {
+            PointOfInterestIndicator.SetActive(pointOfInterest);
         }
 
         private void ResetDirectionFlags()

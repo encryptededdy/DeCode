@@ -154,6 +154,7 @@ namespace LevelManager
          */
         protected IEnumerator MoveTo(GameObject vehicle, Vector3 position, Action<bool> callback, bool fast = false)
         {
+            vehicle.GetComponent<CustomVehicleAnimator>().SetAsPointOfInterest(true);
             var customAStarAgent = vehicle.GetComponent<CustomAStarAgent>();
 
             if (fast)
@@ -164,6 +165,8 @@ namespace LevelManager
             {
                 yield return StartCoroutine(customAStarAgent.MoveTo(position, 3, callback));
             }
+            
+            vehicle.GetComponent<CustomVehicleAnimator>().SetAsPointOfInterest(false);
         }
 
         /*

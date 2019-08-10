@@ -17,11 +17,11 @@ namespace Vehicle
         public float JumpHeight = 0; //vertical distance threshold to next node
         public CustomGridGraph.CustomGridGraph Graph;
         public AstarAgent.Heuristic Heuristic;
-        private CarAnimator _carAnimator;
+        private CustomVehicleAnimator _customVehicleAnimator;
 
         private void Awake()
         {
-            _carAnimator = new CarAnimator(this.GetOrAddComponent<Animator>());
+            _customVehicleAnimator = gameObject.GetComponent<CustomVehicleAnimator>();
         }
 
         public IEnumerator MoveTo(Vector3 destination, int speed, Action<bool> callback = null)
@@ -70,7 +70,7 @@ namespace Vehicle
                 timePassed += Time.deltaTime;
 
                 Vector3 newPosition = Vector3.Lerp(from, to, timePassed / maxTimePassed);
-                _carAnimator.Animate(isoTransform.Position, newPosition);
+                _customVehicleAnimator.Animate(isoTransform.Position, newPosition);
                 isoTransform.Position = new Vector3(newPosition.x, isoTransform.Position.y, newPosition.z);
 
                 // If time has passed then round coordinates to nearest node.
