@@ -19,8 +19,8 @@ public class SmoothCameraMover : MonoBehaviour
     {
         _cameraTransform = GetComponent<IsoTransform>().transform;
         _camera = GetComponent<Camera>();
-        _targetPosition = new Vector3(0, 2, 2);
-        _targetZoom = 7f;
+        _targetPosition = new Vector3(0, 0, 0);
+        _targetZoom = 6f;
     }
 
     // Update is called once per frame
