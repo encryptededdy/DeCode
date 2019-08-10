@@ -34,12 +34,6 @@ namespace DSOperationControllers
                     ManualControls.SetActive(false);
                     OrangeButton.gameObject.SetActive(true);
                     CameraMover.ZoomEntrance();
-                    QuestionScreenLogic.ShowNewQuestion("To gauge your existing knowledge - If we had a fixed size array, and we were adding/removing elements to the front (index 0) and shifting things over to accomodate, what could we do to speed this process up?",
-                        "Arbitrarily define the \"front\" of the array using a pointer/flag",
-                        new []{"Use an ArrayList instead", "I don't know", "Flip the array, such that we're now adding to index n instead of 0"},
-                        "",
-                        attempts => print($"{attempts} attempts until correct"),
-                        false);
                 },
                 queue =>
                 {
@@ -181,6 +175,13 @@ namespace DSOperationControllers
         {
             SetupQueueIntro();
             OperationQueue.ResetLog(); // Reset log so user doesn't have to aimlessly scroll
+            // Ask initial question
+            QuestionScreenLogic.ShowNewQuestion("To gauge your existing knowledge - If we had a fixed size array, and we were adding/removing elements to the front (index 0) and shifting things over to accomodate, what could we do to speed this process up?",
+                "Arbitrarily define the \"front\" of the array using a pointer/flag",
+                new []{"Use an ArrayList instead", "I don't know", "Flip the array, such that we're now adding to index n instead of 0"},
+                "",
+                attempts => print($"{attempts} attempts until correct"),
+                false);
             OperationQueue.LevelManager.StartLevel(obj => NextStep());
         }
         
