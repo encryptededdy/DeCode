@@ -55,7 +55,7 @@ namespace DSOperationControllers
                         "A",
                         new []{"B", "C", "None"},
                         "",
-                        attempts => print($"{attempts} attempts until correct"));
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(7, attempts));
 
                     GreenButton.gameObject.SetActive(false);
                     ManualControls.SetActive(false);
@@ -104,7 +104,7 @@ namespace DSOperationControllers
                         "Dequeue operations require the rest of the elements to be moved over. This is slow, and performance could be improved if this step could be eliminated",
                         attempts =>
                         {
-                            print($"{attempts} attempts until correct");
+                            LevelSwitchStatisticsManager.Instance.QuestionReturn(8, attempts);
                             Description.text =
                                 "Let's enqueue a vehicle, then dequeue one while observing performance. It's obvious to us that while enqueuing is fast, dequeuing is slow since the array copy has to occur.";
                         });
@@ -153,7 +153,7 @@ namespace DSOperationControllers
                         "By defining our own end point, the end does not need to be array index n. Therefore, we don't need to perform an array copy after each dequeue, thus improving performance.",
                         attempts =>
                         {
-                            print($"{attempts} attempts until correct");
+                            LevelSwitchStatisticsManager.Instance.QuestionReturn(9, attempts);
                             Description.text =
                                 "Let's enqueue a vehicle, then dequeue one while observing performance. We can see that dequeuing is just as fast as enqueuing now, as we simply need to move the flag instead of performing the expensive copying operation";
                         });
@@ -181,7 +181,7 @@ namespace DSOperationControllers
                 "Arbitrarily define the \"front\" of the array using a pointer/flag",
                 new []{"Use an ArrayList instead", "I don't know", "Flip the array, such that we're now adding to index n instead of 0"},
                 "",
-                attempts => print($"{attempts} attempts until correct"),
+                attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(6, attempts),
                 false);
             OperationQueue.LevelManager.StartLevel(obj => NextStep());
         }

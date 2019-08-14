@@ -95,7 +95,7 @@ namespace DSOperationControllers
                         "temp and swapped",
                         new []{"temp, swapped and a second copy of the array", "Just temp", "A second copy of the array"},
                         "Correct - we need temp and swapped to allow for swapping of elements and to know when to finish the algorithm respectively.",
-                        attempts => print($"{attempts} attempts until correct"));
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(0, attempts));
                 }));
             
             _questions.Enqueue(new ArrayQuestionData(
@@ -127,7 +127,7 @@ namespace DSOperationControllers
                         "Reverse sorted array",
                         new []{"Already sorted array", "Sorted but one", "Array with duplicate values"},
                         "Correct - since we essentially move only one element every iteration with a reversed array, this is the slowest case.",
-                        attempts => print($"{attempts} attempts until correct"));
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(1, attempts));
                 }));
             
             NextQuestion();

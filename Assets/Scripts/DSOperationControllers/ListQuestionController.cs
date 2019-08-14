@@ -69,7 +69,7 @@ namespace DSOperationControllers
                         "High memory usage",
                         new []{"Slow insertion performance", "Slow retrieval performance", "Hard to sort"},
                         "Correct - we don't use a massive array since it would use up too much memory, especially if we aren't using the full size.",
-                        attempts => print($"{attempts} attempts until correct"));
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(3, attempts));
                 }
             ));
             
@@ -116,7 +116,7 @@ namespace DSOperationControllers
                         "1 + 2 + 3 + ... + 99 = 4950 times",
                         new []{"100 times", "99 times", "101 times"},
                         "Correct. We have to copy one car the going from 1 -> 2, two cars from 2 -> 3 and so on and so forth.",
-                        attempts => print($"{attempts} attempts until correct"));
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(4, attempts));
                 }
             ));
             
@@ -144,7 +144,7 @@ namespace DSOperationControllers
                         "1 + 2 + 4 + 8 + ... + 64 = 127 times",
                         new []{"99 times", "100 x 100 = 10000 times", "50 times"},
                         "Correct - We need to double 7 times. 1 -> 2 -> 4 -> 8 -> 16 -> 32 -> 64 -> 128, thus we copy 1, 2, 4, 8, 16, 32, 64 each time.",
-                        attempts => print($"{attempts} attempts until correct"));
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(5, attempts));
                 }
             ));
             
@@ -152,7 +152,7 @@ namespace DSOperationControllers
                 "The ArrayList can expand (no fixed size)",
                 new []{"ArrayLists can be larger than arrays", "ArrayLists do not support random access", "I don't know"},
                 "",
-                attempts => print($"{attempts} attempts until correct"),
+                attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(2, attempts),
                 false);
                         
             NextQuestion();

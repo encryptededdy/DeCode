@@ -58,7 +58,7 @@ namespace DSOperationControllers
                         {
                             Description.text =
                                 "We can now pop - we can see that C is popped since it was the last vehicle added (remember - last in, first out.)";
-                            print($"{attempts} attempts until correct");
+                            LevelSwitchStatisticsManager.Instance.QuestionReturn(10, attempts);
                         });
 
                     GreenButton.gameObject.SetActive(false);
@@ -100,7 +100,7 @@ namespace DSOperationControllers
                         "No, since both push and pop only requiring writing/reading one element from the internal array. There are no additional operations to eliminate in order to speed it up.",
                         attempts =>
                         {
-                            print($"{attempts} attempts until correct");
+                            LevelSwitchStatisticsManager.Instance.QuestionReturn(11, attempts);
                         });
 
                     CameraMover.ZoomNormal();
