@@ -11,7 +11,7 @@ namespace Misc
 
         private readonly int[] _levelTimes = {-1, -1, -1, -1, -1, -1};
         private readonly int[] _resetCounter = {0, 0, 0, 0, 0, 0};
-        private readonly int[] _questionCounter = {-2, -2, -2, -2, -2 ,-2, -2, -2, -2, -2, -2};
+        private readonly int[] _questionCounter = {-2, -2, -2, -2, -2 ,-2, -2, -2, -2, -2, -2, -2};
 
         public void SwitchLevel(int thisLevelID, int nextLevelID)
         {
@@ -52,5 +52,11 @@ namespace Misc
             Debug.Log($"Question {questionID} took {tries} attempts.");
             _questionCounter[questionID] = tries;
         }
+
+        public int[] LevelTimes => _levelTimes;
+
+        public int[] ResetCounter => _resetCounter;
+
+        public int[] QuestionCounter => _questionCounter;
     }
 }
