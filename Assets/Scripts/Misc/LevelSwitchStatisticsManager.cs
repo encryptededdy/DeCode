@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace Misc
 {
@@ -12,10 +13,14 @@ namespace Misc
         protected LevelSwitchStatisticsManager() { }
 
         private const string ApiEndpoint = "https://decode-d2cec.firebaseapp.com/api/submit";
+        private const string UserApiEndpoint = "https://decode-d2cec.firebaseapp.com/api/new-user";
 
         private readonly int[] _levelTimes = {-1, -1, -1, -1, -1, -1};
         private readonly int[] _resetCounter = {0, 0, 0, 0, 0, 0};
         private readonly int[] _questionCounter = {-2, -2, -2, -2, -2 ,-2, -2, -2, -2, -2, -2, -2};
+        private string _userId;
+        private Boolean _userIdRequested = false;
+        private Text _userIdTextView;
 
         public void SwitchLevel(int thisLevelID, int nextLevelID)
         {
@@ -30,6 +35,19 @@ namespace Misc
         public void LevelReset(int thisLevelID)
         {
             _resetCounter[thisLevelID]++;
+        }
+
+        public void UpdateUserId(Text textView)
+        {
+            _userIdTextView = textView;
+            if (_userIdRequested == false)
+            {
+                _userIdRequested = true;
+                StartCoroutine(RequestUserID());
+            } else if (_userId != null)
+            {
+                _userIdTextView.text = $"ID: {_userId}";
+            }
         }
         
         /**
@@ -65,10 +83,32 @@ namespace Misc
         public int[] ResetCounter => _resetCounter;
 
         public int[] QuestionCounter => _questionCounter;
+
+        IEnumerator RequestUserID()
+        {
+            var uwr = UnityWebRequest.Get(UserApiEndpoint);
+
+            // Send the request then wait here until it returns
+            yield return uwr.SendWebRequest();
+
+            if (uwr.isNetworkError)
+            {
+                Debug.Log("Error While Sending: " + uwr.error);
+            }
+            else
+            {
+                Debug.Log("Received: " + uwr.downloadHandler.text);
+                if (uwr.downloadHandler.text.Length > 0)
+                {
+                    _userId = uwr.downloadHandler.text;
+                    _userIdTextView.text = $"ID: {_userId}";
+                }
+            }
+        }
         
         IEnumerator PostQuestionData(int id, int attempts)
         {
-            var json = $"{{ \"type\": \"question\", \"id\": {id}, \"attempts\": {attempts} }}";
+            var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"question\", \"id\": {id}, \"attempts\": {attempts} }}" : $"{{ \"type\": \"question\", \"id\": {id}, \"attempts\": {attempts} }}";
             var uwr = new UnityWebRequest(ApiEndpoint, "POST");
             var jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
@@ -90,7 +130,7 @@ namespace Misc
         
         IEnumerator PostLevelData(int level, int timeTaken, int resets)
         {
-            var json = $"{{ \"type\": \"level\", \"id\": {level}, \"time\": {timeTaken}, \"reset\": {resets} }}";
+            var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"level\", \"id\": {level}, \"time\": {timeTaken}, \"reset\": {resets} }}" : $"{{ \"type\": \"level\", \"id\": {level}, \"time\": {timeTaken}, \"reset\": {resets} }}";
             var uwr = new UnityWebRequest(ApiEndpoint, "POST");
             var jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
