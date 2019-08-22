@@ -23,6 +23,8 @@ namespace DSOperationControllers
         private ArrayQuestionData _currentQuestion;
         private bool _runArrayAlgoIntro = false;
 
+        private int _currentQuestionResets = 0;
+
         private void Start()
         {
             // Define questions...
@@ -140,7 +142,6 @@ namespace DSOperationControllers
 
         private void NextQuestion()
         {
-
             switch (_questions.Count)
             {
                 case 0 when !_runArrayAlgoIntro:
@@ -162,6 +163,12 @@ namespace DSOperationControllers
                     GreenButton.onClick.AddListener(NextLevel);
                     OrangeButton.gameObject.SetActive(false);
                     return;
+            }
+
+            if (_currentQuestion != null)
+            {
+                LevelSwitchStatisticsManager.Instance.SendSubData(1, _currentQuestionResets, _currentQuestion.Title);
+                _currentQuestionResets = 0;
             }
 
             _currentQuestion = _questions.Dequeue();
@@ -225,12 +232,12 @@ namespace DSOperationControllers
         private void ResetQuestion()
         {
             LevelSwitchStatisticsManager.Instance.LevelReset(1);
+            _currentQuestionResets++;
             StartQuestion();
         }
 
         private void CheckQuestion()
         {
-            print(OperationQueue.GetArrayState());
             if (_currentQuestion.AnswerChecker(OperationQueue.GetArrayState()))
             {
                 // Correct!

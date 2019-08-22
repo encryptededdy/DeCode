@@ -22,6 +22,8 @@ namespace DSOperationControllers
 
         private ListQuestionData _currentQuestion;
 
+        private int _currentQuestionResets = 0;
+
         private void Start()
         {
             OperationQueue.HideAllOperations();
@@ -177,6 +179,12 @@ namespace DSOperationControllers
                 return;
             }
 
+            if (_currentQuestion != null)
+            {
+                LevelSwitchStatisticsManager.Instance.SendSubData(1, _currentQuestionResets, _currentQuestion.Title);
+                _currentQuestionResets = 0;
+            }
+
             _currentQuestion = _questions.Dequeue();
 
 //            if (!OperationQueue.GetArrayState().SequenceEqual(_currentQuestion.InitialState))
@@ -275,6 +283,7 @@ namespace DSOperationControllers
         private void ResetQuestion()
         {
             LevelSwitchStatisticsManager.Instance.LevelReset(2);
+            _currentQuestionResets++;
             StartQuestion();
         }
 

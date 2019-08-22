@@ -22,19 +22,33 @@ namespace Misc
         private Boolean _userIdRequested = false;
         private Text _userIdTextView;
 
-        public void SwitchLevel(int thisLevelID, int nextLevelID)
+        public void SwitchLevel(int thisLevelId, int nextLevelId)
         {
-            int thisLevelTime = (int) Math.Round(Time.timeSinceLevelLoad);
-            _levelTimes[thisLevelID] = thisLevelTime;
-            Debug.Log($"Level {thisLevelID} took {thisLevelTime} seconds with {_resetCounter[thisLevelID]} resets.");
+            var thisLevelTime = (int) Math.Round(Time.timeSinceLevelLoad);
+            _levelTimes[thisLevelId] = thisLevelTime;
+            Debug.Log($"Level {thisLevelId} took {thisLevelTime} seconds with {_resetCounter[thisLevelId]} resets.");
             //Transmit data async
-            StartCoroutine(PostLevelData(thisLevelID, thisLevelTime, _resetCounter[thisLevelID]));
-            SceneManager.LoadScene(nextLevelID);
+            if (nextLevelId != 0)
+            {
+                StartCoroutine(PostLevelData(thisLevelId, thisLevelTime, _resetCounter[thisLevelId], true));
+            }
+            else
+            {
+                StartCoroutine(PostLevelData(thisLevelId, thisLevelTime, _resetCounter[thisLevelId], false));
+            }
+
+            SceneManager.LoadScene(nextLevelId);
         }
 
-        public void LevelReset(int thisLevelID)
+        public void SendSubData(int thisLevelId, int resets, string subLevel)
         {
-            _resetCounter[thisLevelID]++;
+            var thisLevelTime = (int) Math.Round(Time.timeSinceLevelLoad);
+            StartCoroutine(PostSubLevelData(thisLevelId, resets, subLevel, thisLevelTime));
+        }
+
+        public void LevelReset(int thisLevelId)
+        {
+            _resetCounter[thisLevelId]++;
         }
 
         public void UpdateUserId(Text textView)
@@ -105,7 +119,31 @@ namespace Misc
                 }
             }
         }
-        
+
+        IEnumerator PostSubLevelData(int level, int resets, string subLevel, int time)
+        {
+            var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"level\", \"id\": {level}, \"reset\": {resets}, \"subLevel\": \"{subLevel}\", \"time\": {time} }}" : $"{{ \"type\": \"level\", \"id\": {level}, \"reset\": {resets}, \"subLevel\": \"{subLevel}\", \"time\": {time} }}";
+            var uwr = new UnityWebRequest(ApiEndpoint, "POST");
+            var jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+            uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+            uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            uwr.SetRequestHeader("Content-Type", "application/json");
+
+            Debug.Log("Sending: " + json);
+
+            // Send the request then wait here until it returns
+            yield return uwr.SendWebRequest();
+            
+            if (uwr.isNetworkError)
+            {
+                Debug.Log("Error While Sending: " + uwr.error);
+            }
+            else
+            {
+                Debug.Log("Received: " + uwr.downloadHandler.text);
+            }
+        }
+
         IEnumerator PostQuestionData(int id, int attempts)
         {
             var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"question\", \"id\": {id}, \"attempts\": {attempts} }}" : $"{{ \"type\": \"question\", \"id\": {id}, \"attempts\": {attempts} }}";
@@ -128,9 +166,9 @@ namespace Misc
             }
         }
         
-        IEnumerator PostLevelData(int level, int timeTaken, int resets)
+        IEnumerator PostLevelData(int level, int timeTaken, int resets, bool complete)
         {
-            var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"level\", \"id\": {level}, \"time\": {timeTaken}, \"reset\": {resets} }}" : $"{{ \"type\": \"level\", \"id\": {level}, \"time\": {timeTaken}, \"reset\": {resets} }}";
+            var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"level\", \"id\": {level}, \"time\": {timeTaken}, \"reset\": {resets}, \"complete\": {complete.ToString().ToLower()} }}" : $"{{ \"type\": \"level\", \"id\": {level}, \"time\": {timeTaken}, \"reset\": {resets}, \"complete\": {complete.ToString().ToLower()} }}";
             var uwr = new UnityWebRequest(ApiEndpoint, "POST");
             var jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
@@ -139,6 +177,8 @@ namespace Misc
 
             // Send the request then wait here until it returns
             yield return uwr.SendWebRequest();
+            
+            Debug.Log("Sent: " + json);
 
             if (uwr.isNetworkError)
             {
