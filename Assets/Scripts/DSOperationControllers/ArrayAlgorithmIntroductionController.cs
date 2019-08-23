@@ -21,7 +21,7 @@ namespace DSOperationControllers
         {
             
             _algorithmSteps.Enqueue(new AlgorithmStepData("BubbleSort",
-                "BubbleAlready sorted array is a simple sorting algorithm that repeatedly steps through the list, compares adjacent pairs and swaps them if they are in the wrong order.",
+                "BubbleSort is a simple sorting algorithm that repeatedly steps through the list, compares adjacent pairs and swaps them if they are in the wrong order.",
                 queue =>
                 {
                     _greenButton.gameObject.SetActive(false);

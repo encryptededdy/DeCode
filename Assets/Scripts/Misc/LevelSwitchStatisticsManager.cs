@@ -17,7 +17,7 @@ namespace Misc
 
         private readonly int[] _levelTimes = {-1, -1, -1, -1, -1, -1};
         private readonly int[] _resetCounter = {0, 0, 0, 0, 0, 0};
-        private readonly int[] _questionCounter = {-2, -2, -2, -2, -2 ,-2, -2, -2, -2, -2, -2, -2};
+        private readonly int[] _questionCounter = {-2, -2, -2, -2, -2 ,-2, -2, -2, -2, -2, -2, -2, -2};
         private string _userId;
         private Boolean _userIdRequested = false;
         private Text _userIdTextView;

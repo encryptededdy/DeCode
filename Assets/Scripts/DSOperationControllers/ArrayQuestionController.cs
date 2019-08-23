@@ -56,18 +56,26 @@ namespace DSOperationControllers
                 (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
                     VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
-                })));
+                }),
+                () =>
+                {
+                    QuestionScreenLogic.ShowNewQuestion("Which of the below explains the purpose of these lines of code;\n c = a\n a = b\n b = c",
+                        "Swap the values of A and B",
+                        new []{"Swap the values of A and C", "Swap the values of B and C", "Copy the value of a into b and c"},
+                        "Correct - we use c as a temporary variable to store the value of a when we swap a and b.",
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(0, attempts));
+                }));
             
             _questions.Enqueue(new ArrayQuestionData(
-                "Sort Array",
-                "Sort the array according to car type, ascending - Ambulance (index 0), Police, Yellow Taxi, Silver, Black.",
+                "Rotate array",
+                "Rotate the array to the right by 1 element (such that A is in index 0, B is in 1 etc.)",
                 new List<VehicleType>()
                 {
-                    VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
+                    VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e, VehicleType.garbage_a
                 },
                 (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
-                    VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
+                    VehicleType.garbage_a, VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
                 })));
                         
             OperationQueue.LevelManager.StartLevel(obj => NextQuestion());
