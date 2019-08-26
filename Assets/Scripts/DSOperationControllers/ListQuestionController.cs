@@ -150,7 +150,7 @@ namespace DSOperationControllers
                 }
             ));
             
-            QuestionScreenLogic.ShowNewQuestion("Just so we can tell how much you already know - if we consider the ArrayList implementation of a List, what's a difference between it and a plain Array?",
+            QuestionScreenLogic.ShowNewQuestion("Just so we can tell how much you already know - if we consider the ArrayList implementation of a List (known as a Vector in C++), what's a difference between it and a plain Array?",
                 "The ArrayList can expand (no fixed size)",
                 new []{"ArrayLists can be larger than arrays", "ArrayLists do not support random access", "I don't know"},
                 "",
