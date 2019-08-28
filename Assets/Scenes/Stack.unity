@@ -14790,7 +14790,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 576.09375}
+  m_SizeDelta: {x: 0, y: 579.5672}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1195133300
 MonoBehaviour:
@@ -27394,8 +27394,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 245.5, y: 0}
-  m_SizeDelta: {x: 481, y: 0}
+  m_AnchoredPosition: {x: 247, y: 0}
+  m_SizeDelta: {x: 484, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2315353648685889826
 CanvasRenderer:
@@ -27585,7 +27585,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sort Array
+  m_Text: Loading
 --- !u!224 &3519021674526373733
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28299,8 +28299,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sort the array according to car type, aescending - Ambulance, Police, Taxi,
-    Silver, Black.
+  m_Text: '...'
 --- !u!224 &3519021676419097727
 RectTransform:
   m_ObjectHideFlags: 0
@@ -29519,7 +29518,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 576.09375}
+  m_SizeDelta: {x: 0, y: 579.5672}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4887786922749135686
 Canvas:
@@ -29634,7 +29633,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 72.01172}
+  m_SizeDelta: {x: 0, y: 72.4459}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4887786922832731775
 CanvasRenderer:

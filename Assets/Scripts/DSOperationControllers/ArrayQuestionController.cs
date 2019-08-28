@@ -59,7 +59,7 @@ namespace DSOperationControllers
                 }),
                 () =>
                 {
-                    QuestionScreenLogic.ShowNewQuestion("Which of the below explains the purpose of these lines of code;\n c = a\n a = b\n b = c",
+                    QuestionScreenLogic.ShowNewQuestion("Which of the below explains the purpose of these lines of code. Assume all 3 variables were defined earlier as ints.\n c = a\n a = b\n b = c",
                         "Swap the values of A and B",
                         new []{"Swap the values of A and C", "Swap the values of B and C", "Copy the value of c into a and b"},
                         "Correct - we use c as a temporary variable to store the value of a when we swap a and b.",
@@ -78,7 +78,7 @@ namespace DSOperationControllers
                     VehicleType.garbage_a, VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
                 }),() =>
                 {
-                    QuestionScreenLogic.ShowNewQuestion("Similar to before - Which of the below explains the purpose of these lines of code;\n j = i\n i = k\n k = j",
+                    QuestionScreenLogic.ShowNewQuestion("Similar to before - Which of the below explains the purpose of these lines of code. Assume all 3 variables were defined earlier as ints.\n j = i\n i = k\n k = j",
                         "Swap the values of I and K",
                         new []{"Swap the values of K and J", "Swap the values of I and J", "Copy the value of J into I and K"},
                         "Correct - we use c as a temporary variable to store the value of a when we swap a and b.",
