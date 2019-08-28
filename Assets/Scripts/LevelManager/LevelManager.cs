@@ -159,11 +159,11 @@ namespace LevelManager
 
             if (fast)
             {
-                yield return StartCoroutine(customAStarAgent.MoveTo(position, 10, callback));
+                yield return customAStarAgent.MoveTo(position, 10, callback);
             }
             else
             {
-                yield return StartCoroutine(customAStarAgent.MoveTo(position, 4, callback));
+                yield return customAStarAgent.MoveTo(position, 4, callback);
             }
             
             vehicle.GetComponent<CustomVehicleAnimator>().SetAsPointOfInterest(false);
