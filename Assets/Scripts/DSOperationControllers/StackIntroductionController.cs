@@ -81,7 +81,8 @@ namespace DSOperationControllers
                 {
                     CameraMover.ZoomNormal();
                     queue.SetHidden(true);
-                    GreenButton.gameObject.SetActive(true);
+                    queue.QueueFinishedListener = () => GreenButton.gameObject.SetActive(true);
+                    GreenButton.gameObject.SetActive(false);
                     ManualControls.SetActive(true);
                     OrangeButton.gameObject.SetActive(false);
                 },
@@ -90,8 +91,8 @@ namespace DSOperationControllers
                     // Nothing.
                 }));
             
-            _algorithmSteps.Enqueue(new StackStepData("Try yourself",
-                "Now let's take a look at how an array-based implementation of a stack could work, using an array. Try pushing a vehicle, then popping one, and pay attention to what happens.",
+            _algorithmSteps.Enqueue(new StackStepData("Finished!",
+                "Play around a bit more with stacks, or press Next to finish the game.",
                 queue =>
                 {
                     QuestionScreenLogic.ShowNewQuestion("Now let's consider performance. If we assume the size of the stack never exceeds the size of the array (i.e. we never have to expand the array), can we make this stack implementation any faster?",

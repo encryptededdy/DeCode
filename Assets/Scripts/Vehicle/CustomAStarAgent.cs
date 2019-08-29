@@ -26,7 +26,7 @@ namespace Vehicle
 
         public IEnumerator MoveTo(Vector3 destination, int speed, Action<bool> callback = null)
         {
-            var astar = new Astar(GetFromEnum(Heuristic));
+            var astar = new CustomAStar(GetFromEnum(Heuristic));
 
             var startNode = Graph.ClosestNode(GetComponent<IsoTransform>().Position);
             var endNode = Graph.ClosestNode(destination);
@@ -45,16 +45,18 @@ namespace Vehicle
                 yield break;
             }
 
-            astar.SearchPath(startNode, endNode, JumpHeight, path =>
+            Debug.Log("Searching Path");
+            yield return StartCoroutine(astar.SearchPath(startNode, endNode, JumpHeight, path =>
             {
                 StopAllCoroutines();
+                Debug.Log("Found new Path, trying to move");
                 StartCoroutine(MoveAlongPathInternal(path, speed));
             }, () =>
             {
                 Debug.Log("No path found");
                 callback?.Invoke(false);
-            });
-
+            }));
+    
             yield return new WaitUntil(() => gameObject.GetComponent<IsoTransform>().Position.Equals(destination));
             callback?.Invoke(true);
         }
@@ -95,18 +97,18 @@ namespace Vehicle
             }
         }
 
-        private Astar.Heuristic GetFromEnum(AstarAgent.Heuristic heuristic)
+        private CustomAStar.Heuristic GetFromEnum(AstarAgent.Heuristic heuristic)
         {
             switch (heuristic)
             {
                 case AstarAgent.Heuristic.EuclidianDistance:
-                    return Astar.EuclidianHeuristic;
+                    return CustomAStar.EuclidianHeuristic;
                 case AstarAgent.Heuristic.MaxAlongAxis:
-                    return Astar.MaxAlongAxisHeuristic;
+                    return CustomAStar.MaxAlongAxisHeuristic;
                 case AstarAgent.Heuristic.ManhattenDistance:
-                    return Astar.ManhattanHeuristic;
+                    return CustomAStar.ManhattanHeuristic;
                 case AstarAgent.Heuristic.AvoidVerticalSteeps:
-                    return Astar.AvoidVerticalSteepsHeuristic;
+                    return CustomAStar.AvoidVerticalSteepsHeuristic;
                 default:
                     throw new ArgumentOutOfRangeException("heuristic", heuristic, null);
             }

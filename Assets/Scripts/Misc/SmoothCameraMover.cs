@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Assets.UltimateIsometricToolkit.Scripts.Core;
-using UnityEditor.AnimatedValues;
+﻿using Assets.UltimateIsometricToolkit.Scripts.Core;
 using UnityEngine;
 
 public class SmoothCameraMover : MonoBehaviour

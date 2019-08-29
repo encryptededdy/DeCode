@@ -78,7 +78,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sort Array
+  m_Text: Loading
 --- !u!1 &723107429726997813
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,6 +614,7 @@ MonoBehaviour:
   Description: {fileID: 723107430354323101}
   GreenButton: {fileID: 723107429781985672}
   OrangeButton: {fileID: 723107429963516156}
+  QuestionScreenLogic: {fileID: 0}
 --- !u!1 &723107430210571359
 GameObject:
   m_ObjectHideFlags: 0
@@ -771,5 +772,4 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Sort the array according to car type, aescending - Ambulance, Police, Taxi,
-    Silver, Black.
+  m_Text: '...'

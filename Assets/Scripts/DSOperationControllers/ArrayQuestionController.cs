@@ -56,19 +56,34 @@ namespace DSOperationControllers
                 (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
                     VehicleType.ambulance, VehicleType.red, VehicleType.garbage, VehicleType.blue, VehicleType.taxi
-                })));
+                }),
+                () =>
+                {
+                    QuestionScreenLogic.ShowNewQuestion("Which of the below explains the purpose of these lines of code. Assume all 3 variables were defined earlier as ints.\n c = a\n a = b\n b = c",
+                        "Swap the values of A and B",
+                        new []{"Swap the values of A and C", "Swap the values of B and C", "Copy the value of c into a and b"},
+                        "Correct - we use c as a temporary variable to store the value of a when we swap a and b.",
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(0, attempts));
+                }));
             
             _questions.Enqueue(new ArrayQuestionData(
-                "Sort Array",
-                "Sort the array according to car type, ascending - Ambulance (index 0), Police, Yellow Taxi, Silver, Black.",
+                "Rotate array",
+                "Rotate the array to the right by 1 element (such that A is in index 0, B is in 1 etc.)",
                 new List<VehicleType>()
                 {
-                    VehicleType.police, VehicleType.ambulance, VehicleType.black, VehicleType.taxi, VehicleType.silver
+                    VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e, VehicleType.garbage_a
                 },
                 (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
-                    VehicleType.ambulance, VehicleType.police, VehicleType.taxi, VehicleType.silver, VehicleType.black
-                })));
+                    VehicleType.garbage_a, VehicleType.garbage_b, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
+                }),() =>
+                {
+                    QuestionScreenLogic.ShowNewQuestion("Similar to before - Which of the below explains the purpose of these lines of code. Assume all 3 variables were defined earlier as ints.\n j = i\n i = k\n k = j",
+                        "Swap the values of I and K",
+                        new []{"Swap the values of K and J", "Swap the values of I and J", "Copy the value of J into I and K"},
+                        "Correct - we use c as a temporary variable to store the value of a when we swap a and b.",
+                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(0, attempts));
+                }));
                         
             OperationQueue.LevelManager.StartLevel(obj => NextQuestion());
         }
@@ -89,16 +104,7 @@ namespace DSOperationControllers
                 (answer) => answer.SequenceEqual(new List<VehicleType>()
                 {
                     VehicleType.garbage_b, VehicleType.garbage_a, VehicleType.garbage_c, VehicleType.garbage_d, VehicleType.garbage_e
-                }),
-                // TODO: Is this question too hard?
-                () =>
-                {
-                    QuestionScreenLogic.ShowNewQuestion("If we were to implement BubbleSort in code, how many other helper variables do we need to allow it to function, in addition to the input array? Swapped is a variable that records whether two elements were swapped this iteration",
-                        "temp and swapped",
-                        new []{"temp, swapped and a second copy of the array", "Just temp", "A second copy of the array"},
-                        "Correct - we need temp and swapped to allow for swapping of elements and to know when to finish the algorithm respectively.",
-                        attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(0, attempts));
-                }));
+                })));
             
             _questions.Enqueue(new ArrayQuestionData(
                 "Second iteration",
@@ -127,7 +133,7 @@ namespace DSOperationControllers
                 {
                     QuestionScreenLogic.ShowNewQuestion("Given arrays of the same length, which type of array would take the maximum number of iterations (i.e. the slowest) for BubbleSort to sort?",
                         "Reverse sorted array",
-                        new []{"Already sorted array", "Sorted but one", "Array with duplicate values"},
+                        new []{"Already sorted array", "Sorted but the first two elements", "Array with duplicate values"},
                         "Correct - since we essentially move only one element every iteration with a reversed array, this is the slowest case.",
                         attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(1, attempts));
                 }));

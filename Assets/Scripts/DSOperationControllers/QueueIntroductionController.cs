@@ -77,7 +77,8 @@ namespace DSOperationControllers
                 {
                     CameraMover.ZoomNormal();
                     queue.SetHidden(true);
-                    GreenButton.gameObject.SetActive(true);
+                    GreenButton.gameObject.SetActive(false);
+                    queue.QueueFinishedListener = ReEnableGreenButton;
                     ManualControls.SetActive(true);
                     OrangeButton.gameObject.SetActive(false);
                 },
@@ -126,7 +127,8 @@ namespace DSOperationControllers
                 queue =>
                 {
                     queue.MakeCircular();                    
-                    GreenButton.gameObject.SetActive(true);
+                    GreenButton.gameObject.SetActive(false);
+                    queue.QueueFinishedListener = ReEnableGreenButton;
                     ManualControls.SetActive(true);
                     OrangeButton.gameObject.SetActive(false);
                 },
