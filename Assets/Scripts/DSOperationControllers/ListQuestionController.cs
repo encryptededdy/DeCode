@@ -51,7 +51,7 @@ namespace DSOperationControllers
             
             _questions.Enqueue(new ListQuestionData(
                 "Expand and Add Again",
-                "Add 1 more vehicle. To do this, you need to extend the array by 1 again.",
+                "Add 1 more vehicle, totalling 3. To do this, you need to extend the array by 1 again.",
                 new List<VehicleType>()
                 {
                     VehicleType.empty, VehicleType.empty
@@ -77,7 +77,7 @@ namespace DSOperationControllers
             
             _questions.Enqueue(new ListQuestionData(
                 "Expand and Add Again 2",
-                "Add 1 more vehicle. To do this, you need to extend the array by 1 again.",
+                "Add 1 more vehicle, totalling 4. To do this, you need to extend the array by 1 again.",
                 new List<VehicleType>()
                 {
                     VehicleType.empty, VehicleType.empty, VehicleType.empty
@@ -124,7 +124,7 @@ namespace DSOperationControllers
             
             _questions.Enqueue(new ListQuestionData(
                 "Expand and Add Again",
-                "Now, add another 3 vehicles (sequentially, to indices 2, 3, 4). We can see that the doubling method is much more efficient, as it avoids overusing the expensive copying operation.",
+                "Now, add another 3 vehicles (sequentially, to indices 2, 3, 4), totalling 5. We can see that the doubling method is much more efficient, as it avoids overusing the expensive copying operation.",
                 new List<VehicleType>()
                 {
                     VehicleType.empty, VehicleType.empty
