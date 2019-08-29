@@ -40,10 +40,10 @@ namespace Misc
             SceneManager.LoadScene(nextLevelId);
         }
 
-        public void SendSubData(int thisLevelId, int resets, string subLevel)
+        public void SendSubData(int thisLevelId, int resets, string subLevel, string log = "")
         {
             var thisLevelTime = (int) Math.Round(Time.timeSinceLevelLoad);
-            StartCoroutine(PostSubLevelData(thisLevelId, resets, subLevel, thisLevelTime));
+            StartCoroutine(PostSubLevelData(thisLevelId, resets, subLevel, thisLevelTime, log.Replace("\n", "\\n")));
         }
 
         public void LevelReset(int thisLevelId)
@@ -120,9 +120,9 @@ namespace Misc
             }
         }
 
-        IEnumerator PostSubLevelData(int level, int resets, string subLevel, int time)
+        IEnumerator PostSubLevelData(int level, int resets, string subLevel, int time, string log)
         {
-            var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"level\", \"id\": {level}, \"reset\": {resets}, \"subLevel\": \"{subLevel}\", \"time\": {time} }}" : $"{{ \"type\": \"level\", \"id\": {level}, \"reset\": {resets}, \"subLevel\": \"{subLevel}\", \"time\": {time} }}";
+            var json = _userId != null ? $"{{ \"user\": \"{_userId}\", \"type\": \"level\", \"id\": {level}, \"reset\": {resets}, \"subLevel\": \"{subLevel}\", \"time\": {time}, \"log\": \"{log}\" }}" : $"{{ \"type\": \"level\", \"id\": {level}, \"reset\": {resets}, \"subLevel\": \"{subLevel}\", \"time\": {time}, \"log\": \"{log}\" }}";
             var uwr = new UnityWebRequest(ApiEndpoint, "POST");
             var jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
             uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);

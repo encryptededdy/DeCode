@@ -58,6 +58,11 @@ namespace DSOperationControllers
             LoggingView.SetActive(!LoggingView.activeInHierarchy);
         }
 
+        public string GetLogText()
+        {
+            return LoggingText.text;
+        }
+
         public void ResetLog()
         {
             LoggingText.text = "";

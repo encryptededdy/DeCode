@@ -142,6 +142,12 @@ namespace DSOperationControllers
 
         private void NextQuestion()
         {
+            if (_currentQuestion != null)
+            {
+                LevelSwitchStatisticsManager.Instance.SendSubData(1, _currentQuestionResets, _currentQuestion.Title, OperationQueue.GetLogText());
+                _currentQuestionResets = 0;
+            }
+
             switch (_questions.Count)
             {
                 case 0 when !_runArrayAlgoIntro:
@@ -164,13 +170,7 @@ namespace DSOperationControllers
                     OrangeButton.gameObject.SetActive(false);
                     return;
             }
-
-            if (_currentQuestion != null)
-            {
-                LevelSwitchStatisticsManager.Instance.SendSubData(1, _currentQuestionResets, _currentQuestion.Title);
-                _currentQuestionResets = 0;
-            }
-
+            
             _currentQuestion = _questions.Dequeue();
 
             if (!OperationQueue.GetArrayState().SequenceEqual(_currentQuestion.InitialState))
