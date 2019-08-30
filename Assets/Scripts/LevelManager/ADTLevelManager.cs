@@ -119,13 +119,13 @@ namespace LevelManager
                         if (Vector3Collider.Intersect(isoTransform.Position, ConvertTileToPosition(tile), tile.Size))
                         {
                             vehicle.GetComponent<Renderer>().enabled = false;
-                            vehicle.GetComponent<CustomVehicleAnimator>().PointOfInterestIndicator.SetActive(false);
+                            vehicle.GetComponent<CustomVehicleAnimator>().PointOfInterestIndicator.GetComponent<Renderer>().enabled = false;
                             return;
                         }
                     }
 
                     vehicle.GetComponent<Renderer>().enabled = true;
-                    vehicle.GetComponent<CustomVehicleAnimator>().PointOfInterestIndicator.SetActive(true);
+                    vehicle.GetComponent<CustomVehicleAnimator>().PointOfInterestIndicator.GetComponent<Renderer>().enabled = true;
                 }
             }
         }
