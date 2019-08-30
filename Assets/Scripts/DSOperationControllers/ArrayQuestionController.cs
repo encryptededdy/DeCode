@@ -81,7 +81,7 @@ namespace DSOperationControllers
                     QuestionScreenLogic.ShowNewQuestion("Similar to before - Which of the below explains the purpose of these lines of code. Assume all 3 variables were defined earlier as ints.\n j = i\n i = k\n k = j",
                         "Swap the values of I and K",
                         new []{"Swap the values of K and J", "Swap the values of I and J", "Copy the value of J into I and K"},
-                        "Correct - we use c as a temporary variable to store the value of a when we swap a and b.",
+                        "Correct - we use J as a temporary variable to store the value of a when we swap I and K.",
                         attempts => LevelSwitchStatisticsManager.Instance.QuestionReturn(0, attempts));
                 }));
                         
