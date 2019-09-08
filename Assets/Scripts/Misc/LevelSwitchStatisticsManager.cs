@@ -30,11 +30,11 @@ namespace Misc
             //Transmit data async
             if (nextLevelId != 0)
             {
-                StartCoroutine(PostLevelData(thisLevelId, thisLevelTime, _resetCounter[thisLevelId], true));
+//                StartCoroutine(PostLevelData(thisLevelId, thisLevelTime, _resetCounter[thisLevelId], true));
             }
             else
             {
-                StartCoroutine(PostLevelData(thisLevelId, thisLevelTime, _resetCounter[thisLevelId], false));
+//                StartCoroutine(PostLevelData(thisLevelId, thisLevelTime, _resetCounter[thisLevelId], false));
             }
 
             SceneManager.LoadScene(nextLevelId);
@@ -43,7 +43,7 @@ namespace Misc
         public void SendSubData(int thisLevelId, int resets, string subLevel, string log = "")
         {
             var thisLevelTime = (int) Math.Round(Time.timeSinceLevelLoad);
-            StartCoroutine(PostSubLevelData(thisLevelId, resets, subLevel, thisLevelTime, log.Replace("\n", "\\n")));
+//            StartCoroutine(PostSubLevelData(thisLevelId, resets, subLevel, thisLevelTime, log.Replace("\n", "\\n")));
         }
 
         public void LevelReset(int thisLevelId)
@@ -57,7 +57,7 @@ namespace Misc
             if (_userIdRequested == false)
             {
                 _userIdRequested = true;
-                StartCoroutine(RequestUserID());
+//                StartCoroutine(RequestUserID());
             } else if (_userId != null)
             {
                 _userIdTextView.text = $"ID: {_userId}";
@@ -89,7 +89,7 @@ namespace Misc
             Debug.Log($"Question {questionID} took {tries} attempts.");
             _questionCounter[questionID] = tries;
             //Transmit data async
-            StartCoroutine(PostQuestionData(questionID, tries));
+//            StartCoroutine(PostQuestionData(questionID, tries));
         }
 
         public int[] LevelTimes => _levelTimes;
