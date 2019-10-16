@@ -56,7 +56,7 @@ namespace CustomUI
                 else
                 {
                     Prefab.SetActive(false);
-                    questionScreenCallback(-1); // -1 signifies incorrect
+                    questionScreenCallback(1); // 1 signifies correct
                 }
             }));
 
